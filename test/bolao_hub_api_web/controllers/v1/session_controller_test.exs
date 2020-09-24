@@ -2,6 +2,7 @@ defmodule BolaoHubApiWeb.API.V1.SessionControllerTest do
   use BolaoHubApiWeb.ConnCase
 
   alias BolaoHubApi.{Repo, Users.User}
+  import BolaoHubApiWeb.Gettext
 
   @password "secret1234"
 
@@ -18,7 +19,7 @@ defmodule BolaoHubApiWeb.API.V1.SessionControllerTest do
     @valid_params %{"user" => %{"email" => "test@example.com", "password" => @password}}
     @invalid_params %{"user" => %{"email" => "test@example.com", "password" => "invalid"}}
 
-    test "with valid params", %{conn: conn} do
+    test "with valid params (By email)", %{conn: conn} do
       conn = post conn, Routes.api_v1_session_path(conn, :create, @valid_params)
 
       assert json = json_response(conn, 200)
@@ -30,7 +31,26 @@ defmodule BolaoHubApiWeb.API.V1.SessionControllerTest do
       conn = post conn, Routes.api_v1_session_path(conn, :create, @invalid_params)
 
       assert json = json_response(conn, 401)
-      assert json["error"]["message"] == "Invalid email or password"
+      assert json["error"]["message"] == dgettext("errors", "Credentials Incorrect")
+      assert json["error"]["status"] == 401
+    end
+
+    @valid_params_user_name %{"user" => %{"user_name" => "test", "password" => @password}}
+    @invalid_params_user_name %{"user" => %{"user_name" => "test", "password" => "invalid"}}
+
+    test "with valid params (By user_name)", %{conn: conn} do
+      conn = post conn, Routes.api_v1_session_path(conn, :create, @valid_params_user_name)
+
+      assert json = json_response(conn, 200)
+      assert json["data"]["access_token"]
+      assert json["data"]["renewal_token"]
+    end
+
+    test "with invalid params (By user_name)", %{conn: conn} do
+      conn = post conn, Routes.api_v1_session_path(conn, :create, @invalid_params_user_name)
+
+      assert json = json_response(conn, 401)
+      assert json["error"]["message"] == dgettext("errors", "Credentials Incorrect")
       assert json["error"]["status"] == 401
     end
   end

@@ -34,3 +34,8 @@ import_config "#{Mix.env()}.exs"
 config :bolao_hub_api, :pow,
   user: BolaoHubApi.Users.User,
   repo: BolaoHubApi.Repo
+
+# Get Text
+config :bolao_hub_api,
+  BolaoHubApiWeb.Gettext,
+  default_locale: "en"

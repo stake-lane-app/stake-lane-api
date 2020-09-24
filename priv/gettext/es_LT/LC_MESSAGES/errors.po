@@ -8,9 +8,8 @@
 ## to merge POT files into PO files.
 msgid ""
 msgstr ""
-"Language: en\n"
+"Language: es_LT\n"
 
-## From Ecto.Changeset.cast/4
 msgid "can't be blank"
 msgstr ""
 
@@ -100,4 +99,4 @@ msgstr ""
 #: lib/bolao_hub_api_web/controllers/v1/session_controller.ex:29
 #: lib/bolao_hub_api_web/controllers/v1/session_controller.ex:57
 msgid "Credentials Incorrect"
-msgstr ""
+msgstr "Credenciales Incorrectas"

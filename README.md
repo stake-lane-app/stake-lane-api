@@ -18,3 +18,15 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Source: https://github.com/phoenixframework/phoenix
 
   * Pow only api: https://hexdocs.pm/pow/api.html
+
+
+## Translations
+
+* How to get the info from the code to the template .pot:
+  `mix gettext.extract`
+* How to get the info from the template .pot to the files .po:
+  `mix gettext.merge priv/gettext`
+* Compile it:
+  `mix compile.gettext `
+
+<!-- `mix gettext.extract && mix gettext.merge priv/gettext && mix compile.gettext` -->
