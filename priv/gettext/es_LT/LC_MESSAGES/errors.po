@@ -15,7 +15,7 @@ msgstr ""
 
 ## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
-msgstr ""
+msgstr "Ya esta en uso"
 
 ## From Ecto.Changeset.put_change/3
 msgid "is invalid"

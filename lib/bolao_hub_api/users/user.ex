@@ -27,6 +27,7 @@ defmodule BolaoHubApi.Users.User do
   def changeset(user_or_changeset, attrs) do
     user_or_changeset
     |> pow_changeset(attrs)
+    |> unique_constraint(:user_name)
     |> cast(attrs, [:user_name])
     |> validate_required([:user_name])
     |> validate_subset(:role, ["user", "admin"])
