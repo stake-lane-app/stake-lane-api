@@ -8,7 +8,7 @@ defmodule BolaoHubApi.User do
 
   alias BolaoHubApi.Users.User
 
-  @spec get_email_by_user_name(any) :: {:not_found, nil} | {:ok, charlist}
+  @spec get_email_by_user_name(String.t | nil) :: {:not_found, nil} | {:ok, charlist}
   def get_email_by_user_name(user_name) do
     query = from u in User,
       where: u.user_name == ^user_name,

@@ -49,3 +49,11 @@ databases: [
     source: Path.absname("priv/geolite2/city20200922.mmdb")
   }
 ]
+
+
+# Postgis
+config :bolao_hub_api, BolaoHubApi.Repo,
+types: BolaoHubApi.PostgresTypes
+
+config :geo_postgis,
+  json_library: Jason

@@ -3,6 +3,7 @@ defmodule BolaoHubApiWeb.V1.RegistrationController do
 
   alias Ecto.Changeset
   alias Plug.Conn
+  alias BolaoHubApi.RelevantAction
   alias BolaoHubApiWeb.ErrorHelpers
 
 
@@ -24,6 +25,9 @@ defmodule BolaoHubApiWeb.V1.RegistrationController do
     |> Pow.Plug.create_user(user_params)
     |> case do
       {:ok, user, conn} ->
+        RelevantAction.relevantActions[:Registered]
+        |> RelevantAction.create(user.id, conn.remote_ip)
+
         json(conn, %{
           data: %{
             access_token: conn.private[:api_access_token],

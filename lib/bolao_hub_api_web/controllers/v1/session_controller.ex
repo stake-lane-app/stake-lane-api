@@ -4,7 +4,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
   alias BolaoHubApiWeb.APIAuthPlug
   alias Plug.Conn
   alias BolaoHubApi.User
-  alias BolaoHubApiWeb.Utils.IpLocation
+  alias BolaoHubApi.RelevantAction
   import BolaoHubApiWeb.Gettext
 
   defp parse_user(user) do
@@ -15,6 +15,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
       email: user.email,
       role: user.role,
       language: language,
+      id: user.id,
     }
   end
 
@@ -50,11 +51,16 @@ defmodule BolaoHubApiWeb.V1.SessionController do
     |> Pow.Plug.authenticate_user(parsed_params)
     |> case do
       {:ok, conn} ->
+        user = conn|> Pow.Plug.current_user |> parse_user
+
+        RelevantAction.relevantActions[:Login]
+        |> RelevantAction.create(user.id, conn.remote_ip)
+
         json(conn, %{
           data: %{
             access_token: conn.private[:api_access_token],
             renewal_token: conn.private[:api_renewal_token],
-            user: conn|> Pow.Plug.current_user |> parse_user,
+            user: user,
           }
         })
 
@@ -78,8 +84,6 @@ defmodule BolaoHubApiWeb.V1.SessionController do
         |> json(%{error: %{status: 401, message: "Invalid token"}})
 
       {conn, raw_user} ->
-        IO.inspect Map.merge %{user_id: raw_user.id}, IpLocation.get_ip_info(conn)
-
         json(conn, %{
           data: %{
             access_token: conn.private[:api_access_token],
