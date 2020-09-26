@@ -4,6 +4,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
   alias BolaoHubApiWeb.APIAuthPlug
   alias Plug.Conn
   alias BolaoHubApi.User
+  alias BolaoHubApiWeb.Utils.IpLocation
   import BolaoHubApiWeb.Gettext
 
   defp parse_user(user) do
@@ -77,6 +78,8 @@ defmodule BolaoHubApiWeb.V1.SessionController do
         |> json(%{error: %{status: 401, message: "Invalid token"}})
 
       {conn, raw_user} ->
+        IO.inspect Map.merge %{user_id: raw_user.id}, IpLocation.get_ip_info(conn)
+
         json(conn, %{
           data: %{
             access_token: conn.private[:api_access_token],

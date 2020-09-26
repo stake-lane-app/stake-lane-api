@@ -43,7 +43,8 @@ defmodule BolaoHubApi.MixProject do
       {:gettext, "~> 0.18.1"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-
+      {:geolix, "~> 2.0"},
+      {:geolix_adapter_mmdb2, "~> 0.6.0"},
       {:pow, "~> 1.0.21"},
       {:pow_assent, "~> 0.4.8"},
 
