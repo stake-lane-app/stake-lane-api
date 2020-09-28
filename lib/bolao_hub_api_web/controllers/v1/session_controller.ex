@@ -53,7 +53,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
       {:ok, conn} ->
         user = conn|> Pow.Plug.current_user |> parse_user
 
-        RelevantAction.relevantActions[:Login]
+        RelevantAction.relevant_actions[:Login]
         |> RelevantAction.create(user.id, conn.remote_ip)
 
         json(conn, %{

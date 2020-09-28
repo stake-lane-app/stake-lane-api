@@ -10,15 +10,23 @@ defmodule BolaoHubApi.RelevantAction do
 
   alias BolaoHubApi.RelevantActions.RelevantAction
 
-  def relevantActions() do
+  def relevant_actions() do
     %{
       Registered: "registered",
       Login: "login",
     }
   end
 
-  def relevantActionsValues() do
-    Map.values(relevantActions())
+  def relevant_actions_values() do
+    Map.values(relevant_actions())
+  end
+
+  def get_coordinates(ip_info) do
+    with true <- !is_nil(ip_info[:longitude]) do
+      %Geo.Point{coordinates: {ip_info[:longitude], ip_info[:latitude]}, srid: 4326}
+    else
+      _ -> nil
+    end
   end
 
   def create(action, user_id, remote_ip) do
@@ -27,25 +35,25 @@ defmodule BolaoHubApi.RelevantAction do
       ip_info when is_map(ip_info) ->
         %{
           ip_info: ip_info,
-          ip_coordinates: %Geo.Point{coordinates: {ip_info[:longitude], ip_info[:latitude]}, srid: 4326},
+          ip_coordinates: ip_info |> get_coordinates,
           action: action,
           user_id: user_id,
         }
-
       _ -> 
         %{
+          ip_info: %{remote_ip: remote_ip |> Tuple.to_list},
           action: action,
           user_id: user_id,
         }
     end
 
     %RelevantAction{}
-    |> RelevantAction.changeset(attrs)
-    |> Repo.insert()
-    |> case  do
-      {:error, log} -> Logger.error(inspect(log.errors))
-      _ -> nil
-    end
+      |> RelevantAction.changeset(attrs)
+      |> Repo.insert()
+      |> case do
+        {:error, log} -> Logger.error(inspect(log.errors))
+        _ -> nil
+      end
   end
 
 end
