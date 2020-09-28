@@ -19,7 +19,8 @@ defmodule BolaoHubApi.RelevantActions.RelevantAction do
     relevant_action
     |> cast(attrs, [:user_id, :action, :ip_info, :ip_coordinates, :user_agent])
     |> validate_change(:action, fn :action, action ->
-      if !Enum.member?(RelevantAction.relevant_actions_values(), action) do
+      action_allowed = RelevantAction.relevant_actions_values |> Enum.member?(action)
+      if !(action_allowed) do
         [action: "not allowed action: #{action}"]
       else
         []

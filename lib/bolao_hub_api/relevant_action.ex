@@ -18,7 +18,7 @@ defmodule BolaoHubApi.RelevantAction do
   end
 
   def relevant_actions_values() do
-    Map.values(relevant_actions())
+    relevant_actions |> Map.values
   end
 
   def get_coordinates(ip_info) do
