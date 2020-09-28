@@ -7,6 +7,7 @@ defmodule BolaoHubApi.RelevantActions.RelevantAction do
 
   schema "relevant_actions" do
     belongs_to :user, User
+    field :user_agent, :string
     field :action, :string
     field :ip_info, :map
     field :ip_coordinates, Geo.PostGIS.Geometry
@@ -16,7 +17,7 @@ defmodule BolaoHubApi.RelevantActions.RelevantAction do
 
   def changeset(relevant_action, attrs) do
     relevant_action
-    |> cast(attrs, [:user_id, :action, :ip_info, :ip_coordinates])
+    |> cast(attrs, [:user_id, :action, :ip_info, :ip_coordinates, :user_agent])
     |> validate_change(:action, fn :action, action ->
       if !Enum.member?(RelevantAction.relevant_actions_values(), action) do
         [action: "not allowed action: #{action}"]

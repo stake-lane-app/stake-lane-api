@@ -20,7 +20,8 @@ defmodule BolaoHubApiWeb.Utils.IpLocation do
     iso_code: String.t,
     latitude: float,
     longitude: float,
-    time_zone: String.t
+    time_zone: String.t,
+    remote_ip: List,
   }
 
   @spec get_ip_info(Conn.t()) :: nil | ip_info

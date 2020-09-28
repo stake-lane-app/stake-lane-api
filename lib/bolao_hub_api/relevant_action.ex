@@ -23,29 +23,37 @@ defmodule BolaoHubApi.RelevantAction do
 
   def get_coordinates(ip_info) do
     with true <- !is_nil(ip_info[:longitude]) do
-      %Geo.Point{coordinates: {ip_info[:longitude], ip_info[:latitude]}, srid: 4326}
+      %Geo.Point{
+        coordinates: {
+          ip_info[:longitude],
+          ip_info[:latitude]
+        },
+        srid: 4326
+      }
     else
       _ -> nil
     end
   end
 
-  def create(action, user_id, remote_ip) do
-    attrs = IpLocation.get_ip_info(remote_ip)
+  def create(action, user_id, remote_ip, user_agent) do
+    ip_attrs = IpLocation.get_ip_info(remote_ip)
       |> case do
       ip_info when is_map(ip_info) ->
         %{
           ip_info: ip_info,
           ip_coordinates: ip_info |> get_coordinates,
-          action: action,
-          user_id: user_id,
         }
-      _ -> 
-        %{
-          ip_info: %{remote_ip: remote_ip |> Tuple.to_list},
-          action: action,
-          user_id: user_id,
-        }
+
+      _ -> %{
+        remote_ip: remote_ip |> Tuple.to_list
+      }
     end
+
+    attrs = Map.merge(%{
+      action: action,
+      user_id: user_id,
+      user_agent: user_agent,
+    }, ip_attrs)
 
     %RelevantAction{}
       |> RelevantAction.changeset(attrs)
@@ -55,5 +63,4 @@ defmodule BolaoHubApi.RelevantAction do
         _ -> nil
       end
   end
-
 end

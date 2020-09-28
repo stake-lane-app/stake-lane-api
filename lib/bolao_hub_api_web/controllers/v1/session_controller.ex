@@ -51,10 +51,11 @@ defmodule BolaoHubApiWeb.V1.SessionController do
     |> Pow.Plug.authenticate_user(parsed_params)
     |> case do
       {:ok, conn} ->
-        user = conn|> Pow.Plug.current_user |> parse_user
+        user = conn |> Pow.Plug.current_user |> parse_user
+        user_agent = conn |> get_req_header("user-agent") |> to_string
 
         RelevantAction.relevant_actions[:Login]
-        |> RelevantAction.create(user.id, conn.remote_ip)
+          |> RelevantAction.create(user.id, conn.remote_ip, user_agent)
 
         json(conn, %{
           data: %{
