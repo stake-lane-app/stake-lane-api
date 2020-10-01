@@ -36,14 +36,16 @@ defmodule BolaoHubApi.MixProject do
       {:phoenix, "~> 1.5.1"},
       {:phoenix_ecto, "~> 4.1"},
       {:ecto_sql, "~> 3.4"},
-      {:postgrex, ">= 0.0.0"},
+      {:geo_postgis, "~> 3.1"},
+      {:postgrex, ">= 0.15.6"},
       {:phoenix_live_dashboard, "~> 0.2.0"},
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.18.1"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-
+      {:geolix, "~> 2.0"},
+      {:geolix_adapter_mmdb2, "~> 0.6.0"},
       {:pow, "~> 1.0.21"},
       {:pow_assent, "~> 0.4.8"},
 

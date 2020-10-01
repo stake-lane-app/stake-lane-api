@@ -2,6 +2,7 @@ defmodule BolaoHubApi.Users.User do
   use Ecto.Schema
   use Pow.Ecto.Schema
   import Ecto.Changeset
+  alias BolaoHubApi.RelevantActions.RelevantAction
 
   schema "users" do
     field :user_name, :string
@@ -20,8 +21,9 @@ defmodule BolaoHubApi.Users.User do
     field :languages, {:array, :string}
     
     pow_user_fields()
-
     timestamps()
+
+    has_many :relevant_action, RelevantAction
   end
 
   def changeset(user_or_changeset, attrs) do

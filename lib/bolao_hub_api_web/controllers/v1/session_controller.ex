@@ -4,6 +4,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
   alias BolaoHubApiWeb.APIAuthPlug
   alias Plug.Conn
   alias BolaoHubApi.User
+  alias BolaoHubApi.RelevantAction
   import BolaoHubApiWeb.Gettext
 
   defp parse_user(user) do
@@ -14,6 +15,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
       email: user.email,
       role: user.role,
       language: language,
+      id: user.id,
     }
   end
 
@@ -49,11 +51,17 @@ defmodule BolaoHubApiWeb.V1.SessionController do
     |> Pow.Plug.authenticate_user(parsed_params)
     |> case do
       {:ok, conn} ->
+        user = conn |> Pow.Plug.current_user |> parse_user
+        user_agent = conn |> get_req_header("user-agent") |> to_string
+
+        RelevantAction.relevant_actions[:Login]
+          |> RelevantAction.create(user.id, conn.remote_ip, user_agent)
+
         json(conn, %{
           data: %{
             access_token: conn.private[:api_access_token],
             renewal_token: conn.private[:api_renewal_token],
-            user: conn|> Pow.Plug.current_user |> parse_user,
+            user: user,
           }
         })
 
