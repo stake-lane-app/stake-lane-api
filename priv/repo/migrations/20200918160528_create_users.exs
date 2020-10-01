@@ -10,9 +10,6 @@ defmodule BolaoHubApi.Repo.Migrations.CreateUsers do
       add :email_confirmed, :boolean, default: false, null: false
       add :first_name, :string
       add :last_name, :string
-      add :apple_id, :string
-      add :google_id, :string
-      add :facebook_id, :string
       add :social_email, :string
       add :cellphone_number, :string
       add :picture, :string
@@ -26,8 +23,5 @@ defmodule BolaoHubApi.Repo.Migrations.CreateUsers do
 
     create unique_index(:users, [:email])
     create unique_index(:users, [:user_name])
-    create unique_index(:users, [:apple_id])
-    create unique_index(:users, [:google_id])
-    create unique_index(:users, [:facebook_id])
   end
 end
