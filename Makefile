@@ -1,3 +1,4 @@
+# Ensure this file has tabs indentation, otherwise we can have problems running its commands
 .PHONY: help
 
 APP_NAME ?= `grep 'app:' mix.exs | sed -e 's/\[//g' -e 's/ //g' -e 's/app://' -e 's/[:,]//g'`
