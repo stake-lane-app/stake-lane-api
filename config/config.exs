@@ -50,7 +50,6 @@ databases: [
   }
 ]
 
-
 # Postgis
 config :bolao_hub_api, BolaoHubApi.Repo,
 types: BolaoHubApi.PostgresTypes

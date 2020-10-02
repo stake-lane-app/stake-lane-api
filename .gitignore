@@ -28,3 +28,5 @@ bolao_hub_api-*.tar
 /priv/static/
 
 .db/data/
+
+/config/.env

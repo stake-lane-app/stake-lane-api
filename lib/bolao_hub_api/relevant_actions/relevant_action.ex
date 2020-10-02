@@ -11,7 +11,8 @@ defmodule BolaoHubApi.RelevantActions.RelevantAction do
     field :action, :string
     field :ip_info, :map
     field :ip_coordinates, Geo.PostGIS.Geometry
-    
+
+    pow_user_fields()
     timestamps()
   end
 
