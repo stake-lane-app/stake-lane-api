@@ -4,8 +4,8 @@ defmodule BolaoHubApi.MixProject do
   def project do
     [
       app: :bolao_hub_api,
-      version: "0.1.0",
-      elixir: "~> 1.7",
+      version: "0.1.1",
+      elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -48,6 +48,7 @@ defmodule BolaoHubApi.MixProject do
       {:geolix_adapter_mmdb2, "~> 0.6.0"},
       {:pow, "~> 1.0.21"},
       {:pow_assent, "~> 0.4.8"},
+      {:distillery, "~> 2.0"},
 
       {:certifi, "~> 2.4"},
       {:ssl_verify_fun, "~> 1.1"},
