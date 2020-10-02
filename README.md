@@ -29,4 +29,5 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 * Compile it:
   `mix compile.gettext `
 
-<!-- `mix gettext.extract && mix gettext.merge priv/gettext && mix compile.gettext` -->
+## Generating a Container running the Phoenix Server
+We can run the cmd `make build` to do it. More information can be find at [`distillery with docker`](https://hexdocs.pm/distillery/guides/working_with_docker.html).
