@@ -25,10 +25,11 @@ defmodule BolaoHubApiWeb.V1.RegistrationController do
     |> Pow.Plug.create_user(user_params)
     |> case do
       {:ok, user, conn} ->
+        user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
         RelevantAction.relevant_actions[:Registered]
-          |> RelevantAction.create(user.id, conn.remote_ip, user_agent)
+          |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{
           data: %{

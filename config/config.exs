@@ -40,16 +40,6 @@ config :bolao_hub_api,
   BolaoHubApiWeb.Gettext,
   default_locale: "en"
 
-# Geo Lix
-config :geolix,
-databases: [
-  %{
-    id: :city,
-    adapter: Geolix.Adapter.MMDB2,
-    source: Path.absname("priv/geolite2/city20200922.mmdb")
-  }
-]
-
 # Postgis
 config :bolao_hub_api, BolaoHubApi.Repo,
 types: BolaoHubApi.PostgresTypes

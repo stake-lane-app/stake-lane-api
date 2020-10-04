@@ -29,4 +29,4 @@ bolao_hub_api-*.tar
 
 .db/data/
 
-/config/.env
+/config/.env*

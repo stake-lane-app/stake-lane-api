@@ -4,16 +4,19 @@
 # remember to add this file to your .gitignore.
 use Mix.Config
 
-database_url =
-  System.get_env("DATABASE_URL") ||
+database_socket_dir =
+  System.get_env("DATABASE_SOCKET_DIR") ||
     raise """
-    environment variable DATABASE_URL is missing.
-    For example: ecto://USER:PASS@HOST/DATABASE
+    environment variable DATABASE_SOCKET_DIR is missing.
+    For example: "/cloudsql/gcp-account-name:europe-west1:instance-name"
     """
 
 config :bolao_hub_api, BolaoHubApi.Repo,
   # ssl: true,
-  url: database_url,
+  socket_dir: database_socket_dir,
+  username: System.get_env("DATABASE_USERNAME"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  database: System.get_env("DATABASE_DB_NAME"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 secret_key_base =

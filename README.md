@@ -29,5 +29,18 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 * Compile it:
   `mix compile.gettext `
 
-## Generating a Container running the Phoenix Server
-We can run the cmd `make build` to do it. More information can be find at [`distillery with docker`](https://hexdocs.pm/distillery/guides/working_with_docker.html).
+## How to Migrate/Seed remote environment
+1. At instances tab on App Engine dashboard, clik on the SSH option and the the gcloud command to visit the current version
+(Example: `gcloud app instances ssh "aef-default-0--1--5-jkhw" --service "default" --version "0-1-5" --project "bolao-hub"`)
+
+2. Run the command to entry on the container
+(Example: `docker exec -it gaeapp bash`)
+
+3. Fire the Migration/Seed command [Distillery Tutorial](https://hexdocs.pm/distillery/guides/running_migrations.html)
+(Example: `bin/bolao_hub_api migrate`)
+
+
+## How to Connect on Cloud SQL Locally
+1. After donwload the CLI `cloud_sql_proxy`
+2. Fire the command: `./cloud_sql_proxy -instances={{CONNECTION_NAME}}=tcp:5432`
+<!-- ./cloud_sql_proxy -instances=bolao-hub:europe-west1:bolao-hub-dev=tcp:5432 -->

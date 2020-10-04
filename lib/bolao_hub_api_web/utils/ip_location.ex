@@ -1,4 +1,5 @@
 defmodule BolaoHubApiWeb.Utils.IpLocation do
+  alias Plug.Conn
 
   defp parse_geo_data(geo_data) do
     %{
@@ -36,5 +37,18 @@ defmodule BolaoHubApiWeb.Utils.IpLocation do
           |> Map.new()   
           |> parse_geo_data() 
     end
+  end
+
+  @spec get_ip_from_header(Conn.t()) :: Tuple | String
+  def get_ip_from_header(conn) do
+    if Mix.env() in [:local, :test] do
+      conn.remote_ip
+    else
+      conn 
+        |> Conn.get_req_header("x-forwarded-for") 
+        |> Enum.at(0)
+        |> String.split(",")
+        |> Enum.at(0)  
+    end  
   end
 end

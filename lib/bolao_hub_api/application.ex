@@ -23,7 +23,18 @@ defmodule BolaoHubApi.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: BolaoHubApi.Supervisor]
     Supervisor.start_link(children, opts)
+    |> after_start
   end
+
+  defp after_start({:ok, _} = result) do
+    Geolix.load_database(%{
+      id:      :city,
+      adapter: Geolix.Adapter.MMDB2,
+      source:  Application.app_dir(:bolao_hub_api, "priv") |> Path.join("data/city20200929.mmdb")
+    })
+    result
+  end
+  defp after_start(result), do: result
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.

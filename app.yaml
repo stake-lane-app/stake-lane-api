@@ -1,0 +1,9 @@
+env: flex
+runtime: gs://elixir-runtime/elixir.yaml
+runtime_config:
+  release_app: bolao_hub_api
+env_variables:
+  # Copy it form config/.env-{{ENV}}
+beta_settings:
+  cloud_sql_instances: "bolao-hub:europe-west1:bolao-hub-dev"
+
