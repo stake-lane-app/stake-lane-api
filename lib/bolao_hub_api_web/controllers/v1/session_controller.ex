@@ -5,6 +5,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
   alias Plug.Conn
   alias BolaoHubApi.User
   alias BolaoHubApi.RelevantAction
+  alias BolaoHubApiWeb.Utils.IpLocation
   import BolaoHubApiWeb.Gettext
 
   defp parse_user(user) do
@@ -52,10 +53,11 @@ defmodule BolaoHubApiWeb.V1.SessionController do
     |> case do
       {:ok, conn} ->
         user = conn |> Pow.Plug.current_user |> parse_user
+        user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
         RelevantAction.relevant_actions[:Login]
-          |> RelevantAction.create(user.id, conn.remote_ip, user_agent)
+          |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{
           data: %{

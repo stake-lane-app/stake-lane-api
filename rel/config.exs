@@ -31,13 +31,13 @@ environment :dev do
   # dev mode.
   set dev_mode: true
   set include_erts: false
-  set cookie: :"F)MYJdb}2{<>`65iq;s?x]g%uOP~cr*4~kl&H4mmJ(H]f*l%_oJ!^&~UlKg@_zSV"
+  set cookie: :"IjEHvB2G8pW~O$7`4M7!qGh$zM&A=s7i`)=:Pj>};>|d9WdcK*r/s^D3*dIy<TAS"
 end
 
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :"?diAIGdPx8;c*tMg[ZK;~?bQHL8_!4^qgk^!4MDCyn)aISmk;gctM4RX2/ZcXTz:"
+  set cookie: :"IJZ2a&oYbv`KMgcyjtH})dZK?5D5d%.<f*VQ89QIG=;>}(QE8C{*;$}aib[cH@mF"
   set vm_args: "rel/vm.args"
 end
 
@@ -50,6 +50,10 @@ release :bolao_hub_api do
   set version: current_version(:bolao_hub_api)
   set applications: [
     :runtime_tools
+  ]
+  set commands: [
+    migrate: "rel/commands/migrate.sh",
+    seed: "rel/commands/seed.sh",
   ]
 end
 

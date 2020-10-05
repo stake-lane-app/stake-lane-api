@@ -1,13 +1,19 @@
 use Mix.Config
 
-# Configure your database
+database_socket_dir =
+  System.get_env("DATABASE_SOCKET_DIR") ||
+    raise """
+    environment variable DATABASE_SOCKET_DIR is missing.
+    For example: "/cloudsql/gcp-account-name:europe-west1:instance-name"
+    """
+
 config :bolao_hub_api, BolaoHubApi.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "bolao_hub_api_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  # ssl: true,
+  socket_dir: database_socket_dir,
+  username: System.get_env("DATABASE_USERNAME"),
+  password: System.get_env("DATABASE_PASSWORD"),
+  database: System.get_env("DATABASE_DB_NAME"),
+  pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
