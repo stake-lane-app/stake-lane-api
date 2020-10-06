@@ -31,6 +31,10 @@ defmodule BolaoHubApiWeb.V1.AuthorizationController do
     session_params = Map.fetch!(params, "session_params")
     params         = Map.drop(params, ["provider", "session_params"])
 
+    # TODO: How to create the user's username?
+    # TODO: Is is possible to get the user's language case yes, let's do it
+    # TODO: What about user's profile picture?
+
     conn
     |> Conn.put_private(:pow_assent_session_params, session_params)
     |> Plug.callback_upsert(provider, params, redirect_uri(conn))
