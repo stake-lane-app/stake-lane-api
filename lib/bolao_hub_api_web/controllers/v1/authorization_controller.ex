@@ -4,6 +4,7 @@ defmodule BolaoHubApiWeb.V1.AuthorizationController do
   alias Plug.Conn
   alias PowAssent.Plug
   alias BolaoHubApi.RelevantAction
+  alias BolaoHubApiWeb.Utils.IpLocation
 
   @spec new(Conn.t(), map()) :: Conn.t()
   def new(conn, %{"provider" => provider}) do
@@ -21,7 +22,8 @@ defmodule BolaoHubApiWeb.V1.AuthorizationController do
   end
 
   defp redirect_uri(conn) do
-    "https://future.url.com/auth/#{conn.params["provider"]}/callback"
+    api_url = System.get_env("API_URL")
+    "#{api_url}/api/v1/auth/#{conn.params["provider"]}/callback"
   end
 
   @spec callback(Conn.t(), map()) :: Conn.t()
@@ -35,10 +37,12 @@ defmodule BolaoHubApiWeb.V1.AuthorizationController do
     |> case do
       {:ok, conn} ->
 
-        user_agent = conn |> get_req_header("user-agent") |> to_string
         user = conn |> Pow.Plug.current_user
+        user_ip = conn |> IpLocation.get_ip_from_header()
+        user_agent = conn |> get_req_header("user-agent") |> to_string
+
         RelevantAction.relevant_actions[:Registered]
-          |> RelevantAction.create(user.id, conn.remote_ip, user_agent)
+          |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{data: %{token: conn.private[:api_auth_token], renew_token: conn.private[:api_renew_token]}})
 
