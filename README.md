@@ -43,4 +43,4 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 ## How to Connect on Cloud SQL Locally
 1. After donwload the CLI `cloud_sql_proxy`
 2. Fire the command: `./cloud_sql_proxy -instances={{CONNECTION_NAME}}=tcp:5432`
-<!-- ./cloud_sql_proxy -instances=bolao-hub:europe-west1:bolao-hub-dev=tcp:5432 -->
+<!-- ./cloud_sql_proxy -instances=bolao-hub:europe-west1:bolaohub-dev=tcp:5432 -->

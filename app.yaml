@@ -5,5 +5,5 @@ runtime_config:
 env_variables:
   # Copy it form config/.env-{{ENV}}
 beta_settings:
-  cloud_sql_instances: "bolao-hub:europe-west1:bolao-hub-dev"
+  cloud_sql_instances: "bolao-hub:europe-west1:bolaohub-dev"
 
