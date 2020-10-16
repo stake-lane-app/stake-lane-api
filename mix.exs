@@ -49,7 +49,7 @@ defmodule BolaoHubApi.MixProject do
       {:pow, "~> 1.0.21"},
       {:pow_assent, "~> 0.4.8"},
       {:distillery, "~> 2.0"},
-
+      {:assent, "~> 0.1.13"},
       {:certifi, "~> 2.4"},
       {:ssl_verify_fun, "~> 1.1"},
     ]

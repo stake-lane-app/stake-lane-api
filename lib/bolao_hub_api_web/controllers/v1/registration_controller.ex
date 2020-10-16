@@ -5,7 +5,7 @@ defmodule BolaoHubApiWeb.V1.RegistrationController do
   alias Plug.Conn
   alias BolaoHubApi.RelevantAction
   alias BolaoHubApiWeb.ErrorHelpers
-
+  alias BolaoHubApiWeb.Utils.IpLocation
 
   defp userSchema(user) do
     [language | _other_languages ] = user.languages

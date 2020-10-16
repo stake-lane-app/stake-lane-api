@@ -1,6 +1,7 @@
 defmodule BolaoHubApiWeb.Router do
   use BolaoHubApiWeb, :router
   use Pow.Phoenix.Router
+  use PowAssent.Phoenix.Router
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -18,9 +19,12 @@ defmodule BolaoHubApiWeb.Router do
     resources "/registration", RegistrationController, singleton: true, only: [:create]
     resources "/session", SessionController, singleton: true, only: [:create, :delete]
     post "/session/renew", SessionController, :renew
+
+    get "/auth/:provider/new", AuthorizationController, :new
+    post "/auth/:provider/callback", AuthorizationController, :callback
   end
 
-  scope "/api/v1", BolaoHubApiWeb, as: :api_v1 do
+  scope "/api/v1", BolaoHubApiWeb.V1, as: :api_v1 do
     pipe_through [:api, :protected]
 
     # Your protected API endpoints here

@@ -35,6 +35,21 @@ config :bolao_hub_api, :pow,
   user: BolaoHubApi.Users.User,
   repo: BolaoHubApi.Repo
 
+config :bolao_hub_api, :pow_assent,
+  providers: [
+    facebook: [
+      client_id: System.get_env("FACEBOOK_CLIENT_ID"),
+      client_secret: System.get_env("FACEBOOK_CLIENT_SECRET"),
+      strategy: Assent.Strategy.Facebook,
+      nonce: true,
+    ],
+    google: [
+      client_id: System.get_env("GOOGLE_CLIENT_ID"),
+      client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
+      strategy: Assent.Strategy.Google,
+    ]
+  ]
+  
 # Get Text
 config :bolao_hub_api,
   BolaoHubApiWeb.Gettext,

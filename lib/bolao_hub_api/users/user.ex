@@ -1,6 +1,7 @@
 defmodule BolaoHubApi.Users.User do
   use Ecto.Schema
   use Pow.Ecto.Schema
+  use PowAssent.Ecto.Schema
   import Ecto.Changeset
   alias BolaoHubApi.RelevantActions.RelevantAction
 
@@ -9,9 +10,6 @@ defmodule BolaoHubApi.Users.User do
     # field :email_confirmed, :boolean
     # field :first_name, :string
     # field :last_name, :string
-    # field :apple_id, :string
-    # field :google_id, :string
-    # field :facebook_id, :string
     # field :social_email, :string
     # field :cellphone_number, :string
     # field :picture, :string
