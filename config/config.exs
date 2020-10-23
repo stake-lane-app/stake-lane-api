@@ -61,3 +61,13 @@ types: BolaoHubApi.PostgresTypes
 
 config :geo_postgis,
   json_library: Jason
+
+# Oban
+config :bolao_hub_api, Oban,
+  repo: BolaoHubApi.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  queues: [default: 10, events: 50, media: 20],
+  crontab: [
+    # https://github.com/sorentwo/oban#periodic-jobs
+    {"* * * * *", BolaoHubApi.Workers.GetLeagues},
+  ]

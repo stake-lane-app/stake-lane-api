@@ -14,9 +14,10 @@ defmodule BolaoHubApi.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: BolaoHubApi.PubSub},
       # Start the Endpoint (http/https)
-      BolaoHubApiWeb.Endpoint
+      BolaoHubApiWeb.Endpoint,
       # Start a worker by calling: BolaoHubApi.Worker.start_link(arg)
       # {BolaoHubApi.Worker, arg}
+      {Oban, oban_config()},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -35,6 +36,11 @@ defmodule BolaoHubApi.Application do
     result
   end
   defp after_start(result), do: result
+
+  # Conditionally disable crontab, queues, or plugins here.
+  defp oban_config do
+    Application.get_env(:bolao_hub_api, Oban)
+  end
 
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.

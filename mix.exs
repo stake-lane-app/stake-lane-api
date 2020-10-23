@@ -52,6 +52,8 @@ defmodule BolaoHubApi.MixProject do
       {:assent, "~> 0.1.13"},
       {:certifi, "~> 2.4"},
       {:ssl_verify_fun, "~> 1.1"},
+      {:httpoison, "~> 1.7"},
+      {:oban, "~> 2.2"},
     ]
   end
 
