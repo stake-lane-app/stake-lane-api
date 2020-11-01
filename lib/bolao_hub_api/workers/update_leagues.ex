@@ -1,6 +1,7 @@
 defmodule BolaoHubApi.Workers.UpdateLeagues do
   use Oban.Worker, queue: :events
   alias BolaoHubApi.League
+  alias BolaoHubApi.Leagues.ThirdPartyInfo
   require Logger
 
   @doc """
@@ -19,26 +20,24 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
   end
 
   defp request_leagues(league, envs) do
-    league_id = case league.third_parties_info |> Enum.find(&(&1.api == "api_football")) do 
-      nil -> raise "#{league["name"]}-#{league["season"]} has no 3rd party league id"
-      third_party_info -> third_party_info.league_id
-    end
-    
-    url = "#{envs[:url]}/leagues/league/#{league_id}"
-    headers = ["X-RapidAPI-Key": envs[:key]]
-    response = HTTPoison.get!(url, headers)
-    json = Jason.decode!(response.body)
+    %ThirdPartyInfo{ league_id: third_party_league_id } = league.third_parties_info
+      |> Enum.find(&(&1.api == "api_football"))
 
+    headers = ["X-RapidAPI-Key": envs[:key]]
+    json = "#{envs[:url]}/leagues/league/#{third_party_league_id}"
+      |> HTTPoison.get!(headers)
+      |> Jason.decode!(&(&1.body))
+    
     case is_binary json["api"]["error"] do
       true -> Logger.error("Error: #{json["api"]["error"]}") 
     end
 
     refreshed_league = json["api"]["leagues"]
-      |> Enum.find(&(&1["league_id"] == league_id))
+      |> Enum.find(&(&1["league_id"] == third_party_league_id))
 
     %{
-      "refreshed_league" => refreshed_league,
       "actual_league" => league,
+      "refreshed_league" => refreshed_league,
     }
   end
 
