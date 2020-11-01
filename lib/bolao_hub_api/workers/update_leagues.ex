@@ -37,14 +37,12 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
   end
 
   defp update_league(league) do
-    today_date = Date.utc_today()
     refreshed_season_start = Date.from_iso8601!(league["refreshed_league"]["season_start"])
     refreshed_season_end = Date.from_iso8601!(league["refreshed_league"]["season_end"])
 
-    is_active = case Date.diff(today_date, refreshed_season_end) do 
-      diff_date when diff_date <= 0 -> true
-      _ -> false
-    end
+    is_active = Date.utc_today()
+      |> Date.diff(refreshed_season_end)
+      |> is_league_active()
 
     refreshed_attrs = %{
       is_active: is_active,
@@ -54,4 +52,7 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
 
     { :ok, _ } = League.update_league(league["actual_league"], refreshed_attrs)
   end
+
+  defp is_league_active(diff_date) when diff_date <= 0, do: true
+  defp is_league_active(_), do: false
 end
