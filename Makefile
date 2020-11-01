@@ -1,6 +1,6 @@
 
 local-api:
-	MIX_ENV=local mix phx.server
+	mix phx.server
 
 local-infra:
 	docker-compose up -d
