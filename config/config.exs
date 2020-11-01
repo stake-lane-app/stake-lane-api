@@ -69,5 +69,10 @@ config :bolao_hub_api, Oban,
   queues: [default: 10, events: 50, media: 20],
   crontab: [
     # https://github.com/sorentwo/oban#periodic-jobs
-    {"* * * * *", BolaoHubApi.Workers.GetLeagues},
+    {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
+    {"@weekly", BolaoHubApi.Workers.UpsertTeams},
   ]
+
+config :bolao_hub_api, :football_api,
+  url: System.get_env("API_FOOTBALL_URL") || "https://v2.api-football.com",
+  key: System.get_env("API_FOOTBALL_KEY") || "686819f61ee767103c876669418c2156"
