@@ -13,13 +13,13 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)
 
     League.list_api_football_active_leagues
-      |> Enum.map(&request_leagues(&1, envs))
-      |> Enum.map(&update_leagues(&1))
+      |> Enum.map(&request_league(&1, envs))
+      |> Enum.map(&update_league(&1))
     
     :ok
   end
 
-  defp request_leagues(league, envs) do
+  defp request_league(league, envs) do
     %ThirdPartyInfo{ league_id: third_party_league_id } = league.third_parties_info
       |> Enum.find(&(&1.api == "api_football"))
 
@@ -36,7 +36,7 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
     }
   end
 
-  defp update_leagues(league) do
+  defp update_league(league) do
     today_date = Date.utc_today()
     refreshed_season_start = Date.from_iso8601!(league["refreshed_league"]["season_start"])
     refreshed_season_end = Date.from_iso8601!(league["refreshed_league"]["season_end"])
