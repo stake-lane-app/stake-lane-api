@@ -24,15 +24,10 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
       |> Enum.find(&(&1.api == "api_football"))
 
     headers = ["X-RapidAPI-Key": envs[:key]]
-    json = "#{envs[:url]}/leagues/league/#{third_party_league_id}"
+    refreshed_league = "#{envs[:url]}/leagues/league/#{third_party_league_id}"
       |> HTTPoison.get!(headers)
       |> Jason.decode!(&(&1.body))
-    
-    case is_binary json["api"]["error"] do
-      true -> Logger.error("Error: #{json["api"]["error"]}") 
-    end
-
-    refreshed_league = json["api"]["leagues"]
+      |> (&(&1["api"]["leagues"])).()
       |> Enum.find(&(&1["league_id"] == third_party_league_id))
 
     %{
