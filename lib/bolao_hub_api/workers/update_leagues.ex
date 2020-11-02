@@ -26,7 +26,8 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
     headers = ["X-RapidAPI-Key": envs[:key]]
     refreshed_league = "#{envs[:url]}/leagues/league/#{third_party_league_id}"
       |> HTTPoison.get!(headers)
-      |> Jason.decode!(&(&1.body))
+      |> (&(&1.body)).()
+      |> Jason.decode!()
       |> (&(&1["api"]["leagues"])).()
       |> Enum.find(&(&1["league_id"] == third_party_league_id))
 

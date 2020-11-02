@@ -25,8 +25,8 @@ defmodule BolaoHubApi.Leagues.League do
       :season_start,
       :season_end,
       :active,
-      :third_parties_info
     ])
+    |> cast_embed(:third_parties_info)
     |> validate_required([:name, :country, :country_code, :season, :active])
   end
 end
