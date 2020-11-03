@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.AddTeamsTable do
+defmodule BolaoHubApi.Repo.Migrations.AddTeams do
   use Ecto.Migration
 
   def change do
@@ -7,13 +7,14 @@ defmodule BolaoHubApi.Repo.Migrations.AddTeamsTable do
       add :full_name,          :string, size: 100
       add :logo,               :string, size: 100
       add :is_national,        :boolean, default: false, null: false
-      add :country,            :string, size: 100
+      add :country_id,         references("countries", on_delete: :delete_all)
       add :founded,            :integer
       add :venue,              :jsonb, default: "[]"
+      add :third_parties_info, :jsonb, default: "[]"
 
       timestamps()
     end
 
-  create index("teams", [:name, :country])
+  create index("teams", [:name, :country_id])
   end
 end

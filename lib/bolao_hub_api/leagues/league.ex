@@ -33,6 +33,7 @@ end
 
 defmodule BolaoHubApi.Leagues.ThirdPartyInfo do
   use Ecto.Schema
+  import Ecto.Changeset
 
   embedded_schema do
     field :api, :string
@@ -43,5 +44,11 @@ defmodule BolaoHubApi.Leagues.ThirdPartyInfo do
     # In order to have somebody that can overwrite
     # the persisted data (Match results, Active leagues, etc), 
     # we will need to have a higher respectness
+
+    def changeset(info, attrs) do
+      info
+      |> cast(attrs, [:api, :league_id, :respectness])
+      |> validate_required([:api, :league_id])
+    end
   end
 end

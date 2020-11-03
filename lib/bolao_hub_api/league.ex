@@ -8,10 +8,13 @@ defmodule BolaoHubApi.League do
 
   alias BolaoHubApi.Leagues.League
 
-  def list_api_football_active_leagues() do
+  def list_api_football_active_leagues(third_api) do
     query = from l in League,
       where: l.active == true and
-      fragment("third_parties_info @> '[{\"api\": \"api_football\" }]'")
+      fragment(
+        "third_parties_info @> ?",
+        ^[%{"api" => third_api}]
+      )
     
     query 
     |> Repo.all()
@@ -23,7 +26,7 @@ defmodule BolaoHubApi.League do
   ## Examples
 
       iex> update_league(league, %{field: new_value})
-      {:ok, %Project{}}
+      {:ok, %League{}}
 
       iex> update_league(league, %{field: bad_value})
       {:error, %Ecto.Changeset{}}

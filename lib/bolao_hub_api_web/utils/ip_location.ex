@@ -41,14 +41,15 @@ defmodule BolaoHubApiWeb.Utils.IpLocation do
 
   @spec get_ip_from_header(Conn.t()) :: Tuple | String
   def get_ip_from_header(conn) do
-    if Mix.env() in [:local, :test] do
-      conn.remote_ip
-    else
-      conn 
-        |> Conn.get_req_header("x-forwarded-for") 
-        |> Enum.at(0)
-        |> String.split(",")
-        |> Enum.at(0)  
-    end  
+    get_ip(conn, Mix.env())
+  end
+
+  defp get_ip(conn, env) when env in [:local, :test], do: conn.remote_ip
+  defp get_ip(conn, _) do
+    conn 
+      |> Conn.get_req_header("x-forwarded-for") 
+      |> Enum.at(0)
+      |> String.split(",")
+      |> Enum.at(0) 
   end
 end
