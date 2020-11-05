@@ -71,6 +71,7 @@ config :bolao_hub_api, Oban,
     # https://github.com/sorentwo/oban#periodic-jobs
     {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
     {"@weekly", BolaoHubApi.Workers.UpsertTeams},
+    {"@weekly", BolaoHubApi.Workers.UpsertCountries},
   ]
 
 config :bolao_hub_api, :football_api,

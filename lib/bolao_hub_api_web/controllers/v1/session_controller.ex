@@ -9,7 +9,7 @@ defmodule BolaoHubApiWeb.V1.SessionController do
   import BolaoHubApiWeb.Gettext
 
   defp parse_user(user) do
-    [language | _other_languages ] = user.languages
+    [ language | _other_languages ] = user.languages
 
     %{
       user_name: user.user_name,

@@ -25,14 +25,15 @@ defmodule BolaoHubApi.Leagues.League do
       :season_start,
       :season_end,
       :active,
-      :third_parties_info
     ])
+    |> cast_embed(:third_parties_info)
     |> validate_required([:name, :country, :country_code, :season, :active])
   end
 end
 
 defmodule BolaoHubApi.Leagues.ThirdPartyInfo do
   use Ecto.Schema
+  import Ecto.Changeset
 
   embedded_schema do
     field :api, :string
@@ -43,5 +44,11 @@ defmodule BolaoHubApi.Leagues.ThirdPartyInfo do
     # In order to have somebody that can overwrite
     # the persisted data (Match results, Active leagues, etc), 
     # we will need to have a higher respectness
+
+    def changeset(info, attrs) do
+      info
+      |> cast(attrs, [:api, :league_id, :respectness])
+      |> validate_required([:api, :league_id])
+    end
   end
 end

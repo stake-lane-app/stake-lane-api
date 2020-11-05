@@ -44,3 +44,9 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 1. After donwload the CLI `cloud_sql_proxy`
 2. Fire the command: `./cloud_sql_proxy -instances={{CONNECTION_NAME}}=tcp:5432`
 <!-- ./cloud_sql_proxy -instances=bolao-hub:europe-west1:bolaohub-dev=tcp:5432 -->
+
+
+<!--
+  curl --location --request GET 'https://v2.api-football.com/status' \
+  --header 'X-RapidAPI-Key: 686819f61ee767103c876669418c2156'
+-->
