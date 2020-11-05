@@ -1,10 +1,11 @@
 defmodule BolaoHubApi.Workers.UpsertCountries do
+  @moduledoc """
+    Upsert Countries by third_parties_info[api].league_id,
+  """
+
   use Oban.Worker, queue: :events
   alias BolaoHubApi.Country
 
-  @doc """
-    Upsert Countries by third_parties_info[api].league_id,
-  """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)

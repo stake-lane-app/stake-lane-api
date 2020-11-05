@@ -1,4 +1,9 @@
 defmodule BolaoHubApi.Workers.UpdateLeagues do
+  @moduledoc """
+    Updates Leagues information,
+    Starting date, ending date, if it is still active, etc.
+  """
+
   use Oban.Worker, queue: :events
   alias BolaoHubApi.League
   alias BolaoHubApi.Leagues.ThirdPartyInfo
@@ -6,10 +11,6 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
 
   @third_api "api_football"
 
-  @doc """
-    Updates Leagues information,
-    Starting date, ending date, if it is still active, etc.
-  """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)

@@ -1,4 +1,11 @@
 defmodule BolaoHubApi.RelevantActions.RelevantAction do
+  @moduledoc """
+    Every single time something important happening to the user's account
+    We will save it as a relevant action, such as 
+    - account creation
+    - successfully login
+  """
+
   use Ecto.Schema
   use Pow.Ecto.Schema
   import Ecto.Changeset

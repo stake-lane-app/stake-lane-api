@@ -1,4 +1,8 @@
 defmodule BolaoHubApi.Workers.UpsertTeams do
+  @moduledoc """
+    Upsert Teams by third_parties_info[api].league_id,
+  """
+  
   use Oban.Worker, queue: :events
   alias BolaoHubApi.League
   alias BolaoHubApi.Leagues.ThirdPartyInfo, as: LeagueThird
@@ -7,9 +11,6 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
 
   @third_api "api_football"
 
-  @doc """
-    Upsert Teams by third_parties_info[api].league_id,
-  """
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)
