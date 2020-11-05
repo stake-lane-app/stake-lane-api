@@ -10,7 +10,6 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
   alias BolaoHubApi.League
   alias BolaoHubApi.Team
   alias BolaoHubApi.Fixture
-  require Logger
 
   @third_api "api_football"
 
@@ -83,7 +82,7 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
       starts_at_iso_date: fixture["event_date"] |> DateTime.from_iso8601(),
       event_timestamp: fixture["event_timestamp"],
       status: fixture["status"],
-      status_short: fixture["statusShort"],
+      status_code: fixture["statusShort"],
       elapsed: fixture["elapsed"],
       venue: fixture["venue"],
       referee: fixture["referee"],
@@ -101,7 +100,7 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
       starts_at_iso_date: refreshed_fixture["event_date"] |> DateTime.from_iso8601(),
       event_timestamp: refreshed_fixture["event_timestamp"],
       status: refreshed_fixture["status"],
-      status_short: refreshed_fixture["statusShort"],
+      status_code: refreshed_fixture["statusShort"],
       elapsed: refreshed_fixture["elapsed"],
       venue: refreshed_fixture["venue"],
       referee: refreshed_fixture["referee"],

@@ -15,7 +15,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
     field :goals_away_team,     :integer
     field :starts_at_iso_date,  :utc_datetime
     field :event_timestamp,     :integer
-    field :status_short,        :string
+    field :status_code,        :string
     field :elapsed,             :integer
     field :venue,               :string
     field :referee,             :string
@@ -30,7 +30,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
       :goals_away_team,
       :starts_at_iso_date,
       :event_timestamp,
-      :status_short,
+      :status_code,
       :elapsed,
       :venue,
       :referee,
@@ -50,7 +50,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
   end
 end
 
-defmodule BolaoHubApi.Fixture.Score do
+defmodule BolaoHubApi.Fixtures.Score do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -84,5 +84,110 @@ defmodule BolaoHubApi.Fixtures.ThirdPartyInfo do
     info
     |> cast(attrs, [:api, :fixture_id, :league_id, :round, :respectness])
     |> validate_required([:api, :fixture_id, :league_id])
+  end
+end
+
+defmodule BolaoHubApi.Fixtures.Status do
+  def fixtures_status() do
+    %{
+      to_be_defined: %{
+        code: "TBD",
+        description: "Time To Be Defined",
+      },
+      not_started: %{
+        code: "NS",
+        description: "Not Started",
+      },
+      first_half: %{
+        code: "1H",
+        description: "First Half",
+      },
+      half_time: %{
+        code: "HT",
+        description: "Halftime",
+      },
+      second_half: %{
+        code: "2H",
+        description: "Second Half",
+      },
+      extra_time: %{
+        code: "ET",
+        description: "Extra Time",
+      },
+      penalties: %{
+        code: "P",
+        description: "Penalty In Progress",
+      },
+      finished: %{
+        code: "FT",
+        description: "Match Finished",
+      },
+      extra_time_finished: %{
+        code: "AET",
+        description: "Match Finished After Extra Time",
+      },
+      penalties_finished: %{
+        code: "PEN",
+        description: "Match Finished After Penalty",
+      },
+      break_time: %{
+        code: "BT",
+        description: "Break Time (in Extra Time)",
+      },
+      suspended: %{
+        code: "SUSP",
+        description: "Match Suspended",
+      },
+      interrupted: %{
+        code: "INT",
+        description: "Match Interrupted",
+      },
+      postponed: %{
+        code: "PST",
+        description: "Match Postponed",
+      },
+      cancelled: %{
+        code: "CANC",
+        description: "Match Cancelled",
+      },
+      abandoned: %{
+        code: "ABD",
+        description: "Match Abandoned",
+      },
+      technial_loss: %{
+        code: "AWD",
+        description: "Technical Loss",
+      },
+      walkover: %{
+        code: "WO",
+        description: "Walkover",
+      }
+    }
+  end
+
+  def finished_status_codes() do
+    [
+      fixtures_status()[:finished],
+      fixtures_status()[:extra_time_finished],
+      fixtures_status()[:penalties_finished],
+    ]
+  end
+
+  def running_status_codes() do
+    [
+      fixtures_status()[:first_half],
+      fixtures_status()[:half_time],
+      fixtures_status()[:second_half],
+      fixtures_status()[:extra_time],
+      fixtures_status()[:break_time],
+      fixtures_status()[:penalties],
+    ]
+  end
+
+  def get_by_code(code) do
+    {_, fixture_status} = fixtures_status()
+    |> Enum.find(fn {_key, value} -> (value.code == code) end)
+
+    fixture_status
   end
 end

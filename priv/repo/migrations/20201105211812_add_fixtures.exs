@@ -16,7 +16,7 @@ defmodule BolaoHubApi.Repo.Migrations.AddFixtures do
       add :starts_at_iso_date,          :datetime, null: false
       add :event_timestamp,     :integer, null: false
 
-      add :status_short,        :string, default: "NS", null: false
+      add :status_code,        :string, default: "NS", null: false
       add :elapsed,             :integer
       add :venue,               :string
       add :referee,             :string

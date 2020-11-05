@@ -5,8 +5,8 @@ defmodule BolaoHubApi.Fixture do
 
   import Ecto.Query, warn: false
   alias BolaoHubApi.Repo
-
   alias BolaoHubApi.Fixtures.Fixture
+  alias BolaoHubApi.Fixtures.Status
 
   def get_fixture_by_third_id(third_api, third_fixture_id) do
     query = from f in Fixture,
@@ -20,12 +20,14 @@ defmodule BolaoHubApi.Fixture do
   end
 
 
-  def get_fixtures_to_update_results() do
+  def get_fixtures_to_update_results(third_api) do
     # https://hexdocs.pm/ecto/Ecto.Query.API.html#datetime_add/3
     query = from f in Fixture,
       where:
-        f.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -10, "hour") and
-        f.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +10, "hour"),
+        f.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -2, "hour") and
+        f.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +5, "hour") and
+        f.status_code not in ^Status.finished_status_codes() and
+        fragment("third_parties_info @> ?", ^[%{"api" => third_api}]),
       order_by:
         [asc: f.starts_at_iso_date]
 
