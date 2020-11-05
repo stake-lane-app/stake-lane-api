@@ -14,12 +14,12 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
   def perform(%Oban.Job{}) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)
     
-    @third_api
+    done = @third_api
     |> League.list_api_football_active_leagues
     |> Enum.map(&request_teams(&1, envs))
     |> Enum.map(&upsert_teams(&1))
 
-    :ok
+    { :ok, done }
   end
 
   defp request_teams(league, envs) do
@@ -95,8 +95,11 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
   defp get_country_id(nil), do: nil
   defp get_country_id(country_name) do
     country_name
-    |> Country.get_country_by_name()
-    |> Map.get(:id, nil)
+    |> Country.get_country_by_name
+    |> case  do
+      nil -> nil
+      country -> Map.get(country, :id, nil)
+    end
   end
 
 end

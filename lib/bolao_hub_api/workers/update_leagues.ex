@@ -14,12 +14,12 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
   def perform(%Oban.Job{}) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)
 
-    @third_api
+    done = @third_api
     |> League.list_api_football_active_leagues
     |> Enum.map(&request_league(&1, envs))
     |> Enum.map(&update_league(&1))
     
-    :ok
+    { :ok, done }
   end
 
   defp request_league(league, envs) do

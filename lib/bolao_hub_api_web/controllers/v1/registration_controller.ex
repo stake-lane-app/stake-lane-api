@@ -7,7 +7,7 @@ defmodule BolaoHubApiWeb.V1.RegistrationController do
   alias BolaoHubApiWeb.ErrorHelpers
   alias BolaoHubApiWeb.Utils.IpLocation
 
-  defp userSchema(user) do
+  defp user_schema(user) do
     [language | _other_languages ] = user.languages
 
     %{
@@ -35,7 +35,7 @@ defmodule BolaoHubApiWeb.V1.RegistrationController do
           data: %{
             access_token: conn.private[:api_access_token],
             renewal_token: conn.private[:api_renewal_token],
-            user: userSchema(user)
+            user: user_schema(user)
           }
         })
 
