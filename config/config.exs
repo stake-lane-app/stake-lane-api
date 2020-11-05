@@ -69,9 +69,9 @@ config :bolao_hub_api, Oban,
   queues: [default: 10, events: 50, media: 20],
   crontab: [
     # https://github.com/sorentwo/oban#periodic-jobs
-    # {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
-    {"* * * * *", BolaoHubApi.Workers.UpsertTeams},
-    # {"* * * * *", BolaoHubApi.Workers.UpsertCountries},
+    {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
+    {"@weekly", BolaoHubApi.Workers.UpsertTeams},
+    {"@weekly", BolaoHubApi.Workers.UpsertCountries},
   ]
 
 config :bolao_hub_api, :football_api,
