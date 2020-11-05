@@ -54,15 +54,9 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
       name: team["name"],
       logo: team["logo"],
       is_national: team["is_national"],
-      country_id: get_country_id(team["country"]),
       founded: team["founded"],
-      venue: %{
-        name: team["venue_name"],
-        surface: team["venue_surface"],
-        address: team["venue_address"],
-        city: team["venue_city"],
-        capacity: team["venue_capacity"],
-      },
+      country_id: team["country"] |> get_country_id(),
+      venue: team |> parse_venue(),
       third_parties_info: [
         %{
           api: @third_api,
@@ -79,14 +73,8 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
     updated_team = %{
       logo: refreshed_team["logo"],
       founded: refreshed_team["founded"],
-      country_id: get_country_id(refreshed_team["country"]),
-      venue: %{
-        name: refreshed_team["venue_name"],
-        surface: refreshed_team["venue_surface"],
-        address: refreshed_team["venue_address"],
-        city: refreshed_team["venue_city"],
-        capacity: refreshed_team["venue_capacity"],
-      },
+      country_id: refreshed_team["country"] |> get_country_id(),
+      venue: refreshed_team |> parse_venue(),
     }
     
     team
@@ -103,4 +91,13 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
     end
   end
 
+  defp parse_venue(team) do
+    %{
+      name: team["venue_name"],
+      surface: team["venue_surface"],
+      address: team["venue_address"],
+      city: team["venue_city"],
+      capacity: team["venue_capacity"],
+    }
+  end
 end
