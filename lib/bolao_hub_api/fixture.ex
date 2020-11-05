@@ -9,7 +9,7 @@ defmodule BolaoHubApi.Fixture do
   alias BolaoHubApi.Fixtures.Fixture
 
   def get_fixture_by_third_id(third_api, third_fixture_id) do
-    query = from t in Fixture,
+    query = from f in Fixture,
       where: fragment(
         "third_parties_info @> ?",
         ^[%{"api" => third_api, "fixture_id" => third_fixture_id}]
@@ -18,6 +18,21 @@ defmodule BolaoHubApi.Fixture do
     query 
     |> Repo.one()
   end
+
+
+  def get_fixtures_to_update_results() do
+    # https://hexdocs.pm/ecto/Ecto.Query.API.html#datetime_add/3
+    query = from f in Fixture,
+      where:
+        f.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -10, "hour") and
+        f.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +10, "hour"),
+      order_by:
+        [asc: f.starts_at_iso_date]
+
+    query 
+    |> Repo.all()
+  end
+
 
   @doc """
   Updates a fixture.

@@ -13,7 +13,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
 
     field :goals_home_team,     :integer
     field :goals_away_team,     :integer
-    field :event_date,          :utc_datetime
+    field :starts_at_iso_date,  :utc_datetime
     field :event_timestamp,     :integer
     field :status_short,        :string
     field :elapsed,             :integer
@@ -28,7 +28,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
     |> cast(attrs, [
       :goals_home_team,
       :goals_away_team,
-      :event_date,
+      :starts_at_iso_date,
       :event_timestamp,
       :status_short,
       :elapsed,
@@ -44,7 +44,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
       :league_id,
       :home_team_id,
       :away_team_id,
-      :event_date,
+      :starts_at_iso_date,
       :event_timestamp,
     ])
   end

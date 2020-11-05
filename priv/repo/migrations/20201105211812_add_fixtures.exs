@@ -13,7 +13,7 @@ defmodule BolaoHubApi.Repo.Migrations.AddFixtures do
       add :goals_home_team,     :integer
       add :goals_away_team,     :integer
 
-      add :event_date,          :datetime, null: false
+      add :starts_at_iso_date,          :datetime, null: false
       add :event_timestamp,     :integer, null: false
 
       add :status_short,        :string, default: "NS", null: false

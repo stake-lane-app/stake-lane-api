@@ -80,7 +80,7 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
 
       goals_home_team: fixture["goalsHomeTeam"],
       goals_away_team: fixture["goalsAwayTeam"],
-      event_date: fixture["event_date"] |> DateTime.from_iso8601(),
+      starts_at_iso_date: fixture["event_date"] |> DateTime.from_iso8601(),
       event_timestamp: fixture["event_timestamp"],
       status: fixture["status"],
       status_short: fixture["statusShort"],
@@ -98,7 +98,7 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
     updated_fixture = %{
       goals_home_team: refreshed_fixture["goalsHomeTeam"],
       goals_away_team: refreshed_fixture["goalsAwayTeam"],
-      event_date: refreshed_fixture["event_date"] |> DateTime.from_iso8601(),
+      starts_at_iso_date: refreshed_fixture["event_date"] |> DateTime.from_iso8601(),
       event_timestamp: refreshed_fixture["event_timestamp"],
       status: refreshed_fixture["status"],
       status_short: refreshed_fixture["statusShort"],
