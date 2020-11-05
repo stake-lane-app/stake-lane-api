@@ -1,4 +1,6 @@
 defmodule BolaoHubApiWeb.Utils.IpLocation do
+  @moduledoc false
+
   alias Plug.Conn
 
   defp parse_geo_data(geo_data) do

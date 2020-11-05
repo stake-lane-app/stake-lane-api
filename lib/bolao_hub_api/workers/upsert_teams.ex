@@ -4,8 +4,8 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
   """
   
   use Oban.Worker, queue: :events
-  alias BolaoHubApi.League
   alias BolaoHubApi.Leagues.ThirdPartyInfo, as: LeagueThird
+  alias BolaoHubApi.League
   alias BolaoHubApi.Team
   alias BolaoHubApi.Country
 

@@ -20,6 +20,17 @@ defmodule BolaoHubApi.League do
     |> Repo.all()
   end
 
+  def get_league_by_third_id(third_api, third_league_id) do
+    query = from l in League,
+      where: fragment(
+        "third_parties_info @> ?",
+        ^[%{"api" => third_api, "league_id" => third_league_id}]
+      )
+
+    query 
+    |> Repo.one()
+  end
+
   @doc """
   Updates a league.
 
