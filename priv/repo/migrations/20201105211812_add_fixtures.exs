@@ -24,6 +24,6 @@ defmodule BolaoHubApi.Repo.Migrations.AddFixtures do
       timestamps()
     end
 
-  create index("fixtures", [:name, :country_id])
-  end
+
+git s  end
 end

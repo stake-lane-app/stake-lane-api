@@ -120,8 +120,4 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
       penalty: fixture["penalty"],
     }
   end
-
 end
-
-
-
