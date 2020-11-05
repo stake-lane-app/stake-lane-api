@@ -63,15 +63,19 @@ config :geo_postgis,
   json_library: Jason
 
 # Oban
+every_minute = "* * * * *"
 config :bolao_hub_api, Oban,
   repo: BolaoHubApi.Repo,
   plugins: [Oban.Plugins.Pruner],
   queues: [default: 10, events: 50, media: 20],
   crontab: [
     # https://github.com/sorentwo/oban#periodic-jobs
-    {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
-    {"@weekly", BolaoHubApi.Workers.UpsertTeams},
-    {"@weekly", BolaoHubApi.Workers.UpsertCountries},
+    # {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
+    # {"@weekly", BolaoHubApi.Workers.UpsertTeams},
+    # {"@weekly", BolaoHubApi.Workers.UpsertCountries},
+    # {"@daily", BolaoHubApi.Workers.UpsertFixtures}, # Get Fixtures by League
+    {every_minute, BolaoHubApi.Workers.UpsertFixtures}, # Get Fixtures by League
+    # {every_minute, BolaoHubApi.Workers.UpdateResults}, # Get Fixtures by Date
   ]
 
 config :bolao_hub_api, :football_api,
