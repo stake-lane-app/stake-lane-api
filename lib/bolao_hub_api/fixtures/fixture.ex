@@ -169,20 +169,20 @@ defmodule BolaoHubApi.Fixtures.Status do
 
   def finished_status_codes() do
     [
-      fixtures_status()[:finished],
-      fixtures_status()[:extra_time_finished],
-      fixtures_status()[:penalties_finished],
+      fixtures_status()[:finished][:code],
+      fixtures_status()[:extra_time_finished][:code],
+      fixtures_status()[:penalties_finished][:code],
     ]
   end
 
   def running_status_codes() do
     [
-      fixtures_status()[:first_half],
-      fixtures_status()[:half_time],
-      fixtures_status()[:second_half],
-      fixtures_status()[:extra_time],
-      fixtures_status()[:break_time],
-      fixtures_status()[:penalties],
+      fixtures_status()[:first_half][:code],
+      fixtures_status()[:half_time][:code],
+      fixtures_status()[:second_half][:code],
+      fixtures_status()[:extra_time][:code],
+      fixtures_status()[:break_time][:code],
+      fixtures_status()[:penalties][:code],
     ]
   end
 
