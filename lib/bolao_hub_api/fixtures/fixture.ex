@@ -1,4 +1,6 @@
 defmodule BolaoHubApi.Fixtures.Fixture do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
   alias BolaoHubApi.Leagues.League
@@ -53,6 +55,8 @@ defmodule BolaoHubApi.Fixtures.Fixture do
 end
 
 defmodule BolaoHubApi.Fixtures.Score do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -71,6 +75,8 @@ defmodule BolaoHubApi.Fixtures.Score do
 end
 
 defmodule BolaoHubApi.Fixtures.ThirdPartyInfo do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -90,6 +96,8 @@ defmodule BolaoHubApi.Fixtures.ThirdPartyInfo do
 end
 
 defmodule BolaoHubApi.Fixtures.Status do
+  @moduledoc false
+
   def fixtures_status() do
     %{
       to_be_defined: %{

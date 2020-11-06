@@ -5,11 +5,11 @@ defmodule BolaoHubApi.Workers.UpsertCountries do
 
   use Oban.Worker, queue: :events
   alias BolaoHubApi.Country
-  alias ApiFootball.GetCountries
+  alias ApiFootball.ApiCountries
 
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    GetCountries.get_countries()
+    ApiCountries.get_countries()
     |> upsert_countries()
 
     :ok
@@ -29,12 +29,12 @@ defmodule BolaoHubApi.Workers.UpsertCountries do
   end
 
   defp create_country(country) do
-    new_country = country |> GetCountries.parse_country_to_creation
+    new_country = country |> ApiCountries.parse_country_to_creation
     {:ok, _} = new_country |> Country.create_country()
   end
 
   defp update_country(country, refreshed_country) do
-    updated_country = refreshed_country |> GetCountries.parse_country_to_update
+    updated_country = refreshed_country |> ApiCountries.parse_country_to_update
     {:ok, _} = country |> Country.update_country(updated_country)
   end
 

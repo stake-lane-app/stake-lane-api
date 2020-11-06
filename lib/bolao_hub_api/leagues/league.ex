@@ -1,4 +1,6 @@
 defmodule BolaoHubApi.Leagues.League do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -34,6 +36,8 @@ defmodule BolaoHubApi.Leagues.League do
 end
 
 defmodule BolaoHubApi.Leagues.ThirdPartyInfo do
+  @moduledoc false
+
   use Ecto.Schema
   import Ecto.Changeset
 
