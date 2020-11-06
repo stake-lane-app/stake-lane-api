@@ -3,7 +3,7 @@ defmodule BolaoHubApi.Workers.UpdateResults do
 
   use Oban.Worker, queue: :events
   alias BolaoHubApi.Fixture
-  alias ApiFootball.GetFixtures
+  alias ApiFootball.ApiFixtures
 
   @third_api "api_football"
 
@@ -14,8 +14,8 @@ defmodule BolaoHubApi.Workers.UpdateResults do
       |> Fixture.get_fixtures_to_update_results
       |> Enum.map(fn fixture ->
         fixture.third_part_info["fixture_id"]
-        |> GetFixtures.get_fixture_by_id
-        |> GetFixtures.parse_fixture_to_update
+        |> ApiFixtures.get_fixture_by_id
+        |> ApiFixtures.parse_fixture_to_update
         |> (&(Fixture.update_fixture(fixture, &1))).()
       end)
 

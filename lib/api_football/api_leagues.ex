@@ -1,4 +1,5 @@
-defmodule ApiFootball.GetLeagues do
+defmodule ApiFootball.ApiLeagues do
+  @moduledoc false
 
   def get_league_id(api_football_league_id) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)

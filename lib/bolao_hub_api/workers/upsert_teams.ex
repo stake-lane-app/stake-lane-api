@@ -7,7 +7,7 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
   alias BolaoHubApi.League
   alias BolaoHubApi.Team
   alias BolaoHubApi.Country
-  alias ApiFootball.GetTeams
+  alias ApiFootball.ApiTeams
 
   @third_api "api_football"
 
@@ -23,7 +23,7 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
 
   defp request_teams(league) do
     league.third_party_info["league_id"]
-    |> GetTeams.get_team_by_league_id()
+    |> ApiTeams.get_team_by_league_id()
   end
 
   defp upsert_teams(refreshed_teams) do
@@ -41,13 +41,13 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
 
   defp create_team(team) do
     country_id = team["country"] |> get_country_id
-    new_team = team |> GetTeams.parse_team_to_creation(country_id)
+    new_team = team |> ApiTeams.parse_team_to_creation(country_id)
     {:ok, _} = new_team |> Team.create_team()
   end
 
   defp update_team(team, refreshed_team) do
     country_id = team["country"] |> get_country_id
-    updated_team = refreshed_team |> GetTeams.parse_team_to_update(country_id)
+    updated_team = refreshed_team |> ApiTeams.parse_team_to_update(country_id)
     {:ok, _} = team |> Team.update_team(updated_team)
   end
 

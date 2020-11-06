@@ -1,4 +1,5 @@
-defmodule ApiFootball.GetCountries do
+defmodule ApiFootball.ApiCountries do
+  @moduledoc false
 
   def get_countries() do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)

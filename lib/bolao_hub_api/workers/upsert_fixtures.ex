@@ -10,7 +10,7 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
   alias BolaoHubApi.League
   alias BolaoHubApi.Team
   alias BolaoHubApi.Fixture
-  alias ApiFootball.GetFixtures
+  alias ApiFootball.ApiFixtures
 
   @third_api "api_football"
 
@@ -26,7 +26,7 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
 
   defp request_fixture(league) do
     league.third_party_info["league_id"]
-    |> GetFixtures.get_fixtures_by_league_id()
+    |> ApiFixtures.get_fixtures_by_league_id()
   end
 
   defp upsert_fixture(refreshed_fixtures) do
@@ -47,12 +47,12 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
     home_team_id = @third_api |> Team.get_team_by_third_id(fixture["homeTeam"]["team_id"]) |> Map.get(:id)
     away_team_id = @third_api |> Team.get_team_by_third_id(fixture["awayTeam"]["team_id"]) |> Map.get(:id)
 
-    new_fixture = fixture |> GetFixtures.parse_fixture_to_creation(league_id, home_team_id, away_team_id)
+    new_fixture = fixture |> ApiFixtures.parse_fixture_to_creation(league_id, home_team_id, away_team_id)
     {:ok, _} = new_fixture |> Fixture.create_fixture
   end
 
   defp update_fixture(fixture, refreshed_fixture) do
-    updated_fixture = refreshed_fixture |> GetFixtures.parse_fixture_to_update
+    updated_fixture = refreshed_fixture |> ApiFixtures.parse_fixture_to_update
     {:ok, _} = fixture |> Fixture.update_fixture(updated_fixture)
   end
 

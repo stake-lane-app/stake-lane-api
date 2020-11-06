@@ -6,7 +6,7 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
 
   use Oban.Worker, queue: :events
   alias BolaoHubApi.League
-  alias ApiFootball.GetLeagues
+  alias ApiFootball.ApiLeagues
 
   @third_api "api_football"
 
@@ -16,8 +16,8 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
     |> League.list_active_leagues_by_third_api
     |> Enum.map(fn league ->
       league.third_party_info["league_id"]
-      |> GetLeagues.get_league_id
-      |> GetLeagues.parse_league_to_update
+      |> ApiLeagues.get_league_id
+      |> ApiLeagues.parse_league_to_update
       |> (&(League.update_league(league, &1))).()
     end)
 
