@@ -2,43 +2,33 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
   @moduledoc """
     Upsert Teams by third_parties_info[api].league_id,
   """
-  
+
   use Oban.Worker, queue: :events
-  alias BolaoHubApi.Leagues.ThirdPartyInfo, as: LeagueThird
   alias BolaoHubApi.League
   alias BolaoHubApi.Team
   alias BolaoHubApi.Country
+  alias ApiFootball.GetTeams
 
   @third_api "api_football"
 
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    envs = Application.fetch_env!(:bolao_hub_api, :football_api)
-    
     done = @third_api
-    |> League.list_api_football_active_leagues
-    |> Enum.map(&request_teams(&1, envs))
+    |> League.list_active_leagues_by_third_api
+    |> Enum.map(&request_teams(&1))
     |> Enum.map(&upsert_teams(&1))
 
     { :ok, done }
   end
 
-  defp request_teams(league, envs) do
-    %LeagueThird{ league_id: third_party_league_id } = league.third_parties_info
-    |> Enum.find(&(&1.api == @third_api))
-
-    headers = ["X-RapidAPI-Key": envs[:key]]
-
-    "#{envs[:url]}/teams/league/#{third_party_league_id}"
-    |> HTTPoison.get!(headers)
-    |> (&(&1.body)).()
-    |> Jason.decode!()
-    |> (&(&1["api"]["teams"])).()
+  defp request_teams(league) do
+    league.third_party_info["league_id"]
+    |> GetTeams.get_team_by_league_id()
   end
 
   defp upsert_teams(refreshed_teams) do
     refreshed_teams
-    |> Enum.map(fn refreshed_team -> 
+    |> Enum.map(fn refreshed_team ->
 
       Team.get_team_by_third_id(@third_api, refreshed_team["team_id"])
       |> case  do
@@ -76,7 +66,7 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
       country_id: refreshed_team["country"] |> get_country_id(),
       venue: refreshed_team |> parse_venue(),
     }
-    
+
     team
     |> Team.update_team(updated_team)
   end

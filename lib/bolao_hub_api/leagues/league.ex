@@ -13,6 +13,8 @@ defmodule BolaoHubApi.Leagues.League do
     embeds_many :third_parties_info, BolaoHubApi.Leagues.ThirdPartyInfo
 
     timestamps()
+
+    field :third_party_info, :map, virtual: true
   end
 
   def changeset(info, attrs) do
@@ -42,7 +44,7 @@ defmodule BolaoHubApi.Leagues.ThirdPartyInfo do
     field :respectness, :integer
     # 'respectness' will be the the level of force the 3rd-api/admin has
     # In order to have somebody that can overwrite
-    # the persisted data (Match results, Active leagues, etc), 
+    # the persisted data (Match results, Active leagues, etc),
     # we will need to have a higher respectness
 
     def changeset(info, attrs) do

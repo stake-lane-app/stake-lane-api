@@ -49,7 +49,7 @@ config :bolao_hub_api, :pow_assent,
       strategy: Assent.Strategy.Google,
     ]
   ]
-  
+
 # Get Text
 config :bolao_hub_api,
   BolaoHubApiWeb.Gettext,
@@ -70,11 +70,11 @@ config :bolao_hub_api, Oban,
   queues: [default: 10, events: 50, media: 20],
   crontab: [
     # https://github.com/sorentwo/oban#periodic-jobs
-    {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
-    {"@weekly", BolaoHubApi.Workers.UpsertTeams},
-    {"@weekly", BolaoHubApi.Workers.UpsertCountries},
-    {"@weekly", BolaoHubApi.Workers.UpsertFixtures},   # Get Fixtures by League
-    {every_minute, BolaoHubApi.Workers.UpdateResults}, # Get Fixtures by Date
+    # {"@weekly",    BolaoHubApi.Workers.UpdateLeagues},
+    # {every_minute,    BolaoHubApi.Workers.UpsertTeams},
+    # {every_minute,    BolaoHubApi.Workers.UpsertCountries},
+    {every_minute,    BolaoHubApi.Workers.UpsertFixtures},   # Get Fixtures by League
+    # {every_minute, BolaoHubApi.Workers.UpdateResults}, # Get Fixtures by Date
   ]
 
 config :bolao_hub_api, :football_api,

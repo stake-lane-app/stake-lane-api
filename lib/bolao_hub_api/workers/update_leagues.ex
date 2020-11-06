@@ -6,38 +6,24 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
 
   use Oban.Worker, queue: :events
   alias BolaoHubApi.League
-  alias BolaoHubApi.Leagues.ThirdPartyInfo
-  require Logger
+  alias ApiFootball.GetLeagues
 
   @third_api "api_football"
 
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    envs = Application.fetch_env!(:bolao_hub_api, :football_api)
-
     done = @third_api
-    |> League.list_api_football_active_leagues
-    |> Enum.map(&request_league(&1, envs))
+    |> League.list_active_leagues_by_third_api
+    |> Enum.map(&request_league(&1))
     |> Enum.map(&update_league(&1))
-    
+
     { :ok, done }
   end
 
-  defp request_league(league, envs) do
-    %ThirdPartyInfo{ league_id: third_party_league_id } = league.third_parties_info
-      |> Enum.find(&(&1.api == @third_api))
-
-    headers = ["X-RapidAPI-Key": envs[:key]]
-    refreshed_league = "#{envs[:url]}/leagues/league/#{third_party_league_id}"
-      |> HTTPoison.get!(headers)
-      |> (&(&1.body)).()
-      |> Jason.decode!()
-      |> (&(&1["api"]["leagues"])).()
-      |> Enum.find(&(&1["league_id"] == third_party_league_id))
-
+  defp request_league(league) do
     %{
       "actual_league" => league,
-      "refreshed_league" => refreshed_league,
+      "refreshed_league" => league.third_party_info["league_id"] |> GetLeagues.get_league_by_league_id(),
     }
   end
 

@@ -8,15 +8,16 @@ defmodule BolaoHubApi.League do
 
   alias BolaoHubApi.Leagues.League
 
-  def list_api_football_active_leagues(third_api) do
+  def list_active_leagues_by_third_api(third_api) do
     query = from l in League,
-      where: l.active == true and
-      fragment(
-        "third_parties_info @> ?",
-        ^[%{"api" => third_api}]
-      )
-    
-    query 
+      select: merge(l, %{
+        third_party_info: fragment("third_parties_info -> 0")
+      }),
+      where:
+        l.active == true and
+        fragment("third_parties_info @> ?", ^[%{"api" => third_api}])
+
+    query
     |> Repo.all()
   end
 
@@ -27,7 +28,7 @@ defmodule BolaoHubApi.League do
         ^[%{"api" => third_api, "league_id" => third_league_id}]
       )
 
-    query 
+    query
     |> Repo.one()
   end
 

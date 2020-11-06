@@ -4,7 +4,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
   alias BolaoHubApi.Leagues.League
   alias BolaoHubApi.Teams.Team
 
-  schema "teams" do
+  schema "fixtures" do
     belongs_to :league,                League
     belongs_to :home_team,             Team
     belongs_to :away_team,             Team
@@ -15,12 +15,14 @@ defmodule BolaoHubApi.Fixtures.Fixture do
     field :goals_away_team,     :integer
     field :starts_at_iso_date,  :utc_datetime
     field :event_timestamp,     :integer
-    field :status_code,        :string
+    field :status_code,         :string
     field :elapsed,             :integer
     field :venue,               :string
     field :referee,             :string
 
     timestamps()
+
+    field :third_party_info, :map, virtual: true
   end
 
   def changeset(info, attrs) do
@@ -82,7 +84,7 @@ defmodule BolaoHubApi.Fixtures.ThirdPartyInfo do
 
   def changeset(info, attrs) do
     info
-    |> cast(attrs, [:api, :fixture_id, :league_id, :round, :respectness])
+    |> cast(attrs, [:api, :fixture_id, :league_id, :respectness])
     |> validate_required([:api, :fixture_id, :league_id])
   end
 end

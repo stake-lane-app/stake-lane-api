@@ -10,6 +10,6 @@ defmodule BolaoHubApi.Repo.Migrations.AddCountries do
       timestamps()
     end
 
-  create index("countries", [:name])
+    create unique_index("countries", [:name])
   end
 end
