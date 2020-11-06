@@ -188,7 +188,7 @@ defmodule BolaoHubApi.Fixtures.Status do
 
   def get_by_code(code) do
     {_, fixture_status} = fixtures_status()
-    |> Enum.find(fn {_key, value} -> (value.code == code) end)
+    |> Enum.find(fn {_, value} -> (value.code == code) end)
 
     fixture_status
   end

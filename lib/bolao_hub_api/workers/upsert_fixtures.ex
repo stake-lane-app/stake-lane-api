@@ -26,7 +26,7 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
 
   defp request_fixture(league) do
     league.third_party_info["league_id"]
-    |> GetFixtures.get_fixture_by_league_id()
+    |> GetFixtures.get_fixtures_by_league_id()
   end
 
   defp upsert_fixture(refreshed_fixtures) do

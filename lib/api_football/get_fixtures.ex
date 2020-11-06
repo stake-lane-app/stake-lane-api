@@ -1,6 +1,6 @@
 defmodule ApiFootball.GetFixtures do
 
-  def get_fixture_by_league_id(api_football_league_id) do
+  def get_fixtures_by_league_id(api_football_league_id) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)
     headers = ["X-RapidAPI-Key": envs[:key]]
 
