@@ -15,6 +15,6 @@ defmodule BolaoHubApi.Repo.Migrations.AddTeams do
       timestamps()
     end
 
-  create index("teams", [:name, :country_id])
+    create unique_index("teams", [:name, :country_id])
   end
 end

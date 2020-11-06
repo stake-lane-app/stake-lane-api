@@ -15,6 +15,6 @@ defmodule BolaoHubApi.Repo.Migrations.AddLeaguesTable do
       timestamps()
     end
 
-    create index("leagues", [:name, :country_code, :season])
+    create unique_index("leagues", [:name, :country_code, :season])
   end
 end

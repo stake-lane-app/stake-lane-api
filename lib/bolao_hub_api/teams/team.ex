@@ -14,6 +14,8 @@ defmodule BolaoHubApi.Teams.Team do
     embeds_many :third_parties_info,   BolaoHubApi.Teams.ThirdPartyInfo
 
     timestamps()
+
+    field :third_party_info, :map, virtual: true
   end
 
   def changeset(info, attrs) do

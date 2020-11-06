@@ -49,7 +49,7 @@ config :bolao_hub_api, :pow_assent,
       strategy: Assent.Strategy.Google,
     ]
   ]
-  
+
 # Get Text
 config :bolao_hub_api,
   BolaoHubApiWeb.Gettext,
@@ -63,6 +63,7 @@ config :geo_postgis,
   json_library: Jason
 
 # Oban
+every_minute = "* * * * *"
 config :bolao_hub_api, Oban,
   repo: BolaoHubApi.Repo,
   plugins: [Oban.Plugins.Pruner],
@@ -72,6 +73,8 @@ config :bolao_hub_api, Oban,
     {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
     {"@weekly", BolaoHubApi.Workers.UpsertTeams},
     {"@weekly", BolaoHubApi.Workers.UpsertCountries},
+    {"@weekly", BolaoHubApi.Workers.UpsertFixtures},   # Get Fixtures by League
+    {every_minute, BolaoHubApi.Workers.UpdateResults}, # Get Fixtures by Date
   ]
 
 config :bolao_hub_api, :football_api,

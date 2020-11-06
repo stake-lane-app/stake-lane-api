@@ -15,7 +15,7 @@ defmodule BolaoHubApi.Team do
         ^[%{"api" => third_api, "team_id" => third_team_id}]
       )
 
-    query 
+    query
     |> Repo.one()
   end
 
