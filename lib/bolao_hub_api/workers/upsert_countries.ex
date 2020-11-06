@@ -29,23 +29,13 @@ defmodule BolaoHubApi.Workers.UpsertCountries do
   end
 
   defp create_country(country) do
-    new_country = %{
-      name: country["country"],
-      code: country["code"],
-      flag: country["flag"],
-    }
-
-    new_country
-    |> Country.create_country()
+    new_country = country |> GetCountries.parse_country_to_creation
+    {:ok, _} = new_country |> Country.create_country()
   end
 
   defp update_country(country, refreshed_country) do
-    updated_country = %{
-      logo: refreshed_country["logo"],
-    }
-
-    country
-    |> Country.update_country(updated_country)
+    updated_country = refreshed_country |> GetCountries.parse_country_to_update
+    {:ok, _} = country |> Country.update_country(updated_country)
   end
 
 end

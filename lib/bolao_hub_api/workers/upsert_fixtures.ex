@@ -43,41 +43,17 @@ defmodule BolaoHubApi.Workers.UpsertFixtures do
   end
 
   defp create_fixture(fixture) do
-    {:ok, starts_at_iso_date, _} = fixture["event_date"] |> DateTime.from_iso8601
+    league_id = @third_api |> League.get_league_by_third_id(fixture["league_id"]) |> Map.get(:id)
+    home_team_id = @third_api |> Team.get_team_by_third_id(fixture["homeTeam"]["team_id"]) |> Map.get(:id)
+    away_team_id = @third_api |> Team.get_team_by_third_id(fixture["awayTeam"]["team_id"]) |> Map.get(:id)
 
-    new_fixture = %{
-      league_id: @third_api |> League.get_league_by_third_id(fixture["league_id"]) |> Map.get(:id),
-      home_team_id: @third_api |> Team.get_team_by_third_id(fixture["homeTeam"]["team_id"]) |> Map.get(:id),
-      away_team_id: @third_api |> Team.get_team_by_third_id(fixture["awayTeam"]["team_id"]) |> Map.get(:id),
-      third_parties_info: [
-        %{
-          api: @third_api,
-          fixture_id: fixture["fixture_id"],
-          league_id: fixture["league_id"],
-          round: fixture["fixture_id"],
-        }
-      ],
-
-      goals_home_team: fixture["goalsHomeTeam"],
-      goals_away_team: fixture["goalsAwayTeam"],
-      starts_at_iso_date: starts_at_iso_date,
-      event_timestamp: fixture["event_timestamp"],
-      status: fixture["status"],
-      status_code: fixture["statusShort"],
-      elapsed: fixture["elapsed"],
-      venue: fixture["venue"],
-      referee: fixture["referee"],
-      score: fixture["score"] |> GetFixtures.parse_score,
-    }
-
-    {:ok, _} = new_fixture |> Fixture.create_fixture()
+    new_fixture = fixture |> GetFixtures.parse_fixture_to_creation(league_id, home_team_id, away_team_id)
+    {:ok, _} = new_fixture |> Fixture.create_fixture
   end
 
   defp update_fixture(fixture, refreshed_fixture) do
-    updated_fixture = refreshed_fixture |> GetFixtures.parse_fixture_to_update()
-
-    fixture
-    |> Fixture.update_fixture(updated_fixture)
+    updated_fixture = refreshed_fixture |> GetFixtures.parse_fixture_to_update
+    {:ok, _} = fixture |> Fixture.update_fixture(updated_fixture)
   end
 
 end

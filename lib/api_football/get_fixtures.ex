@@ -22,24 +22,44 @@ defmodule ApiFootball.GetFixtures do
     |> (&(&1["api"]["fixtures"])).()
   end
 
-  def parse_fixture_to_update(refreshed_fixture) do
-    {:ok, starts_at_iso_date, _} = refreshed_fixture["event_date"] |> DateTime.from_iso8601
+  def parse_fixture_to_creation(fixture, league_id, home_team_id, away_team_id) do
+    fixture
+    |> updatable_fields
+    |> Map.merge(%{
+      league_id: league_id,
+      home_team_id: home_team_id,
+      away_team_id: away_team_id,
+      third_parties_info: [
+        %{
+          api: "api_football",
+          fixture_id: fixture["fixture_id"],
+          league_id: fixture["league_id"],
+          round: fixture["fixture_id"],
+        }
+      ],
+    })
+  end
 
+  def parse_fixture_to_update(refreshed_fixture) do
+    refreshed_fixture |> updatable_fields
+  end
+
+  defp updatable_fields(fixture) do
     %{
-      goals_home_team: refreshed_fixture["goalsHomeTeam"],
-      goals_away_team: refreshed_fixture["goalsAwayTeam"],
-      starts_at_iso_date: starts_at_iso_date,
-      event_timestamp: refreshed_fixture["event_timestamp"],
-      status: refreshed_fixture["status"],
-      status_code: refreshed_fixture["statusShort"],
-      elapsed: refreshed_fixture["elapsed"],
-      venue: refreshed_fixture["venue"],
-      referee: refreshed_fixture["referee"],
-      score: refreshed_fixture["score"] |> parse_score,
+      goals_home_team: fixture["goalsHomeTeam"],
+      goals_away_team: fixture["goalsAwayTeam"],
+      starts_at_iso_date: fixture["event_date"] |> get_start_date,
+      event_timestamp: fixture["event_timestamp"],
+      status: fixture["status"],
+      status_code: fixture["statusShort"],
+      elapsed: fixture["elapsed"],
+      venue: fixture["venue"],
+      referee: fixture["referee"],
+      score: fixture["score"] |> parse_score,
     }
   end
 
-  def parse_score(fixture) do
+  defp parse_score(fixture) do
     %{
       halftime: fixture["halftime"],
       fulltime: fixture["fulltime"],
@@ -48,4 +68,9 @@ defmodule ApiFootball.GetFixtures do
     }
   end
 
+  defp get_start_date(event_date) do
+    {:ok, starts_at_iso_date, _} = event_date |> DateTime.from_iso8601()
+
+    starts_at_iso_date
+  end
 end
