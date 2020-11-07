@@ -51,6 +51,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
       :starts_at_iso_date,
       :event_timestamp,
     ])
+    |> unique_constraint([:home_team_id, :away_team_id, :event_timestamp])
   end
 end
 

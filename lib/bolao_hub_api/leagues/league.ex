@@ -32,6 +32,7 @@ defmodule BolaoHubApi.Leagues.League do
     ])
     |> cast_embed(:third_parties_info)
     |> validate_required([:name, :country, :country_code, :season, :active])
+    |> unique_constraint([:name, :country_code, :season])
   end
 end
 

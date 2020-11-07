@@ -31,6 +31,7 @@ defmodule BolaoHubApi.Teams.Team do
     |> cast_embed(:venue)
     |> cast_embed(:third_parties_info)
     |> validate_required([:name])
+    |> unique_constraint([:name, :country_id])
   end
 end
 

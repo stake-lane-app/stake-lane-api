@@ -14,5 +14,6 @@ defmodule BolaoHubApi.Countries.Country do
     info
     |> cast(attrs, [:name, :code, :flag])
     |> validate_required([:name, :code])
+    |> unique_constraint([:name])
   end
 end
