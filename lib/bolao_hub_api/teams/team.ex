@@ -2,6 +2,7 @@ defmodule BolaoHubApi.Teams.Team do
   use Ecto.Schema
   import Ecto.Changeset
   alias BolaoHubApi.Countries.Country
+  alias BolaoHubApi.Fixtures.Fixture
 
   schema "teams" do
     field :name,                       :string
@@ -14,6 +15,8 @@ defmodule BolaoHubApi.Teams.Team do
     embeds_many :third_parties_info,   BolaoHubApi.Teams.ThirdPartyInfo
 
     timestamps()
+
+    has_many :fixtures, Fixture
 
     field :third_party_info, :map, virtual: true
   end

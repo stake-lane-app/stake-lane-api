@@ -3,6 +3,7 @@ defmodule BolaoHubApi.Leagues.League do
 
   use Ecto.Schema
   import Ecto.Changeset
+  alias BolaoHubApi.Fixtures.Fixture
 
   schema "leagues" do
     field :name,             :string
@@ -15,6 +16,8 @@ defmodule BolaoHubApi.Leagues.League do
     embeds_many :third_parties_info, BolaoHubApi.Leagues.ThirdPartyInfo
 
     timestamps()
+
+    has_many :fixtures, Fixture
 
     field :third_party_info, :map, virtual: true
   end
