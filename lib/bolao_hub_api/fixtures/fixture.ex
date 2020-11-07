@@ -1,6 +1,21 @@
 defmodule BolaoHubApi.Fixtures.Fixture do
   @moduledoc false
 
+  @derive {Jason.Encoder, only: [
+    :goals_home_team,
+    :goals_away_team,
+    :starts_at_iso_date,
+    :event_timestamp,
+    :status_code,
+    :elapsed,
+    :venue,
+    :referee,
+    :home_team,
+    :away_team,
+    :league,
+    :score,
+  ]}
+
   use Ecto.Schema
   import Ecto.Changeset
   alias BolaoHubApi.Leagues.League
@@ -57,6 +72,13 @@ end
 
 defmodule BolaoHubApi.Fixtures.Score do
   @moduledoc false
+
+  @derive {Jason.Encoder, only: [
+    :halftime,
+    :fulltime,
+    :extratime,
+    :penalty,
+  ]}
 
   use Ecto.Schema
   import Ecto.Changeset

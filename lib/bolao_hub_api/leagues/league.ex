@@ -1,6 +1,17 @@
 defmodule BolaoHubApi.Leagues.League do
   @moduledoc false
 
+    @derive {Jason.Encoder, only: [
+    :name,
+    :country,
+    :country_code,
+    :season,
+    :season_start,
+    :season_end,
+    :active,
+    :fixtures
+  ]}
+
   use Ecto.Schema
   import Ecto.Changeset
   alias BolaoHubApi.Fixtures.Fixture
@@ -48,12 +59,7 @@ defmodule BolaoHubApi.Leagues.ThirdPartyInfo do
   embedded_schema do
     field :api, :string
     field :league_id, :integer
-
     field :respectness, :integer
-    # 'respectness' will be the the level of force the 3rd-api/admin has
-    # In order to have somebody that can overwrite
-    # the persisted data (Match results, Active leagues, etc),
-    # we will need to have a higher respectness
 
     def changeset(info, attrs) do
       info

@@ -9,7 +9,7 @@ defmodule BolaoHubApiWeb.Router do
   end
 
   pipeline :protected do
-    plug Pow.Plug.RequireAuthenticated, 
+    plug Pow.Plug.RequireAuthenticated,
       error_handler: BolaoHubApiWeb.APIAuthErrorHandler
   end
 
@@ -27,6 +27,7 @@ defmodule BolaoHubApiWeb.Router do
   scope "/api/v1", BolaoHubApiWeb.V1, as: :api_v1 do
     pipe_through [:api, :protected]
 
+    get "/leagues", LeagueController, :index 
     # Your protected API endpoints here
   end
 

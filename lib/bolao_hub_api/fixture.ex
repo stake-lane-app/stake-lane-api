@@ -27,7 +27,7 @@ defmodule BolaoHubApi.Fixture do
         third_party_info: fragment("third_parties_info -> 0")
       }),
       where:
-        f.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -2, "hour") and
+        f.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -5, "hour") and
         f.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +5, "hour") and
         f.status_code not in ^Status.finished_status_codes() and
         fragment("third_parties_info @> ?", ^[%{"api" => third_api}]),
@@ -37,7 +37,6 @@ defmodule BolaoHubApi.Fixture do
     query
     |> Repo.all()
   end
-
 
   @doc """
   Updates a fixture.

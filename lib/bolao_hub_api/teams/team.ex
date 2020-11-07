@@ -4,6 +4,18 @@ defmodule BolaoHubApi.Teams.Team do
   alias BolaoHubApi.Countries.Country
   alias BolaoHubApi.Fixtures.Fixture
 
+  @derive {Jason.Encoder, only: [
+    :name,
+    :full_name,
+    :logo,
+    :is_national,
+    :founded,
+    :venue,
+    :country,
+    # :fixtures_home,
+    # :fixtures_away,
+  ]}
+
   schema "teams" do
     field :name,                       :string
     field :full_name,                  :string
@@ -16,7 +28,8 @@ defmodule BolaoHubApi.Teams.Team do
 
     timestamps()
 
-    has_many :fixtures, Fixture
+    has_many :fixtures_home, Fixture, foreign_key: :home_team_id, references: :id
+    has_many :fixtures_away, Fixture, foreign_key: :away_team_id, references: :id
 
     field :third_party_info, :map, virtual: true
   end
@@ -41,6 +54,14 @@ end
 defmodule BolaoHubApi.Teams.Venue do
   use Ecto.Schema
   import Ecto.Changeset
+
+  @derive {Jason.Encoder, only: [
+    :name,
+    :surface,
+    :address,
+    :city,
+    :capacity,
+  ]}
 
   embedded_schema do
     field :name,       :string

@@ -73,8 +73,8 @@ config :bolao_hub_api, Oban,
     {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
     {"@weekly", BolaoHubApi.Workers.UpsertTeams},
     {"@weekly", BolaoHubApi.Workers.UpsertCountries},
-    {"@weekly", BolaoHubApi.Workers.UpsertFixtures},   # Get Fixtures by League
-    {every_minute, BolaoHubApi.Workers.UpdateResults}, # Get Fixtures by Date
+    {"@daily", BolaoHubApi.Workers.UpsertFixtures},
+    {every_minute, BolaoHubApi.Workers.UpdateFixtures},
   ]
 
 config :bolao_hub_api, :football_api,

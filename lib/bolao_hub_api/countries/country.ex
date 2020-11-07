@@ -2,6 +2,12 @@ defmodule BolaoHubApi.Countries.Country do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [
+    :name,
+    :code,
+    :flag,
+  ]}
+
   alias BolaoHubApi.Teams.Team
 
   schema "countries" do
