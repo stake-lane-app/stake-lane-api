@@ -16,7 +16,7 @@ defmodule BolaoHubApi.Workers.UpdateLeagues do
     |> League.list_active_leagues_by_third_api
     |> Enum.map(fn league ->
       league.third_party_info["league_id"]
-      |> ApiLeagues.get_league_id
+      |> ApiLeagues.get_league_by_id
       |> ApiLeagues.parse_league_to_update
       |> (&(League.update_league(league, &1))).()
     end)
