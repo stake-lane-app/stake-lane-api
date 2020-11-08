@@ -1,25 +1,22 @@
 defmodule BolaoHubApi.Leagues.League do
   @moduledoc false
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias BolaoHubApi.Fixtures.Fixture
+  alias BolaoHubApi.Countries.Country
 
-    @derive {Jason.Encoder, only: [
+  @derive {Jason.Encoder, only: [
     :name,
-    :country,
-    :country_code,
     :season,
     :season_start,
     :season_end,
     :active,
-    :fixtures
+    :fixtures,
+    :country,
   ]}
-
-  use Ecto.Schema
-  import Ecto.Changeset
-  alias BolaoHubApi.Fixtures.Fixture
 
   schema "leagues" do
     field :name,             :string
-    field :country,          :string
-    field :country_code,     :string
     field :season,           :integer
     field :season_start,     :date
     field :season_end,       :date
@@ -28,6 +25,7 @@ defmodule BolaoHubApi.Leagues.League do
 
     timestamps()
 
+    belongs_to :country, Country
     has_many :fixtures, Fixture
 
     field :third_party_info, :map, virtual: true
@@ -37,16 +35,15 @@ defmodule BolaoHubApi.Leagues.League do
     info
     |> cast(attrs, [
       :name,
-      :country,
-      :country_code,
+      :country_id,
       :season,
       :season_start,
       :season_end,
       :active,
     ])
     |> cast_embed(:third_parties_info)
-    |> validate_required([:name, :country, :country_code, :season, :active])
-    |> unique_constraint([:name, :country_code, :season])
+    |> validate_required([:name, :country_id, :season, :active])
+    |> unique_constraint([:name, :country_id, :season])
   end
 end
 

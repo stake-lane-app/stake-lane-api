@@ -74,7 +74,6 @@ defmodule BolaoHubApi.Teams.Venue do
   def changeset(info, attrs) do
     info
     |> cast(attrs, [:name, :surface, :address, :city, :capacity])
-    |> validate_required([:name, :city])
   end
 end
 

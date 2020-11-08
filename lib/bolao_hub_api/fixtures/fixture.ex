@@ -1,6 +1,11 @@
 defmodule BolaoHubApi.Fixtures.Fixture do
   @moduledoc false
 
+  use Ecto.Schema
+  import Ecto.Changeset
+  alias BolaoHubApi.Leagues.League
+  alias BolaoHubApi.Teams.Team
+
   @derive {Jason.Encoder, only: [
     :goals_home_team,
     :goals_away_team,
@@ -12,14 +17,9 @@ defmodule BolaoHubApi.Fixtures.Fixture do
     :referee,
     :home_team,
     :away_team,
-    :league,
     :score,
+    # :league,
   ]}
-
-  use Ecto.Schema
-  import Ecto.Changeset
-  alias BolaoHubApi.Leagues.League
-  alias BolaoHubApi.Teams.Team
 
   schema "fixtures" do
     belongs_to :league,                League

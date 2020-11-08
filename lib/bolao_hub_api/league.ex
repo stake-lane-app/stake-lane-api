@@ -36,6 +36,7 @@ defmodule BolaoHubApi.League do
     # TODO: Paginate it:
 
     query = from leagues in League,
+      inner_join: league_country  in assoc(leagues,  :country),
       inner_join: fixtures  in assoc(leagues,  :fixtures),
       inner_join: home_team in assoc(fixtures, :home_team),
       inner_join: away_team in assoc(fixtures, :away_team),
@@ -47,6 +48,7 @@ defmodule BolaoHubApi.League do
         fixtures.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -1, "day") and
         fixtures.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +1, "day"),
       preload: [
+        country: league_country,
         fixtures: {
           fixtures,
           home_team: {
@@ -57,7 +59,7 @@ defmodule BolaoHubApi.League do
             away_team,
             country: away_country
           }
-        }
+        },
       ]
 
     query

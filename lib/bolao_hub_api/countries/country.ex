@@ -1,14 +1,14 @@
 defmodule BolaoHubApi.Countries.Country do
   use Ecto.Schema
   import Ecto.Changeset
+  alias BolaoHubApi.Teams.Team
+  alias BolaoHubApi.Leagues.League
 
   @derive {Jason.Encoder, only: [
     :name,
     :code,
     :flag,
   ]}
-
-  alias BolaoHubApi.Teams.Team
 
   schema "countries" do
     field :name,        :string
@@ -18,6 +18,7 @@ defmodule BolaoHubApi.Countries.Country do
     timestamps()
 
     has_many :teams, Team
+    has_many :league, League
   end
 
   def changeset(info, attrs) do
