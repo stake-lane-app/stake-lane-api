@@ -13,7 +13,7 @@ defmodule BolaoHubApi.UserTeam do
       inner_join: country in assoc(team, :team),
       where: user_team.user_id == ^user_id,
       select: %{
-        level_type: user_team.level_type,
+        level: user_team.level,
         team_id: team.team_id,
         name: team.name,
         full_name: team.full_name,

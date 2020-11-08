@@ -6,8 +6,8 @@ defmodule BolaoHubApiWeb.V1.MyLeagueFixtureController do
 
   def index(conn, _) do
     user_id = conn
-      |> Pow.Plug.current_user
-      |> Map.get(:id)
+    |> Pow.Plug.current_user
+    |> Map.get(:id)
 
     response = user_id
     |> UserLeague.get_user_leagues_id
