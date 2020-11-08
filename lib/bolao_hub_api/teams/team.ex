@@ -5,6 +5,7 @@ defmodule BolaoHubApi.Teams.Team do
   alias BolaoHubApi.Fixtures.Fixture
 
   @derive {Jason.Encoder, only: [
+    :id,
     :name,
     :full_name,
     :logo,

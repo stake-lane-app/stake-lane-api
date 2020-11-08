@@ -64,6 +64,7 @@ config :geo_postgis,
 
 # Oban
 every_minute = "* * * * *"
+every_even_minute = "*/2 * * * *"
 config :bolao_hub_api, Oban,
   repo: BolaoHubApi.Repo,
   plugins: [Oban.Plugins.Pruner],
@@ -73,8 +74,8 @@ config :bolao_hub_api, Oban,
     {"@weekly", BolaoHubApi.Workers.UpsertCountries},
     {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
     {"@weekly", BolaoHubApi.Workers.UpsertTeams},
-    {"@daily", BolaoHubApi.Workers.UpsertFixtures},
-    {every_minute, BolaoHubApi.Workers.UpdateFixtures},
+    {"@daily", BolaoHubApi.Workers.UpsertFixtures, max_attempts: 5},
+    {every_even_minute, BolaoHubApi.Workers.UpdateFixtures, max_attempts: 1},
   ]
 
 config :bolao_hub_api, :football_api,

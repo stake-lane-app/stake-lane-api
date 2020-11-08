@@ -1,4 +1,5 @@
 defmodule BolaoHubApi.Repo.Migrations.AddCountries do
+  @moduledoc false
   use Ecto.Migration
 
   def change do

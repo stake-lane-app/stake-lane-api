@@ -6,6 +6,7 @@ defmodule BolaoHubApi.Leagues.League do
   alias BolaoHubApi.Countries.Country
 
   @derive {Jason.Encoder, only: [
+    :id,
     :name,
     :season,
     :season_start,

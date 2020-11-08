@@ -28,7 +28,7 @@ defmodule BolaoHubApi.Fixture do
       }),
       where:
         f.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -5, "hour") and
-        f.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +5, "hour") and
+        f.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +15, "minute") and
         f.status_code not in ^Status.finished_status_codes() and
         fragment("third_parties_info @> ?", ^[%{"api" => third_api}]),
       order_by:

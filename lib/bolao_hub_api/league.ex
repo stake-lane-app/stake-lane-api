@@ -31,10 +31,24 @@ defmodule BolaoHubApi.League do
     |> Repo.one()
   end
 
+  def list_leagues() do
+    query = from league in League,
+      inner_join: country in assoc(league, :country),
+      select: %{
+        league_id: league.id,
+        name: league.name,
+        season: league.season,
+        active: league.active,
+        country: country,
+      },
+      order_by:
+        [asc: country.name]
 
-  def fixtures_by_league_ids(league_ids) do
+    Repo.all query
+  end
+
+  def list_leagues_with_fixture(league_ids) do
     # TODO: Paginate it:
-
     query = from leagues in League,
       inner_join: league_country  in assoc(leagues,  :country),
       inner_join: fixtures  in assoc(leagues,  :fixtures),

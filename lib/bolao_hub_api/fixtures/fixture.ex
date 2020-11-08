@@ -7,6 +7,7 @@ defmodule BolaoHubApi.Fixtures.Fixture do
   alias BolaoHubApi.Teams.Team
 
   @derive {Jason.Encoder, only: [
+    :id,
     :goals_home_team,
     :goals_away_team,
     :starts_at_iso_date,

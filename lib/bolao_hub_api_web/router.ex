@@ -27,8 +27,9 @@ defmodule BolaoHubApiWeb.Router do
   scope "/api/v1", BolaoHubApiWeb.V1, as: :api_v1 do
     pipe_through [:api, :protected]
 
-    get "/leagues", LeagueController, :index 
-    # Your protected API endpoints here
+    resources "/leagues", LeagueController, only: [:index]
+    resources "/leagues/my", MyLeagueController, only: [:create, :index]
+    resources "/leagues/my/fixtures", MyLeagueFixtureController, only: [:index]
   end
 
   # Enables LiveDashboard only for development
