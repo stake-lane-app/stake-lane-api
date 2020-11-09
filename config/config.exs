@@ -62,7 +62,6 @@ types: BolaoHubApi.PostgresTypes
 config :geo_postgis,
   json_library: Jason
 
-
 # API Football
 config :bolao_hub_api, :football_api,
   url: System.get_env("API_FOOTBALL_URL") || "https://v2.api-football.com",

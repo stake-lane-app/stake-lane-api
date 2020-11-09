@@ -1,4 +1,4 @@
-defmodule BolaoHubApiWeb.V1.LeagueController do
+defmodule BolaoHubApiWeb.V1.League.LeagueController do
   use BolaoHubApiWeb, :controller
 
   alias BolaoHubApi.League

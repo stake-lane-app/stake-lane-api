@@ -1,4 +1,4 @@
-defmodule BolaoHubApiWeb.V1.MyLeagueFixtureController do
+defmodule BolaoHubApiWeb.V1.League.MyLeagueFixtureController do
   use BolaoHubApiWeb, :controller
 
   alias BolaoHubApi.League

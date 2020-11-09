@@ -1,4 +1,4 @@
-defmodule BolaoHubApiWeb.V1.MyLeagueController do
+defmodule BolaoHubApiWeb.V1.League.MyLeagueController do
   use BolaoHubApiWeb, :controller
 
   alias Ecto.Changeset
@@ -6,7 +6,6 @@ defmodule BolaoHubApiWeb.V1.MyLeagueController do
   alias BolaoHubApiWeb.ErrorHelpers
 
   def create(conn, %{"league_id" => league_id}) do
-    Gettext.put_locale("es_LT")
 
     conn
     |> Pow.Plug.current_user
