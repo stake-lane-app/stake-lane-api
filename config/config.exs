@@ -62,22 +62,8 @@ types: BolaoHubApi.PostgresTypes
 config :geo_postgis,
   json_library: Jason
 
-# Oban
-every_minute = "* * * * *"
-every_even_minute = "*/2 * * * *"
-config :bolao_hub_api, Oban,
-  repo: BolaoHubApi.Repo,
-  plugins: [Oban.Plugins.Pruner],
-  queues: [default: 10, events: 50, media: 20],
-  crontab: [
-    # https://github.com/sorentwo/oban#periodic-jobs
-    {"@weekly", BolaoHubApi.Workers.UpsertCountries},
-    {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
-    {"@weekly", BolaoHubApi.Workers.UpsertTeams},
-    {"@daily", BolaoHubApi.Workers.UpsertFixtures, max_attempts: 5},
-    {every_even_minute, BolaoHubApi.Workers.UpdateFixtures, max_attempts: 1},
-  ]
 
+# API Football
 config :bolao_hub_api, :football_api,
   url: System.get_env("API_FOOTBALL_URL") || "https://v2.api-football.com",
   key: System.get_env("API_FOOTBALL_KEY") || "686819f61ee767103c876669418c2156"

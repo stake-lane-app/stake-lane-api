@@ -19,7 +19,7 @@ defmodule BolaoHubApiWeb.API.V1.RegistrationControllerTest do
       conn = post conn, Routes.api_v1_registration_path(conn, :create, @invalid_params)
 
       assert json = json_response(conn, 400)
-      assert json["error"]["message"] == "Couldn't create user"
+      assert json["error"]["message"] == "Couldn't create the user"
       assert json["error"]["status"] == 400
       assert json["error"]["errors"]["password_confirmation"] == ["does not match confirmation"]
       assert json["error"]["errors"]["email"] == ["has invalid format"]
