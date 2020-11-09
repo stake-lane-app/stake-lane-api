@@ -9,7 +9,7 @@ defmodule BolaoHubApiWeb.Router do
   end
 
   pipeline :protected do
-    plug Pow.Plug.RequireAuthenticated, 
+    plug Pow.Plug.RequireAuthenticated,
       error_handler: BolaoHubApiWeb.APIAuthErrorHandler
   end
 
@@ -27,7 +27,9 @@ defmodule BolaoHubApiWeb.Router do
   scope "/api/v1", BolaoHubApiWeb.V1, as: :api_v1 do
     pipe_through [:api, :protected]
 
-    # Your protected API endpoints here
+    resources "/leagues", League.LeagueController, only: [:index]
+    resources "/leagues/my", League.MyLeagueController, only: [:create, :index]
+    resources "/leagues/my/fixtures", League.MyLeagueFixtureController, only: [:index]
   end
 
   # Enables LiveDashboard only for development

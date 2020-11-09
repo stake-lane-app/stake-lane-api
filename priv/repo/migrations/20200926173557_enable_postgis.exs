@@ -1,4 +1,5 @@
 defmodule BolaoHubApi.Repo.Migrations.EnablePostgis do
+  @moduledoc false
   use Ecto.Migration
 
   def up do

@@ -36,8 +36,8 @@ defmodule BolaoHubApiWeb.Utils.IpLocation do
         geo_data
           |> Map.from_struct()
           |> Enum.filter(fn {_key, value} -> !is_nil(value) end)
-          |> Map.new()   
-          |> parse_geo_data() 
+          |> Map.new()
+          |> parse_geo_data()
     end
   end
 
@@ -46,12 +46,12 @@ defmodule BolaoHubApiWeb.Utils.IpLocation do
     get_ip(conn, Mix.env())
   end
 
-  defp get_ip(conn, env) when env in [:local, :test], do: conn.remote_ip
+  defp get_ip(conn, env) when env in [:local, :test, :dev], do: conn.remote_ip
   defp get_ip(conn, _) do
-    conn 
-      |> Conn.get_req_header("x-forwarded-for") 
+    conn
+      |> Conn.get_req_header("x-forwarded-for")
       |> Enum.at(0)
       |> String.split(",")
-      |> Enum.at(0) 
+      |> Enum.at(0)
   end
 end

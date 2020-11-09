@@ -44,7 +44,7 @@ defmodule BolaoHubApiWeb.V1.RegistrationController do
 
         conn
         |> put_status(400)
-        |> json(%{error: %{status: 400, message: "Couldn't create user", errors: errors}})
+        |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't create the user"), errors: errors}})
     end
   end
 end

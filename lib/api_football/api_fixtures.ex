@@ -21,6 +21,7 @@ defmodule ApiFootball.ApiFixtures do
     |> (&(&1.body)).()
     |> Jason.decode!()
     |> (&(&1["api"]["fixtures"])).()
+    |> Enum.at(0)
   end
 
   def parse_fixture_to_creation(fixture, league_id, home_team_id, away_team_id) do

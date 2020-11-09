@@ -22,11 +22,11 @@ defmodule BolaoHubApiWeb.V1.SessionController do
 
   defp parse_params(conn, user_params) do
     email = case Map.fetch(user_params, "user_name") do
-      {:ok, user_name} -> 
+      {:ok, user_name} ->
         User.get_email_by_user_name(user_name)
         |> case do
           {:ok, email} -> email
-          {:not_found, nil} -> 
+          {:not_found, nil} ->
             conn
             |> put_status(401)
             |> json(%{error: %{status: 401, message: dgettext("errors", "Credentials Incorrect")}})

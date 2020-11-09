@@ -27,7 +27,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 * How to get the info from the template .pot to the files .po:
   `mix gettext.merge priv/gettext`
 * Compile it:
-  `mix compile.gettext `
+  `mix compile.gettext`
 
 ## How to Migrate/Seed remote environment
 1. At instances tab on App Engine dashboard, clik on the SSH option and the the gcloud command to visit the current version

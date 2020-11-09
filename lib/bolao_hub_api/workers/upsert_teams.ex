@@ -46,7 +46,7 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
   end
 
   defp update_team(team, refreshed_team) do
-    country_id = team["country"] |> get_country_id
+    country_id = refreshed_team["country"] |> get_country_id
     updated_team = refreshed_team |> ApiTeams.parse_team_to_update(country_id)
     {:ok, _} = team |> Team.update_team(updated_team)
   end
@@ -57,7 +57,7 @@ defmodule BolaoHubApi.Workers.UpsertTeams do
     |> Country.get_country_by_name
     |> case  do
       nil -> nil
-      country -> Map.get(country, :id, nil)
+      country -> country |> Map.get(:id, nil)
     end
   end
 end

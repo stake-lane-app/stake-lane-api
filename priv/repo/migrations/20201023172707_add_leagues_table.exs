@@ -1,11 +1,11 @@
 defmodule BolaoHubApi.Repo.Migrations.AddLeaguesTable do
+  @moduledoc false
   use Ecto.Migration
 
   def change do
     create table("leagues") do
       add :name,               :string, size: 30, null: false
-      add :country,            :string, size: 15, null: false
-      add :country_code,       :string, size: 5, null: false
+      add :country_id,         references("countries", on_delete: :delete_all)
       add :season,             :integer, comment: "When it get started", null: false
       add :season_start,       :date
       add :season_end,         :date
@@ -15,6 +15,6 @@ defmodule BolaoHubApi.Repo.Migrations.AddLeaguesTable do
       timestamps()
     end
 
-    create unique_index("leagues", [:name, :country_code, :season])
+    create unique_index("leagues", [:name, :country_id, :season])
   end
 end

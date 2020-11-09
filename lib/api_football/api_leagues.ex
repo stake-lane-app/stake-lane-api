@@ -1,7 +1,7 @@
 defmodule ApiFootball.ApiLeagues do
   @moduledoc false
 
-  def get_league_id(api_football_league_id) do
+  def get_league_by_id(api_football_league_id) do
     envs = Application.fetch_env!(:bolao_hub_api, :football_api)
     headers = ["X-RapidAPI-Key": envs[:key]]
 
@@ -16,7 +16,7 @@ defmodule ApiFootball.ApiLeagues do
   def parse_league_to_update(refreshed_league) do
     refreshed_season_end = refreshed_league["season_end"] |> Date.from_iso8601!
     %{
-      is_active: Date.utc_today |> Date.diff(refreshed_season_end) |> is_league_active,
+      active: Date.utc_today |> Date.diff(refreshed_season_end) |> is_league_active,
       season_start: refreshed_league["season_start"] |> Date.from_iso8601!,
       season_end: refreshed_season_end,
     }

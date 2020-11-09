@@ -20,3 +20,11 @@ config :bolao_hub_api, BolaoHubApiWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
+
+# Print everything during test
+# config :logger, level: :debug
+
+config :bolao_hub_api, Oban,
+  repo: BolaoHubApi.Repo,
+  plugins: [Oban.Plugins.Pruner],
+  crontab: []

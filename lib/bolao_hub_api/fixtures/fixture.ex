@@ -6,6 +6,22 @@ defmodule BolaoHubApi.Fixtures.Fixture do
   alias BolaoHubApi.Leagues.League
   alias BolaoHubApi.Teams.Team
 
+  @derive {Jason.Encoder, only: [
+    :id,
+    :goals_home_team,
+    :goals_away_team,
+    :starts_at_iso_date,
+    :event_timestamp,
+    :status_code,
+    :elapsed,
+    :venue,
+    :referee,
+    :home_team,
+    :away_team,
+    :score,
+    # :league,
+  ]}
+
   schema "fixtures" do
     belongs_to :league,                League
     belongs_to :home_team,             Team
@@ -51,11 +67,19 @@ defmodule BolaoHubApi.Fixtures.Fixture do
       :starts_at_iso_date,
       :event_timestamp,
     ])
+    |> unique_constraint([:home_team_id, :away_team_id, :event_timestamp])
   end
 end
 
 defmodule BolaoHubApi.Fixtures.Score do
   @moduledoc false
+
+  @derive {Jason.Encoder, only: [
+    :halftime,
+    :fulltime,
+    :extratime,
+    :penalty,
+  ]}
 
   use Ecto.Schema
   import Ecto.Changeset

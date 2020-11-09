@@ -5,7 +5,6 @@ defmodule BolaoHubApi.Team do
 
   import Ecto.Query, warn: false
   alias BolaoHubApi.Repo
-
   alias BolaoHubApi.Teams.Team
 
   def get_team_by_third_id(third_api, third_team_id) do
