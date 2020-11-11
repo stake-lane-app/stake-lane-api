@@ -4,7 +4,7 @@ services:
     image: mdillon/postgis
     environment:
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=bolao_hub_api_dev
+      - POSTGRES_DB=stake_lane_api_dev
       - POSTGRES_USER=postgres
     ports:
       - 5432:5432

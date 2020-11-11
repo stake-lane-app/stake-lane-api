@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.AddLeaguesTable do
+defmodule StakeLaneApi.Repo.Migrations.AddLeaguesTable do
   @moduledoc false
   use Ecto.Migration
 

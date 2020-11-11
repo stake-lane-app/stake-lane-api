@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.LinkUserLeague do
+defmodule StakeLaneApi.Repo.Migrations.LinkUserLeague do
   @moduledoc false
   use Ecto.Migration
 

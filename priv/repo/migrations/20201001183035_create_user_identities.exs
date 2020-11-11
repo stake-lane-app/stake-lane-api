@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.CreateUserIdentities do
+defmodule StakeLaneApi.Repo.Migrations.CreateUserIdentities do
   @moduledoc false
   use Ecto.Migration
 

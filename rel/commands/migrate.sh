@@ -1,3 +1,3 @@
 #!/bin/sh
 
-release_ctl eval --mfa "BolaoHubApi.Helpers.ReleaseTasks.migrate/1" --argv -- "$@"
+release_ctl eval --mfa "StakeLaneApi.Helpers.ReleaseTasks.migrate/1" --argv -- "$@"

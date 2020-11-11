@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.EnablePostgis do
+defmodule StakeLaneApi.Repo.Migrations.EnablePostgis do
   @moduledoc false
   use Ecto.Migration
 

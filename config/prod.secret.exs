@@ -11,7 +11,7 @@ database_socket_dir =
     For example: "/cloudsql/gcp-account-name:europe-west1:instance-name"
     """
 
-config :bolao_hub_api, BolaoHubApi.Repo,
+config :stake_lane_api, StakeLaneApi.Repo,
   # ssl: true,
   socket_dir: database_socket_dir,
   username: System.get_env("DATABASE_USERNAME"),
@@ -26,7 +26,7 @@ secret_key_base =
     You can generate one by calling: mix phx.gen.secret
     """
 
-config :bolao_hub_api, BolaoHubApiWeb.Endpoint,
+config :stake_lane_api, StakeLaneApiWeb.Endpoint,
   http: [
     port: String.to_integer(System.get_env("PORT") || "4000"),
     transport_options: [socket_opts: [:inet6]]
@@ -39,7 +39,7 @@ config :bolao_hub_api, BolaoHubApiWeb.Endpoint,
 # If you are doing OTP releases, you need to instruct Phoenix
 # to start each relevant endpoint:
 #
-#     config :bolao_hub_api, BolaoHubApiWeb.Endpoint, server: true
+#     config :stake_lane_api, StakeLaneApiWeb.Endpoint, server: true
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.

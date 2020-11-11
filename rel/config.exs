@@ -46,8 +46,8 @@ end
 # when running `mix distillery.release`, the first release in the file
 # will be used by default
 
-release :bolao_hub_api do
-  set version: current_version(:bolao_hub_api)
+release :stake_lane_api do
+  set version: current_version(:stake_lane_api)
   set applications: [
     :runtime_tools
   ]
@@ -56,4 +56,3 @@ release :bolao_hub_api do
     seed: "rel/commands/seed.sh",
   ]
 end
-

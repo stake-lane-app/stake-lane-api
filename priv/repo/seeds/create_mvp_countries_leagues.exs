@@ -1,9 +1,9 @@
 
-alias BolaoHubApi.Repo
+alias StakeLaneApi.Repo
 
-alias BolaoHubApi.Leagues.League
-alias BolaoHubApi.Leagues.ThirdPartyInfo
-alias BolaoHubApi.Countries.Country
+alias StakeLaneApi.Leagues.League
+alias StakeLaneApi.Leagues.ThirdPartyInfo
+alias StakeLaneApi.Countries.Country
 
 Repo.insert % Country { name: "World", code: "World" }
 Repo.insert % Country { name: "England", code: "GB" }

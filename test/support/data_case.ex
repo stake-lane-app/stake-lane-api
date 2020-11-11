@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.DataCase do
+defmodule StakeLaneApi.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,7 +10,7 @@ defmodule BolaoHubApi.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use BolaoHubApi.DataCase, async: true`, although
+  by setting `use StakeLaneApi.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -18,20 +18,20 @@ defmodule BolaoHubApi.DataCase do
 
   using do
     quote do
-      alias BolaoHubApi.Repo
+      alias StakeLaneApi.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import BolaoHubApi.DataCase
+      import StakeLaneApi.DataCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(BolaoHubApi.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(StakeLaneApi.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(BolaoHubApi.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(StakeLaneApi.Repo, {:shared, self()})
     end
 
     :ok

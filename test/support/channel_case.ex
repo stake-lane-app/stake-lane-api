@@ -1,4 +1,4 @@
-defmodule BolaoHubApiWeb.ChannelCase do
+defmodule StakeLaneApiWeb.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -11,7 +11,7 @@ defmodule BolaoHubApiWeb.ChannelCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use BolaoHubApiWeb.ChannelCase, async: true`, although
+  by setting `use StakeLaneApiWeb.ChannelCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -21,18 +21,18 @@ defmodule BolaoHubApiWeb.ChannelCase do
     quote do
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
-      import BolaoHubApiWeb.ChannelCase
+      import StakeLaneApiWeb.ChannelCase
 
       # The default endpoint for testing
-      @endpoint BolaoHubApiWeb.Endpoint
+      @endpoint StakeLaneApiWeb.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(BolaoHubApi.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(StakeLaneApi.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(BolaoHubApi.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(StakeLaneApi.Repo, {:shared, self()})
     end
 
     :ok

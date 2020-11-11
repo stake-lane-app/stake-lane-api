@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.LinkUserTeams do
+defmodule StakeLaneApi.Repo.Migrations.LinkUserTeams do
   @moduledoc false
   use Ecto.Migration
 
