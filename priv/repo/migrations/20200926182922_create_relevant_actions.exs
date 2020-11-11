@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.CreateRelevantActions do
+defmodule StakeLaneApi.Repo.Migrations.CreateRelevantActions do
   @moduledoc false
   use Ecto.Migration
 

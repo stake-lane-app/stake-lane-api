@@ -97,17 +97,17 @@ msgid "must be equal to %{number}"
 msgstr ""
 
 #, elixir-format
-#: lib/bolao_hub_api_web/controllers/v1/session_controller.ex:32
-#: lib/bolao_hub_api_web/controllers/v1/session_controller.ex:73
+#: lib/stake_lane_api_web/controllers/v1/session_controller.ex:32
+#: lib/stake_lane_api_web/controllers/v1/session_controller.ex:73
 msgid "Credentials Incorrect"
 msgstr ""
 
 #, elixir-format
-#: lib/bolao_hub_api_web/controllers/v1/league/my_league_controller.ex:23
+#: lib/stake_lane_api_web/controllers/v1/league/my_league_controller.ex:23
 msgid "Couldn't link the league"
 msgstr ""
 
 #, elixir-format
-#: lib/bolao_hub_api_web/controllers/v1/registration_controller.ex:47
+#: lib/stake_lane_api_web/controllers/v1/registration_controller.ex:47
 msgid "Couldn't create the user"
 msgstr ""

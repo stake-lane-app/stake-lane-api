@@ -1,7 +1,7 @@
 env: flex
 runtime: gs://elixir-runtime/elixir.yaml
 runtime_config:
-  release_app: bolao_hub_api
+  release_app: stake_lane_api
 env_variables:
   # Copy it form config/.env-{{ENV}}
 beta_settings:

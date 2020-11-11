@@ -1,4 +1,4 @@
-# BolaoHubApi
+# StakeLaneApi
 
 To start your Phoenix server:
 
@@ -37,7 +37,7 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 (Example: `docker exec -it gaeapp bash`)
 
 3. Fire the Migration/Seed command [Distillery Tutorial](https://hexdocs.pm/distillery/guides/running_migrations.html)
-(Example: `bin/bolao_hub_api migrate`)
+(Example: `bin/stake_lane_api migrate`)
 
 
 ## How to Connect on Cloud SQL Locally

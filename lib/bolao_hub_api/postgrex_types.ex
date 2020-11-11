@@ -1,1 +1,0 @@
-Postgrex.Types.define(BolaoHubApi.PostgresTypes, [Geo.PostGIS.Extension], [])

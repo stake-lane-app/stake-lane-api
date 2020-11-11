@@ -2,7 +2,7 @@ defmodule ApiFootball.ApiCountries do
   @moduledoc false
 
   def get_countries() do
-    envs = Application.fetch_env!(:bolao_hub_api, :football_api)
+    envs = Application.fetch_env!(:stake_lane_api, :football_api)
     headers = ["X-RapidAPI-Key": envs[:key]]
 
     "#{envs[:url]}/countries"

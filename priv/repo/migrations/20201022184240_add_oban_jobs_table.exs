@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.AddObanJobsTable do
+defmodule StakeLaneApi.Repo.Migrations.AddObanJobsTable do
   @moduledoc false
   use Ecto.Migration
 

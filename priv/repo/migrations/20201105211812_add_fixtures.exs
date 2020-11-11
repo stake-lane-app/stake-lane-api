@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.AddFixtures do
+defmodule StakeLaneApi.Repo.Migrations.AddFixtures do
   @moduledoc false
   use Ecto.Migration
 

@@ -1,4 +1,4 @@
-defmodule BolaoHubApi.Repo.Migrations.AddCountries do
+defmodule StakeLaneApi.Repo.Migrations.AddCountries do
   @moduledoc false
   use Ecto.Migration
 

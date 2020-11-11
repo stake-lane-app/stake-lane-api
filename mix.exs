@@ -1,9 +1,9 @@
-defmodule BolaoHubApi.MixProject do
+defmodule StakeLaneApi.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :bolao_hub_api,
+      app: :stake_lane_api,
       version: "0.1.1",
       elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule BolaoHubApi.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {BolaoHubApi.Application, []},
+      mod: {StakeLaneApi.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

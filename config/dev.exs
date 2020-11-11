@@ -1,10 +1,10 @@
 use Mix.Config
 
 # Configure your database
-config :bolao_hub_api, BolaoHubApi.Repo,
+config :stake_lane_api, StakeLaneApi.Repo,
   username: "postgres",
   password: "postgres",
-  database: "bolao_hub_api_dev",
+  database: "stake_lane_api_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -15,7 +15,7 @@ config :bolao_hub_api, BolaoHubApi.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
-config :bolao_hub_api, BolaoHubApiWeb.Endpoint,
+config :stake_lane_api, StakeLaneApiWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
@@ -59,15 +59,15 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Oban
 every_even_minute = "*/2 * * * *"
-config :bolao_hub_api, Oban,
-  repo: BolaoHubApi.Repo,
+config :stake_lane_api, Oban,
+  repo: StakeLaneApi.Repo,
   plugins: [Oban.Plugins.Pruner],
   queues: [default: 10, events: 50, media: 20],
   crontab: [
     # https://github.com/sorentwo/oban#periodic-jobs
-    {"@weekly", BolaoHubApi.Workers.UpsertCountries},
-    {"@weekly", BolaoHubApi.Workers.UpdateLeagues},
-    {"@weekly", BolaoHubApi.Workers.UpsertTeams},
-    {"@daily", BolaoHubApi.Workers.UpsertFixtures, max_attempts: 5},
-    {every_even_minute, BolaoHubApi.Workers.UpdateFixtures, max_attempts: 1},
+    {"@weekly", StakeLaneApi.Workers.UpsertCountries, max_attempts: 2},
+    {"@weekly", StakeLaneApi.Workers.UpdateLeagues, max_attempts: 2},
+    {"@weekly", StakeLaneApi.Workers.UpsertTeams, max_attempts: 3},
+    {"@daily", StakeLaneApi.Workers.UpsertFixtures, max_attempts: 3},
+    {every_even_minute, StakeLaneApi.Workers.UpdateFixtures, max_attempts: 1},
   ]
