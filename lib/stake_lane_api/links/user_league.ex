@@ -2,7 +2,7 @@ defmodule StakeLaneApi.Links.UserLeague do
   @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
-  alias StakeLaneApi.Leagues.League
+  alias StakeLaneApi.Football.League
   alias StakeLaneApi.Users.User
 
   @derive {Jason.Encoder, only: [

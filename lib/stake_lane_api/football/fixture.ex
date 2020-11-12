@@ -1,10 +1,10 @@
-defmodule StakeLaneApi.Fixtures.Fixture do
+defmodule StakeLaneApi.Football.Fixture do
   @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset
-  alias StakeLaneApi.Leagues.League
-  alias StakeLaneApi.Teams.Team
+  alias StakeLaneApi.Football.League
+  alias StakeLaneApi.Football.Team
 
   @derive {Jason.Encoder, only: [
     :id,
@@ -26,8 +26,8 @@ defmodule StakeLaneApi.Fixtures.Fixture do
     belongs_to :league,                League
     belongs_to :home_team,             Team
     belongs_to :away_team,             Team
-    embeds_one :score,                 StakeLaneApi.Fixtures.Score, on_replace: :update
-    embeds_many :third_parties_info,   StakeLaneApi.Fixtures.ThirdPartyInfo
+    embeds_one :score,                 StakeLaneApi.Football.Fixture.Score, on_replace: :update
+    embeds_many :third_parties_info,   StakeLaneApi.Football.Fixture.ThirdPartyInfo
 
     field :goals_home_team,     :integer
     field :goals_away_team,     :integer
@@ -71,7 +71,7 @@ defmodule StakeLaneApi.Fixtures.Fixture do
   end
 end
 
-defmodule StakeLaneApi.Fixtures.Score do
+defmodule StakeLaneApi.Football.Fixture.Score do
   @moduledoc false
 
   @derive {Jason.Encoder, only: [
@@ -98,7 +98,7 @@ defmodule StakeLaneApi.Fixtures.Score do
   end
 end
 
-defmodule StakeLaneApi.Fixtures.ThirdPartyInfo do
+defmodule StakeLaneApi.Football.Fixture.ThirdPartyInfo do
   @moduledoc false
 
   use Ecto.Schema
@@ -119,7 +119,7 @@ defmodule StakeLaneApi.Fixtures.ThirdPartyInfo do
   end
 end
 
-defmodule StakeLaneApi.Fixtures.Status do
+defmodule StakeLaneApi.Football.Fixture.Status do
   @moduledoc false
 
   def fixtures_status() do

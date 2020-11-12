@@ -1,8 +1,8 @@
-defmodule StakeLaneApi.Teams.Team do
+defmodule StakeLaneApi.Football.Team do
   use Ecto.Schema
   import Ecto.Changeset
   alias StakeLaneApi.Countries.Country
-  alias StakeLaneApi.Fixtures.Fixture
+  alias StakeLaneApi.Football.Fixture
 
   @derive {Jason.Encoder, only: [
     :id,
@@ -24,8 +24,8 @@ defmodule StakeLaneApi.Teams.Team do
     field :is_national,                :boolean
     field :founded,                    :integer
     belongs_to :country,               Country
-    embeds_one :venue,                 StakeLaneApi.Teams.Venue, on_replace: :update
-    embeds_many :third_parties_info,   StakeLaneApi.Teams.ThirdPartyInfo
+    embeds_one :venue,                 StakeLaneApi.Football.Team.Venue, on_replace: :update
+    embeds_many :third_parties_info,   StakeLaneApi.Football.Team.ThirdPartyInfo
 
     timestamps()
 
@@ -52,7 +52,7 @@ defmodule StakeLaneApi.Teams.Team do
   end
 end
 
-defmodule StakeLaneApi.Teams.Venue do
+defmodule StakeLaneApi.Football.Team.Venue do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -78,7 +78,7 @@ defmodule StakeLaneApi.Teams.Venue do
   end
 end
 
-defmodule StakeLaneApi.Teams.ThirdPartyInfo do
+defmodule StakeLaneApi.Football.Team.ThirdPartyInfo do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,8 +1,8 @@
 
 alias StakeLaneApi.Repo
 
-alias StakeLaneApi.Leagues.League
-alias StakeLaneApi.Leagues.ThirdPartyInfo
+alias StakeLaneApi.Football.League
+alias StakeLaneApi.Football.League.ThirdPartyInfo
 alias StakeLaneApi.Countries.Country
 
 Repo.insert % Country { name: "World", code: "World" }

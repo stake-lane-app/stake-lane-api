@@ -5,7 +5,7 @@ defmodule StakeLaneApi.League do
 
   import Ecto.Query, warn: false
   alias StakeLaneApi.Repo
-  alias StakeLaneApi.Leagues.League
+  alias StakeLaneApi.Football.League
 
   def list_active_leagues_by_third_api(third_api) do
     query = from l in League,
