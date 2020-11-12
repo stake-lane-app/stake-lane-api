@@ -27,9 +27,11 @@ defmodule StakeLaneApiWeb.Router do
   scope "/api/v1", StakeLaneApiWeb.V1, as: :api_v1 do
     pipe_through [:api, :protected]
 
-    resources "/leagues", League.LeagueController, only: [:index]
-    resources "/leagues/my", League.MyLeagueController, only: [:create, :index]
-    resources "/leagues/my/fixtures", League.MyLeagueFixtureController, only: [:index]
+    resources "/leagues", League.LeaguesController, only: [:index]
+    resources "/leagues/my", League.MyLeaguesController, only: [:create, :index]
+    resources "/leagues/my/fixtures", League.MyLeaguesFixturesController, only: [:index]
+
+    resources "/fixtures/my", League.MyFixturesController, only: [:index]
   end
 
   # Enables LiveDashboard only for development

@@ -38,6 +38,35 @@ defmodule StakeLaneApi.Fixture do
     |> Repo.all()
   end
 
+  def get_my_fixtures(user_id) do
+    query = from fixtures in Fixture,
+      inner_join: league in assoc(fixtures, :league),
+      inner_join: user_league in assoc(league, :user_league),
+      inner_join: home_team in assoc(fixtures, :home_team),
+      inner_join: away_team in assoc(fixtures, :away_team),
+      inner_join: home_country in assoc(home_team, :country),
+      inner_join: away_country in assoc(away_team, :country),
+      where:
+        fixtures.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -5, "day") and
+        fixtures.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +0, "day") and
+        user_league.user_id == ^user_id,
+      order_by:
+        [asc: fixtures.starts_at_iso_date],
+      preload: [
+        home_team: {
+          home_team,
+          country: home_country
+        },
+        away_team: {
+          away_team,
+          country: away_country
+        }
+      ]
+
+    query
+    |> Repo.all()
+  end
+
   @doc """
   Updates a fixture.
 

@@ -1,4 +1,4 @@
-defmodule StakeLaneApiWeb.V1.League.MyLeagueController do
+defmodule StakeLaneApiWeb.V1.League.MyLeaguesController do
   use StakeLaneApiWeb, :controller
 
   alias Ecto.Changeset

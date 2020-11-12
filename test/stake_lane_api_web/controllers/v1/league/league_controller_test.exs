@@ -1,4 +1,4 @@
-defmodule StakeLaneApiWeb.API.V1.League.LeagueControllerTest do
+defmodule StakeLaneApiWeb.API.V1.League.LeaguesControllerTest do
   use StakeLaneApiWeb.ConnCase
 
   describe "list/2" do
@@ -14,7 +14,7 @@ defmodule StakeLaneApiWeb.API.V1.League.LeagueControllerTest do
     end
 
     test "with valid params", %{authed_conn: authed_conn} do
-      conn = get authed_conn, Routes.api_v1_league_path(authed_conn, :index)
+      conn = get authed_conn, Routes.api_v1_leagues_path(authed_conn, :index)
       assert json = json_response(conn, 200)
 
       Enum.map(json, fn league ->
