@@ -5,8 +5,8 @@ defmodule StakeLaneApi.Fixture do
 
   import Ecto.Query, warn: false
   alias StakeLaneApi.Repo
-  alias StakeLaneApi.Fixtures.Fixture
-  alias StakeLaneApi.Fixtures.Status
+  alias StakeLaneApi.Football.Fixture
+  alias StakeLaneApi.Football.Fixture.Status
 
   def get_fixture_by_third_id(third_api, third_fixture_id) do
     query = from f in Fixture,

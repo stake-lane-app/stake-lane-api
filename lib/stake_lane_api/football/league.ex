@@ -1,8 +1,8 @@
-defmodule StakeLaneApi.Leagues.League do
+defmodule StakeLaneApi.Football.League do
   @moduledoc false
   use Ecto.Schema
   import Ecto.Changeset
-  alias StakeLaneApi.Fixtures.Fixture
+  alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Countries.Country
 
   @derive {Jason.Encoder, only: [
@@ -22,7 +22,7 @@ defmodule StakeLaneApi.Leagues.League do
     field :season_start,     :date
     field :season_end,       :date
     field :active,           :boolean
-    embeds_many :third_parties_info, StakeLaneApi.Leagues.ThirdPartyInfo
+    embeds_many :third_parties_info, StakeLaneApi.Football.League.ThirdPartyInfo
 
     timestamps()
 
@@ -48,7 +48,7 @@ defmodule StakeLaneApi.Leagues.League do
   end
 end
 
-defmodule StakeLaneApi.Leagues.ThirdPartyInfo do
+defmodule StakeLaneApi.Football.League.ThirdPartyInfo do
   @moduledoc false
 
   use Ecto.Schema

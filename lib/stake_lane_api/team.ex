@@ -5,7 +5,7 @@ defmodule StakeLaneApi.Team do
 
   import Ecto.Query, warn: false
   alias StakeLaneApi.Repo
-  alias StakeLaneApi.Teams.Team
+  alias StakeLaneApi.Football.Team
 
   def get_team_by_third_id(third_api, third_team_id) do
     query = from t in Team,
