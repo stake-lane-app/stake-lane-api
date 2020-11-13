@@ -38,30 +38,29 @@ defmodule StakeLaneApi.Fixture do
     |> Repo.all()
   end
 
-  def get_my_fixtures(user_id) do
-    # beginning_of_today = NaiveDateTime.utc_now() |> Timex.beginning_of_day()
-
-    # TODO: set as request params:
-    user_tz = "Europe/Berlin"
-    page_size = 3
-    page = 1
-
+  def get_my_fixtures(user_id, user_tz \\ "UTC", page, page_size) do
     beginning_of_the_user_day = user_tz |> Timex.now() |> Timex.beginning_of_day()
 
-    query = from fixtures in Fixture,
-      inner_join: league in assoc(fixtures, :league),
+    query = from fixture in Fixture,
+      inner_join: league in assoc(fixture, :league),
+      inner_join: league_country in assoc(league, :country),
       inner_join: user_league in assoc(league, :user_league),
-      inner_join: home_team in assoc(fixtures, :home_team),
-      inner_join: away_team in assoc(fixtures, :away_team),
+      inner_join: home_team in assoc(fixture, :home_team),
+      inner_join: away_team in assoc(fixture, :away_team),
       left_join: home_country in assoc(home_team, :country),
       left_join: away_country in assoc(away_team, :country),
       where:
-        # For today and future fixtures:
-        fixtures.starts_at_iso_date > datetime_add(^beginning_of_the_user_day, -0, "day") and
-        # For past fixtures:
-        # fixtures.starts_at_iso_date < datetime_add(^beginning_of_the_user_day, -0, "day") and
-
         user_league.user_id == ^user_id,
+      select: %{
+        fixture |
+        league: %{
+          league_id: league.id,
+          name: league.name,
+          season: league.season,
+          country_name: league_country.name,
+          country_flag: league_country.flag,
+        },
+      },
       preload: [
         home_team: {
           home_team,
@@ -70,27 +69,33 @@ defmodule StakeLaneApi.Fixture do
         away_team: {
           away_team,
           country: away_country
-        }
+        },
       ]
 
-    offset = page|> get_offset(page_size)
+    offset = page|> get_page |> get_offset(page_size)
 
     query
-    # |> where(^filter_fixtures(page, beginning_of_the_user_day))
+    |> filter_fixtures(page, beginning_of_the_user_day)
     |> limit(^page_size)
     |> offset(^offset)
     |> order_by(^get_order_by_page(page))
     |> Repo.all()
   end
 
-  # defp filter_fixtures(page, beginning_of_the_user_day) when page >= 0 do
-  #   # For today and future fixtures:
-  #   (starts_at_iso_date > datetime_add(^beginning_of_the_user_day, -0, "day"))
-  # end
-  # defp filter_fixtures(page, beginning_of_the_user_day) when page < 0 do
-  #   # For past fixtures:
-  #   (fixtures.starts_at_iso_date < datetime_add(^beginning_of_the_user_day, -0, "day"))
-  # end
+  defp filter_fixtures(queryable, page, beginning_of_the_user_day) when page >= 0 do
+    # For today and future fixtures:
+    queryable
+    |> where([fixture], fixture.starts_at_iso_date > datetime_add(^beginning_of_the_user_day, -0, "day"))
+  end
+  defp filter_fixtures(queryable, page, beginning_of_the_user_day) when page < 0 do
+    # For past fixtures:
+    queryable
+    |> where([fixture], fixture.starts_at_iso_date < datetime_add(^beginning_of_the_user_day, -0, "day"))
+  end
+
+  defp get_page(-1), do: 0
+  defp get_page(page) when page <= 0, do: page
+  defp get_page(page) when page >= -2, do: (page * -1) -1
 
   defp get_order_by_page(page) when page >= 0, do: [asc: :starts_at_iso_date]
   defp get_order_by_page(page) when page < 0, do: [desc: :starts_at_iso_date]
