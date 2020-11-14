@@ -38,7 +38,7 @@ defmodule StakeLaneApi.Fixture do
     |> Repo.all()
   end
 
-  def get_my_fixtures(user_id, user_tz \\ "UTC", page, page_size) do
+  def get_my_fixtures(user_id, user_tz\\"UTC", page\\0, page_size\\10) do
     beginning_of_the_user_day = user_tz |> Timex.now() |> Timex.beginning_of_day()
 
     query = from fixture in Fixture,
@@ -78,7 +78,6 @@ defmodule StakeLaneApi.Fixture do
     |> filter_fixtures(page, beginning_of_the_user_day)
     |> limit(^page_size)
     |> offset(^offset)
-    |> order_by(^get_order_by_page(page))
     |> Repo.all()
   end
 
@@ -86,19 +85,18 @@ defmodule StakeLaneApi.Fixture do
     # For today and future fixtures:
     queryable
     |> where([fixture], fixture.starts_at_iso_date > datetime_add(^beginning_of_the_user_day, -0, "day"))
+    |> order_by([asc: :starts_at_iso_date])
   end
   defp filter_fixtures(queryable, page, beginning_of_the_user_day) when page < 0 do
     # For past fixtures:
     queryable
     |> where([fixture], fixture.starts_at_iso_date < datetime_add(^beginning_of_the_user_day, -0, "day"))
+    |> order_by([desc: :starts_at_iso_date])
   end
 
   defp get_page(-1), do: 0
-  defp get_page(page) when page <= 0, do: page
-  defp get_page(page) when page >= -2, do: (page * -1) -1
-
-  defp get_order_by_page(page) when page >= 0, do: [asc: :starts_at_iso_date]
-  defp get_order_by_page(page) when page < 0, do: [desc: :starts_at_iso_date]
+  defp get_page(page) when page >= 0, do: page
+  defp get_page(page) when page <= -2, do: (page * -1) -1
 
   defp get_offset(0, _page_size), do: 0
   defp get_offset(page, page_size), do: (page*page_size)
