@@ -14,7 +14,15 @@ defmodule StakeLaneApiWeb.APIAuthPlugTest do
       email: "test@example.com",
       user_name: "test",
       languages: ["EN"],
-      role: "user"
+      role: "user",
+      email_confirmed: false,
+      first_name: "Test",
+      last_name: "Surname",
+      social_email: nil,
+      cellphone_number: nil,
+      picture: nil,
+      locked: false,
+      bio: nil,
     })
 
     {:ok, conn: conn, user: user}

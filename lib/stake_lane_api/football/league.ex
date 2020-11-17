@@ -4,6 +4,7 @@ defmodule StakeLaneApi.Football.League do
   import Ecto.Changeset
   alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Countries.Country
+  alias StakeLaneApi.Links.UserLeague
 
   @derive {Jason.Encoder, only: [
     :id,
@@ -28,6 +29,7 @@ defmodule StakeLaneApi.Football.League do
 
     belongs_to :country, Country
     has_many :fixtures, Fixture
+    has_many :user_league, UserLeague
 
     field :third_party_info, :map, virtual: true
   end

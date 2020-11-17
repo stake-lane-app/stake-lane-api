@@ -38,6 +38,73 @@ defmodule StakeLaneApi.Fixture do
     |> Repo.all()
   end
 
+  def get_my_fixtures(user_id, user_tz\\"UTC", page\\0, page_size\\10) do
+    query = from fixture in Fixture,
+      inner_join: league in assoc(fixture, :league),
+      inner_join: league_country in assoc(league, :country),
+      inner_join: user_league in assoc(league, :user_league),
+      inner_join: home_team in assoc(fixture, :home_team),
+      inner_join: away_team in assoc(fixture, :away_team),
+      left_join: home_country in assoc(home_team, :country),
+      left_join: away_country in assoc(away_team, :country),
+      where:
+        user_league.user_id == ^user_id,
+      select: %{
+        fixture |
+        league: %{
+          league_id: league.id,
+          name: league.name,
+          season: league.season,
+          country_name: league_country.name,
+          country_flag: league_country.flag,
+        },
+      },
+      preload: [
+        home_team: {
+          home_team,
+          country: home_country
+        },
+        away_team: {
+          away_team,
+          country: away_country
+        },
+      ]
+
+    beginning_of_the_user_day = user_tz
+    |> Timex.now()
+    |> Timex.beginning_of_day()
+
+    offset = page
+    |> get_page
+    |> get_offset(page_size)
+
+    query
+    |> filter_fixtures(page, beginning_of_the_user_day)
+    |> limit(^page_size)
+    |> offset(^offset)
+    |> Repo.all()
+  end
+
+  # For today and future fixtures:
+  defp filter_fixtures(queryable, page, beginning_of_the_user_day) when page >= 0 do
+    queryable
+    |> where([fixture], fixture.starts_at_iso_date > datetime_add(^beginning_of_the_user_day, -0, "day"))
+    |> order_by([asc: :starts_at_iso_date])
+  end
+  # For past fixtures:
+  defp filter_fixtures(queryable, page, beginning_of_the_user_day) when page < 0 do
+    queryable
+    |> where([fixture], fixture.starts_at_iso_date < datetime_add(^beginning_of_the_user_day, -0, "day"))
+    |> order_by([desc: :starts_at_iso_date])
+  end
+
+  defp get_page(-1), do: 0
+  defp get_page(page) when page >= 0, do: page
+  defp get_page(page) when page <= -2, do: (page * -1) -1
+
+  defp get_offset(0, _page_size), do: 0
+  defp get_offset(page, page_size), do: (page*page_size)
+
   @doc """
   Updates a fixture.
 

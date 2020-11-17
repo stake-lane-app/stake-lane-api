@@ -20,7 +20,6 @@ config :stake_lane_api, StakeLaneApiWeb.Endpoint,
 
 # Print only warnings and errors during test
 config :logger, level: :warn
-
 # Print everything during test
 # config :logger, level: :debug
 

@@ -53,8 +53,9 @@ defmodule StakeLaneApi.MixProject do
       {:certifi, "~> 2.4"},
       {:ssl_verify_fun, "~> 1.1"},
       {:httpoison, "~> 1.7"},
+      {:timex, "~> 3.5"},
       {:oban, "~> 2.2"},
-      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
+      {:ex_machina, "~> 2.4", only: :test},
     ]
   end
 

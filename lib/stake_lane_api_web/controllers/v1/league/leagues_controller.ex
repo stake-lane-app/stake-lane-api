@@ -1,4 +1,4 @@
-defmodule StakeLaneApiWeb.V1.League.LeagueController do
+defmodule StakeLaneApiWeb.V1.League.LeaguesController do
   use StakeLaneApiWeb, :controller
 
   alias StakeLaneApi.League
