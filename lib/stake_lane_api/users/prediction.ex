@@ -7,8 +7,8 @@ defmodule StakeLaneApi.Users.Prediction do
   schema "predictions" do
     belongs_to :user, User
     belongs_to :fixture, Fixture
-    field :home_team_prediction, :integer
-    field :away_team_prediction, :integer
+    field :home_team, :integer
+    field :away_team, :integer
 
     timestamps()
   end
@@ -17,14 +17,14 @@ defmodule StakeLaneApi.Users.Prediction do
     prediction
     |> unique_constraint([:user_id, :fixture_id])
     |> cast(attrs, [
-      :home_team_prediction,
-      :away_team_prediction
+      :home_team,
+      :away_team
     ])
     |> validate_required([
       :user_id,
       :fixture_id,
-      :home_team_prediction,
-      :away_team_prediction
+      :home_team,
+      :away_team
     ])
   end
 
