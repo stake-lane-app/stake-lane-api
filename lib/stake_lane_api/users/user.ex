@@ -7,16 +7,17 @@ defmodule StakeLaneApi.Users.User do
 
   schema "users" do
     field :user_name, :string
-    # field :email_confirmed, :boolean
-    # field :first_name, :string
-    # field :last_name, :string
-    # field :social_email, :string
-    # field :cellphone_number, :string
-    # field :picture, :string
-    # field :locked, :boolean
-    # field :bio, :string
     field :role, :string
     field :languages, {:array, :string}
+
+    field :email_confirmed, :boolean
+    field :first_name, :string
+    field :last_name, :string
+    field :social_email, :string
+    field :cellphone_number, :string
+    field :picture, :string
+    field :locked, :boolean
+    field :bio, :string
 
     pow_user_fields()
     timestamps()
