@@ -130,4 +130,13 @@ defmodule StakeLaneApi.Factory do
     }
   end
 
+  def prediction_factory do
+    %StakeLaneApi.Users.Prediction{
+      user: build(:user),
+      fixture: build(:fixture),
+      home_team: 2,
+      away_team: 1,
+    }
+  end
+
 end

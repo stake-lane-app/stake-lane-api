@@ -47,10 +47,12 @@ defmodule StakeLaneApi.Fixture do
       inner_join: away_team in assoc(fixture, :away_team),
       left_join: home_country in assoc(home_team, :country),
       left_join: away_country in assoc(away_team, :country),
+      left_join: prediction in assoc(fixture, :prediction),
       where:
         user_league.user_id == ^user_id,
       select: %{
         fixture |
+        prediction: prediction,
         league: %{
           league_id: league.id,
           name: league.name,

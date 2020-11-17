@@ -21,6 +21,7 @@ defmodule StakeLaneApi.Football.Fixture do
     :away_team,
     :score,
     :league,
+    :prediction,
   ]}
 
   schema "fixtures" do
