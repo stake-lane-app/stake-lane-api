@@ -1,15 +1,12 @@
 defmodule StakeLaneApiWeb.V1.League.MyFixturesController do
   use StakeLaneApiWeb, :controller
 
-  # alias Ecto.Changeset
   alias StakeLaneApi.Fixture
-  # alias StakeLaneApiWeb.ErrorHelpers
 
   def index(conn, params) do
-    %{ "page" => page, "page_size" => page_size, "tz" => tz } = params
-
-    page = page |> String.to_integer
-    page_size = page_size |> String.to_integer
+    page = params |> Map.get("page", "0") |> String.to_integer
+    page_size = params |> Map.get("page_size", "10") |> String.to_integer
+    tz = params |> Map.get("tz", "UTC")
 
     conn
     |> Pow.Plug.current_user

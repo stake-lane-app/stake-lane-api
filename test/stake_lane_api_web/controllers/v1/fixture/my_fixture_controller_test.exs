@@ -39,11 +39,7 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
       %{ authed_conn: authed_conn, league: league } = setup_params
 
       insert_list(2, :past_fixture, league: league)
-      attrs = %{
-        "page" => -1,
-        "page_size" => 10,
-        "tz" => "UTC"
-      }
+      attrs = %{ "page" => -1 }
       conn = get authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index, attrs)
       assert fixtures = json_response(conn, 200)
       assert false == Enum.empty?(fixtures)
@@ -60,11 +56,7 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
     end
 
     test "empty page, (past fixtures)", %{authed_conn: authed_conn} do
-      attrs = %{
-        "page" => -1,
-        "page_size" => 10,
-        "tz" => "UTC"
-      }
+      attrs = %{ "page" => -1 }
       conn = get authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index, attrs)
       assert fixtures = json_response(conn, 200)
       assert true == Enum.empty?(fixtures)
