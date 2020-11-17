@@ -1,5 +1,4 @@
 defmodule StakeLaneApi.Factory do
-  # with Ecto
   use ExMachina.Ecto, repo: StakeLaneApi.Repo
   alias StakeLaneApi.Football
 
