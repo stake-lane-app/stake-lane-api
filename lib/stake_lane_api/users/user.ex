@@ -3,7 +3,8 @@ defmodule StakeLaneApi.Users.User do
   use Pow.Ecto.Schema
   use PowAssent.Ecto.Schema
   import Ecto.Changeset
-  alias StakeLaneApi.RelevantActions.RelevantAction
+  alias StakeLaneApi.Users.RelevantAction
+  alias StakeLaneApi.Users.Prediction
 
   schema "users" do
     field :user_name, :string
@@ -23,6 +24,7 @@ defmodule StakeLaneApi.Users.User do
     timestamps()
 
     has_many :relevant_action, RelevantAction
+    has_many :prediction, Prediction
   end
 
   def changeset(user_or_changeset, attrs) do
