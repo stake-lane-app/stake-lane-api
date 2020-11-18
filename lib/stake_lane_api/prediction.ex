@@ -21,7 +21,7 @@ defmodule StakeLaneApi.Prediction do
 
     # TO DO: Validate the match has not gotten started
 
-    IO.inspect(attrs)
+    # TO DO: Validate if the prediction exists, case yes, update the prediction
 
     %Prediction{}
     |> Prediction.changeset(attrs)
