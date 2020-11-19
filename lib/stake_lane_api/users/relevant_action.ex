@@ -1,4 +1,4 @@
-defmodule StakeLaneApi.RelevantActions.RelevantAction do
+defmodule StakeLaneApi.Users.RelevantAction do
   @moduledoc """
     Every single time something important happening to the user's account
     We will save it as a relevant action, such as

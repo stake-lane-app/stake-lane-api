@@ -8,6 +8,14 @@ defmodule StakeLaneApi.Fixture do
   alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Football.Fixture.Status
 
+  def get_fixture_by_id(fixture_id) do
+    query = from f in Fixture,
+      where: f.id == ^fixture_id
+
+    query
+    |> Repo.one()
+  end
+
   def get_fixture_by_third_id(third_api, third_fixture_id) do
     query = from f in Fixture,
       where: fragment(
@@ -18,7 +26,6 @@ defmodule StakeLaneApi.Fixture do
     query
     |> Repo.one()
   end
-
 
   def get_fixtures_to_update_results(third_api) do
     # https://hexdocs.pm/ecto/Ecto.Query.API.html#datetime_add/3
@@ -47,10 +54,12 @@ defmodule StakeLaneApi.Fixture do
       inner_join: away_team in assoc(fixture, :away_team),
       left_join: home_country in assoc(home_team, :country),
       left_join: away_country in assoc(away_team, :country),
+      left_join: prediction in assoc(fixture, :prediction),
       where:
         user_league.user_id == ^user_id,
       select: %{
         fixture |
+        prediction: prediction,
         league: %{
           league_id: league.id,
           name: league.name,

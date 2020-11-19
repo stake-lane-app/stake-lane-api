@@ -11,7 +11,7 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
       insert(:user_league, league: league, user: user)
 
       authed_conn = Pow.Plug.assign_current_user(conn, user, [])
-      {:ok, authed_conn: authed_conn, league: league}
+      {:ok, authed_conn: authed_conn, league: league, user: user}
     end
 
     test "with valid params", %{authed_conn: authed_conn} do
@@ -25,6 +25,7 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
       assert false == Enum.empty?(fixtures)
       Enum.map(fixtures, fn fixture ->
         assert Map.has_key?(fixture, "league")
+        assert Map.has_key?(fixture, "prediction")
         assert Map.has_key?(fixture, "home_team")
         assert Map.has_key?(fixture, "away_team")
         assert Map.has_key?(fixture, "goals_home_team")
@@ -44,6 +45,7 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
       assert fixtures = json_response(conn, 200)
       assert false == Enum.empty?(fixtures)
       Enum.map(fixtures, fn fixture ->
+        assert Map.has_key?(fixture, "prediction")
         assert Map.has_key?(fixture, "league")
         assert Map.has_key?(fixture, "home_team")
         assert Map.has_key?(fixture, "away_team")
@@ -53,6 +55,22 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
         assert Map.has_key?(fixture, "status_code")
         assert Map.has_key?(fixture, "elapsed")
       end)
+    end
+
+    test "with valid params and prediction", setup_params do
+      %{ authed_conn: authed_conn, league: league, user: user } = setup_params
+      fixture_fabricated = insert(:fixture, league: league)
+      insert(:prediction, fixture: fixture_fabricated, user: user)
+
+      conn = get authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index)
+      assert fixtures = json_response(conn, 200)
+      assert false == Enum.empty?(fixtures)
+      fixture_predicted = Enum.find(fixtures, fn fixture ->
+        fixture["id"] == fixture_fabricated.id
+      end)
+
+      assert Map.has_key?(fixture_predicted["prediction"], "away_team")
+      assert Map.has_key?(fixture_predicted["prediction"], "home_team")
     end
 
     test "empty page, (past fixtures)", %{authed_conn: authed_conn} do

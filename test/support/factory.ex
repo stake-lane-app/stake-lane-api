@@ -1,5 +1,4 @@
 defmodule StakeLaneApi.Factory do
-  # with Ecto
   use ExMachina.Ecto, repo: StakeLaneApi.Repo
   alias StakeLaneApi.Football
 
@@ -128,6 +127,15 @@ defmodule StakeLaneApi.Factory do
       blocked: false,
       league: build(:league),
       user: build(:user),
+    }
+  end
+
+  def prediction_factory do
+    %StakeLaneApi.Users.Prediction{
+      user: build(:user),
+      fixture: build(:fixture),
+      home_team: 2,
+      away_team: 1,
     }
   end
 

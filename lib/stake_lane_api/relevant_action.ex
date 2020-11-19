@@ -5,10 +5,9 @@ defmodule StakeLaneApi.RelevantAction do
 
   require Logger
   import Ecto.Query, warn: false
-  alias StakeLaneApi.Repo
   alias StakeLaneApiWeb.Utils.IpLocation
-
-  alias StakeLaneApi.RelevantActions.RelevantAction
+  alias StakeLaneApi.Repo
+  alias StakeLaneApi.Users.RelevantAction
 
   def relevant_actions() do
     %{

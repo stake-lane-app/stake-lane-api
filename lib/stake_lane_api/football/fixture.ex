@@ -5,6 +5,7 @@ defmodule StakeLaneApi.Football.Fixture do
   import Ecto.Changeset
   alias StakeLaneApi.Football.League
   alias StakeLaneApi.Football.Team
+  alias StakeLaneApi.Users.Prediction
 
   @derive {Jason.Encoder, only: [
     :id,
@@ -20,12 +21,14 @@ defmodule StakeLaneApi.Football.Fixture do
     :away_team,
     :score,
     :league,
+    :prediction,
   ]}
 
   schema "fixtures" do
     belongs_to :league,                League
     belongs_to :home_team,             Team
     belongs_to :away_team,             Team
+    has_one    :prediction,            Prediction
     embeds_one :score,                 StakeLaneApi.Football.Fixture.Score, on_replace: :update
     embeds_many :third_parties_info,   StakeLaneApi.Football.Fixture.ThirdPartyInfo
 
@@ -215,6 +218,13 @@ defmodule StakeLaneApi.Football.Fixture.Status do
       fixtures_status()[:extra_time][:code],
       fixtures_status()[:break_time][:code],
       fixtures_status()[:penalties][:code],
+    ]
+  end
+
+  def allow_prediction() do
+    [
+      fixtures_status()[:not_started][:code],
+      fixtures_status()[:to_be_defined][:code],
     ]
   end
 
