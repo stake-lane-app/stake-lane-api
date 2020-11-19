@@ -221,6 +221,13 @@ defmodule StakeLaneApi.Football.Fixture.Status do
     ]
   end
 
+  def allow_prediction() do
+    [
+      fixtures_status()[:not_started][:code],
+      fixtures_status()[:to_be_defined][:code],
+    ]
+  end
+
   def get_by_code(code) do
     {_, fixture_status} = fixtures_status()
     |> Enum.find(fn {_, value} -> (value.code == code) end)

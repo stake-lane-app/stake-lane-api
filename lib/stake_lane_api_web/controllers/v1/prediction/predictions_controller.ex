@@ -15,10 +15,17 @@ defmodule StakeLaneApiWeb.V1.Prediction.PredictionsController do
     conn
     |> Pow.Plug.current_user
     |> Map.get(:id)
-    |> (&(Prediction.create_prediction(&1, fixture_id, prediction_home_team, prediction_away_team))).()
+    |> (&(Prediction.upsert_prediction(&1, fixture_id, prediction_home_team, prediction_away_team))).()
     |> case  do
       {:ok, _} ->
-        conn |> send_resp(204, "")
+        conn
+        |> send_resp(204, "")
+
+      {:treated_error, treated_error} ->
+        conn
+        |> put_status(treated_error.status)
+        |> json(%{treated_error: treated_error})
+
       {:error, changeset} ->
         errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
 
