@@ -103,7 +103,7 @@ msgid "Credentials Incorrect"
 msgstr "Credenciais Incorretas"
 
 #, elixir-format
-#: lib/stake_lane_api_web/controllers/v1/league/my_league_controller.ex:23
+#: lib/stake_lane_api_web/controllers/v1/league/my_leagues_controller.ex:22
 msgid "Couldn't link the league"
 msgstr "Não foi possível adicionar a liga"
 
@@ -111,3 +111,23 @@ msgstr "Não foi possível adicionar a liga"
 #: lib/stake_lane_api_web/controllers/v1/registration_controller.ex:47
 msgid "Couldn't create the user"
 msgstr "Não foi possível terminar o registro"
+
+#, elixir-format
+#: lib/stake_lane_api_web/controllers/v1/prediction/predictions_controller.ex:34
+msgid "Couldn't save the prediction"
+msgstr "Não foi possível salvar o palpite"
+
+#, elixir-format
+#: lib/stake_lane_api/prediction.ex:52
+msgid "Fixture not found"
+msgstr "Partida não encontrada"
+
+#, elixir-format
+#: lib/stake_lane_api/prediction.ex:61
+msgid "The fixture status does not allow prediction"
+msgstr "O status da partida não permite palpites"
+
+#, elixir-format
+#: lib/stake_lane_api/prediction.ex:43
+msgid "You don't play this league"
+msgstr "Você não joga essa liga"
