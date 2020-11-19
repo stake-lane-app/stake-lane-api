@@ -34,6 +34,8 @@ defmodule StakeLaneApiWeb.Router do
     resources "/fixtures/my", League.MyFixturesController, only: [:index]
 
     resources "/predictions", Prediction.PredictionsController, only: [:create]
+
+    resources "/teams", Prediction.PredictionsController, only: [:create]
   end
 
   # Enables LiveDashboard only for development
