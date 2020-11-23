@@ -35,7 +35,7 @@ defmodule StakeLaneApiWeb.Router do
 
     resources "/predictions", Prediction.PredictionsController, only: [:create]
 
-    resources "/teams", Prediction.PredictionsController, only: [:create]
+    resources "/teams", Prediction.PredictionsController, only: [:edit, :delete]
   end
 
   # Enables LiveDashboard only for development
