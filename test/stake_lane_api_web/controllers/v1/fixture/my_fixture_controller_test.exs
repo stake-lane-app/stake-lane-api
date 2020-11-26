@@ -5,9 +5,8 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
   describe "my_fixtures/1" do
     setup %{conn: conn} do
       user = insert(:user)
-      country = insert(:country)
-      league = insert(:league, country: country)
-      insert_list(3, :fixture, league: league)
+      league = insert(:league)
+      insert_list(3, :not_started_fixture, league: league)
       insert(:user_league, league: league, user: user)
 
       authed_conn = Pow.Plug.assign_current_user(conn, user, [])
@@ -22,8 +21,8 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
       }
       conn = get authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index, attrs)
       assert fixtures = json_response(conn, 200)
-      assert false == Enum.empty?(fixtures)
-      Enum.map(fixtures, fn fixture ->
+      assert false === Enum.empty?(fixtures)
+      Enum.each(fixtures, fn fixture ->
         assert Map.has_key?(fixture, "league")
         assert Map.has_key?(fixture, "prediction")
         assert Map.has_key?(fixture, "home_team")
@@ -43,8 +42,8 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
       attrs = %{ "page" => -1 }
       conn = get authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index, attrs)
       assert fixtures = json_response(conn, 200)
-      assert false == Enum.empty?(fixtures)
-      Enum.map(fixtures, fn fixture ->
+      assert false === Enum.empty?(fixtures)
+      Enum.each(fixtures, fn fixture ->
         assert Map.has_key?(fixture, "prediction")
         assert Map.has_key?(fixture, "league")
         assert Map.has_key?(fixture, "home_team")
@@ -59,15 +58,14 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
 
     test "with valid params and prediction", setup_params do
       %{ authed_conn: authed_conn, league: league, user: user } = setup_params
-      fixture_fabricated = insert(:fixture, league: league)
+      fixture_fabricated = insert(:not_started_fixture, league: league)
       insert(:prediction, fixture: fixture_fabricated, user: user)
 
       conn = get authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index)
       assert fixtures = json_response(conn, 200)
-      assert false == Enum.empty?(fixtures)
-      fixture_predicted = Enum.find(fixtures, fn fixture ->
-        fixture["id"] == fixture_fabricated.id
-      end)
+      assert false === Enum.empty?(fixtures)
+
+      fixture_predicted = Enum.find(fixtures, &(&1["id"] === fixture_fabricated.id))
 
       assert Map.has_key?(fixture_predicted["prediction"], "away_team")
       assert Map.has_key?(fixture_predicted["prediction"], "home_team")
@@ -77,7 +75,7 @@ defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
       attrs = %{ "page" => -1 }
       conn = get authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index, attrs)
       assert fixtures = json_response(conn, 200)
-      assert true == Enum.empty?(fixtures)
+      assert true === Enum.empty?(fixtures)
     end
 
   end

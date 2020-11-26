@@ -50,7 +50,7 @@ defmodule StakeLaneApi.Factory do
         surface: "grass",
         address: "North Test, TL",
         city: "Testcity",
-        capacity: 150000,
+        capacity: 150_000,
       },
       third_parties_info: [
         %Football.Team.ThirdPartyInfo{
@@ -62,14 +62,14 @@ defmodule StakeLaneApi.Factory do
     }
   end
 
-  def fixture_factory do
+  def not_started_fixture_factory do
     now = Timex.now("UTC")
     %Football.Fixture{
       goals_home_team: nil,
       goals_away_team: nil,
       starts_at_iso_date: now,
       event_timestamp: now |> Timex.to_unix(),
-      status_code: Football.Fixture.Status.fixtures_status()[:not_started][:code],
+      status_code: Football.Fixture.Status.fixtures_statuses[:not_started][:code],
       elapsed: nil,
       venue: nil,
       referee: nil,
@@ -97,7 +97,7 @@ defmodule StakeLaneApi.Factory do
       goals_away_team: 1,
       starts_at_iso_date: yesterday,
       event_timestamp: yesterday |> Timex.to_unix(),
-      status_code: Football.Fixture.Status.fixtures_status()[:finished][:code],
+      status_code: Football.Fixture.Status.fixtures_statuses[:finished][:code],
       elapsed: 90,
       venue: "Some Venue",
       referee: "Some Referee",
@@ -133,7 +133,7 @@ defmodule StakeLaneApi.Factory do
   def prediction_factory do
     %StakeLaneApi.Users.Prediction{
       user: build(:user),
-      fixture: build(:fixture),
+      fixture: build(:not_started_fixture),
       home_team: 2,
       away_team: 1,
     }

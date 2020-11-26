@@ -41,8 +41,9 @@ defmodule StakeLaneApi.Workers.UpsertTeams do
 
   defp create_team(team) do
     country_id = team["country"] |> get_country_id
-    new_team = team |> ApiTeams.parse_team_to_creation(country_id)
-    {:ok, _} = new_team |> Team.create_team()
+    {:ok, _} = team
+    |> ApiTeams.parse_team_to_creation(country_id)
+    |> Team.create_team()
   end
 
   defp update_team(team, refreshed_team) do

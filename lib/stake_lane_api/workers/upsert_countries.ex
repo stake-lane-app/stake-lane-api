@@ -29,8 +29,9 @@ defmodule StakeLaneApi.Workers.UpsertCountries do
   end
 
   defp create_country(country) do
-    new_country = country |> ApiCountries.parse_country_to_creation
-    {:ok, _} = new_country |> Country.create_country()
+    {:ok, _} = country
+    |> ApiCountries.parse_country_to_creation
+    |> Country.create_country()
   end
 
   defp update_country(country, refreshed_country) do
