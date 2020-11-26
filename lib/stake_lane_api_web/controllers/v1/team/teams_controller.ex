@@ -29,8 +29,8 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
     |> (&(UserTeam.upsert_user_team(&1, team_id, level))).()
     |> case do
       {:ok, _} ->
-        conn |> send_resp(204, "")
-
+        conn
+        |> send_resp(204, "")
 
       {:treated_error, treated_error} ->
         conn
@@ -39,7 +39,6 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
 
       {:error, changeset} ->
         errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
-
         conn
         |> put_status(400)
         |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't save team preference"), errors: errors}})

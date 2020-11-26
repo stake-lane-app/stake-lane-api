@@ -66,9 +66,9 @@ defmodule StakeLaneApi.UserTeam do
 
   defp validate_duplicated(user_id, team_id) do
     user_id
-    |> get_user_team(team_id)
+    |> already_supports_team?(team_id)
     |> case do
-      true -> dgettext("errors", "You cannot add the same team on more than one level") |> Errors.treated_error
+      true -> dgettext("errors", "You already support this team") |> Errors.treated_error
       false -> {:ok, false}
     end
   end
@@ -83,7 +83,7 @@ defmodule StakeLaneApi.UserTeam do
     |> Repo.one()
   end
 
-  defp get_user_team(user_id, team_id) do
+  defp already_supports_team?(user_id, team_id) do
     query = from ut in UserTeam,
     where:
       ut.user_id == ^user_id and

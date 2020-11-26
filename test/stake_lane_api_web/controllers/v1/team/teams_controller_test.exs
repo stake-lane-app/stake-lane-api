@@ -65,18 +65,6 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       assert conn.status == 204
     end
 
-    test "trying to use a national team as a club", %{authed_conn: authed_conn} do
-      national_team = insert(:team, %{is_national: true})
-
-      body = %{
-        team_id: national_team.id,
-        level: Level.team_levels[:primary],
-      }
-      conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body
-      assert error = json_response(conn, 400)
-      assert error["treated_error"]["message"] == "The team needs to be national"
-    end
-
     test "with valid params, overwriting", %{authed_conn: authed_conn} do
       team_a = insert(:team)
       team_b = insert(:team)
@@ -96,6 +84,18 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       assert conn.status == 204
     end
 
+    test "trying to use a national team as a club", %{authed_conn: authed_conn} do
+      national_team = insert(:team, %{is_national: true})
+
+      body = %{
+        team_id: national_team.id,
+        level: Level.team_levels[:primary],
+      }
+      conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body
+      assert error = json_response(conn, 400)
+      assert error["treated_error"]["message"] == "The team needs to be national"
+    end
+
     test "trying to add same team on diff level", %{authed_conn: authed_conn} do
       team = insert(:team)
 
@@ -112,7 +112,7 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       }
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body_b
       assert error = json_response(conn, 400)
-      assert error["treated_error"]["message"] == "You cannot add the same team on more than one level"
+      assert error["treated_error"]["message"] == "You already support this team"
     end
 
   end
