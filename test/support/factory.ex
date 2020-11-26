@@ -130,6 +130,14 @@ defmodule StakeLaneApi.Factory do
     }
   end
 
+  def user_team_factory do
+    %StakeLaneApi.Links.UserTeam{
+      level: StakeLaneApi.Links.UserTeam.Level.team_levels[:primary],
+      team: build(:team),
+      user: build(:user),
+    }
+  end
+
   def prediction_factory do
     %StakeLaneApi.Users.Prediction{
       user: build(:user),

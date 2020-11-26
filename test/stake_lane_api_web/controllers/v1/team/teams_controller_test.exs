@@ -116,4 +116,31 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
     end
 
   end
+
+  describe "delete/2" do
+    setup %{conn: conn} do
+      user = insert(:user)
+
+      authed_conn = Pow.Plug.assign_current_user(conn, user, [])
+      {:ok, authed_conn: authed_conn, user: user}
+    end
+
+    test "with valid params", %{authed_conn: authed_conn, user: user} do
+      user_team = insert(:user_team, %{ user: user })
+      body = %{ "level" => user_team.level }
+
+      conn = delete authed_conn, Routes.api_v1_teams_path(authed_conn, :index), body
+      assert conn.status == 204
+    end
+
+    test "trying to delete non-existing user team", %{authed_conn: authed_conn} do
+      body = %{
+        "level" => Level.team_levels[:third],
+      }
+      conn = delete authed_conn, Routes.api_v1_teams_path(authed_conn, :index), body
+      assert error = json_response(conn, 400)
+      assert error["treated_error"]["message"] == "We've found any team preference at this level"
+    end
+
+  end
 end

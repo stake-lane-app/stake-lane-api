@@ -45,4 +45,31 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
     end
   end
 
+  def delete(conn, params) do
+    %{
+      "level" => level,
+    } = params
+
+    conn
+    |> Pow.Plug.current_user
+    |> Map.get(:id)
+    |> (&(UserTeam.delete_user_team_by_level(&1, level))).()
+    |> case do
+      {:ok, _} ->
+        conn
+        |> send_resp(204, "")
+
+      {:treated_error, treated_error} ->
+        conn
+        |> put_status(treated_error.status)
+        |> json(%{treated_error: treated_error})
+
+      {:error, changeset} ->
+        errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
+        conn
+        |> put_status(400)
+        |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't delete team preference"), errors: errors}})
+    end
+  end
+
 end
