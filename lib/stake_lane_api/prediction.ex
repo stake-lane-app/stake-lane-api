@@ -38,7 +38,7 @@ defmodule StakeLaneApi.Prediction do
   end
 
   defp verify_user_league(user_id, fixture_id) do
-    UserLeague.user_plays_league(user_id, fixture_id)
+    UserLeague.user_plays_league?(user_id, fixture_id)
     |> case do
       nil -> dgettext("errors", "You don't play this league") |> Errors.treated_error
       league -> {:ok, league}

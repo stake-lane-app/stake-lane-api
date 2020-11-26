@@ -5,6 +5,8 @@ local-api:
 local-infra:
 	docker-compose up -d
 
+local: local-infra local-api
+
 deploy-dev:
 	gcloud app deploy --quiet
 

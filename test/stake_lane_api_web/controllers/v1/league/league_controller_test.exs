@@ -14,7 +14,7 @@ defmodule StakeLaneApiWeb.API.V1.League.LeaguesControllerTest do
     test "with valid params", %{authed_conn: authed_conn} do
       conn = get authed_conn, Routes.api_v1_leagues_path(authed_conn, :index)
       assert leagues = json_response(conn, 200)
-      assert false == Enum.empty?(leagues)
+      assert false === Enum.empty?(leagues)
       Enum.map(leagues, fn league ->
         assert Map.has_key?(league, "active")
         assert Map.has_key?(league, "country")

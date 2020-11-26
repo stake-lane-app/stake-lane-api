@@ -7,7 +7,7 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
     setup %{conn: conn} do
       user = insert(:user)
       league = insert(:league)
-      fixture = insert(:fixture, league: league)
+      fixture = insert(:not_started_fixture, league: league)
 
       insert(:user_league, league: league, user: user)
 
@@ -26,21 +26,26 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       assert conn.status == 204
     end
 
-    test "with running fixture", %{authed_conn: authed_conn, league: league} do
-      live_fixture = insert(:fixture, %{
-        league: league,
-        status_code: Status.fixtures_status()[:second_half][:code]
-      })
+    test "with not allowed statuses", %{authed_conn: authed_conn, league: league} do
+      for {_, fixture_status} <- Status.fixtures_statuses do
+        if fixture_status[:code] not in Status.allow_prediction do
 
-      body = %{
-        fixture_id: live_fixture.id,
-        prediction_home_team: 1,
-        prediction_away_team: 0,
-      }
+          live_fixture = insert(:not_started_fixture, %{
+            league: league,
+            status_code: fixture_status[:code]
+          })
 
-      conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
-      assert error = json_response(conn, 400)
-      assert error["treated_error"]["message"] == "The fixture status does not allow prediction"
+          body = %{
+            fixture_id: live_fixture.id,
+            prediction_home_team: 1,
+            prediction_away_team: 0,
+          }
+
+          conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
+          assert error = json_response(conn, 400)
+          assert error["treated_error"]["message"] == "The fixture status does not allow prediction"
+        end
+      end
     end
 
     test "with non-existing fixture", %{authed_conn: authed_conn} do
@@ -56,7 +61,7 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
     end
 
     test "with a league the users doesnt play", %{authed_conn: authed_conn} do
-      new_fixture = insert(:fixture)
+      new_fixture = insert(:not_started_fixture)
       body = %{
         fixture_id: new_fixture.id,
         prediction_home_team: 1,

@@ -43,7 +43,7 @@ defmodule StakeLaneApi.UserLeague do
     |> Repo.insert()
   end
 
-  def user_plays_league(user_id, fixture_id, blocked \\ false) do
+  def user_plays_league?(user_id, fixture_id, blocked \\ false) do
     query = from ul in UserLeague,
       inner_join: league in assoc(ul, :league),
       inner_join: fixtures in assoc(league, :fixtures),

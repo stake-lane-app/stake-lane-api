@@ -22,9 +22,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "World")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2771 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2771 } ]
 }
 
 Repo.insert % League {
@@ -32,9 +30,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "World")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2777 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2777 } ]
 }
 
 Repo.insert % League {
@@ -42,9 +38,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "World")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 403 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 403 } ]
 }
 
 Repo.insert % League {
@@ -52,9 +46,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "World")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1422 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1422 } ]
 }
 
 Repo.insert % League {
@@ -62,9 +54,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "England")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2790 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2790 } ]
 }
 
 Repo.insert % League {
@@ -72,9 +62,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "England")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2791 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2791 } ]
 }
 
 Repo.insert % League {
@@ -82,9 +70,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "England")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2781 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2781 } ]
 }
 
 Repo.insert % League {
@@ -92,9 +78,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Spain")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2833 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2833 } ]
 }
 
 Repo.insert % League {
@@ -110,9 +94,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Germany")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2755 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2755 } ]
 }
 
 Repo.insert % League {
@@ -120,9 +102,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Germany")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2677 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2677 } ]
 }
 
 Repo.insert % League {
@@ -130,9 +110,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "France")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2664 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2664 } ]
 }
 
 Repo.insert % League {
@@ -148,9 +126,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Italy")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2857 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2857 } ]
 }
 
 Repo.insert % League {
@@ -158,9 +134,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Italy")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2941 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2941 } ]
 }
 
 Repo.insert % League {
@@ -168,9 +142,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Portugal")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2826 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2826 } ]
 }
 
 Repo.insert % League {
@@ -178,9 +150,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Portugal")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2948 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2948 } ]
 }
 
 Repo.insert % League {
@@ -188,9 +158,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Netherlands")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2673 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2673 } ]
 }
 
 Repo.insert % League {
@@ -198,9 +166,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Brazil")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1396 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1396 } ]
 }
 
 Repo.insert % League {
@@ -208,9 +174,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Brazil")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1345 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1345 } ]
 }
 
 Repo.insert % League {
@@ -218,9 +182,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Brazil")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2269 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2269 } ]
 }
 
 Repo.insert % League {
@@ -228,9 +190,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Brazil")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1333 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1333 } ]
 }
 
 Repo.insert % League {
@@ -238,9 +198,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Argentina")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 3023 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3023 } ]
 }
 
 Repo.insert % League {
@@ -248,9 +206,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Argentina")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1291 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1291 } ]
 }
 
 Repo.insert % League {
@@ -258,9 +214,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Mexico")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2656 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2656 } ]
 }
 
 Repo.insert % League {
@@ -268,9 +222,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "Mexico")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 2786 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2786 } ]
 }
 
 Repo.insert % League {
@@ -278,9 +230,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "World")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1251 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1251 } ]
 }
 
 Repo.insert % League {
@@ -288,9 +238,7 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "World")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1321 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1321 } ]
 }
 
 Repo.insert % League {
@@ -298,7 +246,5 @@ Repo.insert % League {
   country_id: (Repo.get_by(Country, name: "World")).id,
   season: 2020,
   active: true,
-  third_parties_info: [
-    %ThirdPartyInfo { api: "api_football", league_id: 1030 },
-  ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1030 } ]
 }

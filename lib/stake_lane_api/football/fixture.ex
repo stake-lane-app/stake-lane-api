@@ -125,7 +125,7 @@ end
 defmodule StakeLaneApi.Football.Fixture.Status do
   @moduledoc false
 
-  def fixtures_status() do
+  def fixtures_statuses() do
     %{
       to_be_defined: %{
         code: "TBD",
@@ -204,32 +204,32 @@ defmodule StakeLaneApi.Football.Fixture.Status do
 
   def finished_status_codes() do
     [
-      fixtures_status()[:finished][:code],
-      fixtures_status()[:extra_time_finished][:code],
-      fixtures_status()[:penalties_finished][:code],
+      fixtures_statuses()[:finished][:code],
+      fixtures_statuses()[:extra_time_finished][:code],
+      fixtures_statuses()[:penalties_finished][:code],
     ]
   end
 
   def running_status_codes() do
     [
-      fixtures_status()[:first_half][:code],
-      fixtures_status()[:half_time][:code],
-      fixtures_status()[:second_half][:code],
-      fixtures_status()[:extra_time][:code],
-      fixtures_status()[:break_time][:code],
-      fixtures_status()[:penalties][:code],
+      fixtures_statuses()[:first_half][:code],
+      fixtures_statuses()[:half_time][:code],
+      fixtures_statuses()[:second_half][:code],
+      fixtures_statuses()[:extra_time][:code],
+      fixtures_statuses()[:break_time][:code],
+      fixtures_statuses()[:penalties][:code],
     ]
   end
 
   def allow_prediction() do
     [
-      fixtures_status()[:not_started][:code],
-      fixtures_status()[:to_be_defined][:code],
+      fixtures_statuses()[:not_started][:code],
+      fixtures_statuses()[:to_be_defined][:code],
     ]
   end
 
   def get_by_code(code) do
-    {_, fixture_status} = fixtures_status()
+    {_, fixture_status} = fixtures_statuses()
     |> Enum.find(fn {_, value} -> (value.code == code) end)
 
     fixture_status

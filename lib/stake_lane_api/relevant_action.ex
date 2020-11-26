@@ -20,18 +20,15 @@ defmodule StakeLaneApi.RelevantAction do
     relevant_actions() |> Map.values
   end
 
-  def get_coordinates(ip_info) do
-    with true <- !is_nil(ip_info[:longitude]) do
-      %Geo.Point{
-        coordinates: {
-          ip_info[:longitude],
-          ip_info[:latitude]
-        },
-        srid: 4326
-      }
-    else
-      _ -> nil
-    end
+  defp get_coordinates(_, nil), do: nil
+  defp get_coordinates(ip_info, _) do
+    %Geo.Point{
+      coordinates: {
+        ip_info[:longitude],
+        ip_info[:latitude]
+      },
+      srid: 4326
+    }
   end
 
   def create(action, user_id, remote_ip, user_agent) do
@@ -40,7 +37,7 @@ defmodule StakeLaneApi.RelevantAction do
       ip_info when is_map(ip_info) ->
         %{
           ip_info: ip_info,
-          ip_coordinates: ip_info |> get_coordinates,
+          ip_coordinates: ip_info |> get_coordinates(ip_info[:longitude]),
         }
 
       _ -> %{
@@ -48,11 +45,11 @@ defmodule StakeLaneApi.RelevantAction do
       }
     end
 
-    attrs = Map.merge(%{
+    attrs = ip_attrs |> Map.merge(%{
       action: action,
       user_id: user_id,
       user_agent: user_agent,
-    }, ip_attrs)
+    })
 
     %RelevantAction{}
       |> RelevantAction.changeset(attrs)
