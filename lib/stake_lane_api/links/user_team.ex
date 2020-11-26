@@ -12,7 +12,7 @@ defmodule StakeLaneApi.Links.UserTeam do
   ]}
 
   schema "users_teams" do
-    field :level, {:array, Ecto.Enum}, values: [:primary, :second, :third, :national]
+    field :level, Ecto.Enum, values: [:primary, :second, :third, :national]
     belongs_to :team,  Team
     belongs_to :user,  User
 
@@ -25,5 +25,16 @@ defmodule StakeLaneApi.Links.UserTeam do
     |> validate_required([:level, :team_id, :user_id])
     |> unique_constraint([:team_id, :user_id])
     |> unique_constraint([:level, :user_id])
+  end
+end
+
+defmodule StakeLaneApi.Links.UserTeam.Level do
+  def team_levels do
+    %{
+      primary: "primary",
+      second: "second",
+      third: "third",
+      national: "national",
+    }
   end
 end
