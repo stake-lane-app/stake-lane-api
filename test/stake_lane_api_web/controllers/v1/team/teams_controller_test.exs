@@ -2,9 +2,9 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
   use StakeLaneApiWeb.ConnCase
   import StakeLaneApi.Factory
   alias StakeLaneApi.Links.UserTeam.Level
-  @quantity 3
 
   describe "list/2" do
+    @quantity 3
     setup %{conn: conn} do
       country = insert(:country)
       insert_list(@quantity, :team, country: country)
