@@ -1,4 +1,4 @@
-defmodule StakeLaneApiWeb.V1.League.MyFixturesControllerTest do
+defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
   use StakeLaneApiWeb.ConnCase
   import StakeLaneApi.Factory
 

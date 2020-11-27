@@ -1,4 +1,4 @@
-defmodule StakeLaneApiWeb.V1.League.MyFixturesController do
+defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesController do
   use StakeLaneApiWeb, :controller
 
   alias StakeLaneApi.Fixture

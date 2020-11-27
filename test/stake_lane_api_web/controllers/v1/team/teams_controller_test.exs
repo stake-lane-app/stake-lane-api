@@ -139,7 +139,7 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       }
       conn = delete authed_conn, Routes.api_v1_teams_path(authed_conn, :index), body
       assert error = json_response(conn, 400)
-      assert error["treated_error"]["message"] == "We've found any team preference at this level"
+      assert error["treated_error"]["message"] == "We've not found any team preference at this level"
     end
 
   end

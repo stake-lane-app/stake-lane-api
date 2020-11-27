@@ -97,7 +97,7 @@ defmodule StakeLaneApi.UserTeam do
     UserTeam
     |> Repo.get_by(%{user_id: user_id, level: level})
     |> case do
-      nil -> dgettext("errors", "We've found any team preference at this level") |> Errors.treated_error
+      nil -> dgettext("errors", "We've not found any team preference at this level") |> Errors.treated_error
       user_team -> Repo.delete(user_team)
     end
   end
