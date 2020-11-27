@@ -35,7 +35,7 @@ defmodule StakeLaneApi.MixProject do
     [
       {:phoenix, "~> 1.5.1"},
       {:phoenix_ecto, "~> 4.1"},
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.5.3"},
       {:geo_postgis, "~> 3.1"},
       {:postgrex, ">= 0.15.6"},
       {:phoenix_live_dashboard, "~> 0.2.0"},

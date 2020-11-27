@@ -12,5 +12,6 @@ defmodule StakeLaneApi.Repo.Migrations.LinkUserTeams do
     end
 
     create unique_index(:users_teams, [:team_id, :user_id])
+    create unique_index(:users_teams, [:level, :user_id])
   end
 end

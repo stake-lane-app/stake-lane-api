@@ -16,6 +16,13 @@ defmodule StakeLaneApi.Country do
     |> Repo.one()
   end
 
+  def list_countries() do
+    query = from c in Country
+
+    query
+    |> Repo.all
+  end
+
   def update_country(%Country{} = country, attrs) do
     country
     |> Country.changeset(attrs)
