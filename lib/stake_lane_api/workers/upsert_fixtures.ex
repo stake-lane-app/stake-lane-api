@@ -10,6 +10,7 @@ defmodule StakeLaneApi.Workers.UpsertFixtures do
   alias StakeLaneApi.League
   alias StakeLaneApi.Team
   alias StakeLaneApi.Fixture
+  alias StakeLaneApi.Prediction
   alias ApiFootball.ApiFixtures
 
   @third_api "api_football"
@@ -36,7 +37,7 @@ defmodule StakeLaneApi.Workers.UpsertFixtures do
       Fixture.get_fixture_by_third_id(@third_api, refreshed_fixture["fixture_id"])
       |> case  do
         nil -> create_fixture(refreshed_fixture)
-        current_fixture -> update_fixture(current_fixture, refreshed_fixture)
+        current_fixture -> update_fixture_and_predictions(current_fixture, refreshed_fixture)
       end
 
     end)
@@ -51,9 +52,11 @@ defmodule StakeLaneApi.Workers.UpsertFixtures do
     {:ok, _} = new_fixture |> Fixture.create_fixture
   end
 
-  defp update_fixture(fixture, refreshed_fixture) do
+  defp update_fixture_and_predictions(fixture, refreshed_fixture) do
     updated_fixture = refreshed_fixture |> ApiFixtures.parse_fixture_to_update
-    {:ok, _} = fixture |> Fixture.update_fixture(updated_fixture)
+    fixture
+    |> Fixture.update_fixture!(updated_fixture)
+    |> Prediction.update_predictions_score
   end
 
 end

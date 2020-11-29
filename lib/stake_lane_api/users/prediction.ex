@@ -8,6 +8,7 @@ defmodule StakeLaneApi.Users.Prediction do
     :home_team,
     :away_team,
     :score,
+    :finished,
   ]}
 
   schema "predictions" do
@@ -15,7 +16,8 @@ defmodule StakeLaneApi.Users.Prediction do
     belongs_to :fixture, Fixture
     field :home_team, :integer
     field :away_team, :integer
-    field :score, :integer
+    field :score,     :integer
+    field :finished,  :boolean
 
     timestamps()
   end
@@ -27,7 +29,8 @@ defmodule StakeLaneApi.Users.Prediction do
       :fixture_id,
       :home_team,
       :away_team,
-      :score
+      :score,
+      :finished,
     ])
     |> validate_required([
       :user_id,
