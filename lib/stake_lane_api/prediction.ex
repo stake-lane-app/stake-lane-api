@@ -16,7 +16,7 @@ defmodule StakeLaneApi.Prediction do
     with {:ok, fixture} <- find_fixture(fixture_id),
          {:ok, _} <- verify_user_league(user_id, fixture_id),
          {:ok, _} <- fixture_allow_prediction(fixture),
-         previous_prediction <- get_by_fixture_id(fixture_id) do
+         previous_prediction <- get_user_prediciton(fixture_id, user_id) do
 
       %{
         user_id: user_id,
@@ -29,9 +29,11 @@ defmodule StakeLaneApi.Prediction do
 
   end
 
-  def get_by_fixture_id(fixture_id) do
+  defp get_user_prediciton(fixture_id, user_id) do
     query = from p in Prediction,
-      where: p.fixture_id == ^fixture_id
+      where:
+        p.fixture_id == ^fixture_id and
+        p.user_id == ^user_id
 
     query
     |> Repo.one
@@ -72,6 +74,65 @@ defmodule StakeLaneApi.Prediction do
     previous_prediction
     |> Prediction.changeset(attrs)
     |> Repo.update()
+  end
+
+  def update_prediction_score(%StakeLaneApi.Football.Fixture{} = fixture) do
+    %{
+      id: fixture_id ,
+      status_code: fixture_status_code,
+      goals_home_team: goals_home_team,
+      goals_away_team: goals_away_team
+    } = fixture
+
+    fixture_id
+    |> get_fixture_predicitons
+    |> Enum.map(&get_prediction_score(&1, fixture_status_code, goals_home_team, goals_away_team))
+    |> Enum.map(&update_score!/1)
+  end
+
+  defp get_fixture_predicitons(fixture_id) do
+    query = from p in Prediction,
+      where:
+        p.fixture_id == ^fixture_id
+
+    query
+    |> Repo.all
+  end
+
+  def get_prediction_score(%Prediction{} = prediction, fixture_status_code, goals_home_team, goals_amay_team) do
+    who_leads_fixture = get_who_leads(goals_home_team, goals_amay_team)
+    who_leads_prediction = get_who_leads(prediction.home_team, prediction.away_team)
+
+    score = calculate_prediction(
+      who_leads_fixture === who_leads_prediction,
+      prediction.home_team === goals_home_team,
+      prediction.away_team === goals_amay_team
+    )
+
+    %{
+      prediction: prediction,
+      updated_attrs: %{
+        score: score,
+        finished: fixture_status_code in Status.finished_status_codes,
+      }
+    }
+  end
+
+  defp get_who_leads(home_team, away_team) when home_team > away_team,   do: :home_team
+  defp get_who_leads(home_team, away_team) when home_team < away_team,   do: :away_team
+  defp get_who_leads(home_team, away_team) when home_team === away_team, do: :draw
+
+  @bingo 20
+  @who_leads 10
+  @zero 0
+  defp calculate_prediction(true, true, true), do: @bingo
+  defp calculate_prediction(true, _, _), do: @who_leads
+  defp calculate_prediction(_, _, _), do: @zero
+
+  defp update_score!(prediction) do
+    prediction[:prediction]
+    |> Prediction.changeset(prediction[:updated_attrs])
+    |> Repo.update!()
   end
 
 end

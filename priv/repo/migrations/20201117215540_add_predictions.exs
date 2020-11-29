@@ -8,6 +8,7 @@ defmodule StakeLaneApi.Repo.Migrations.AddPredictions do
       add :home_team,   :integer, null: false
       add :away_team,   :integer, null: false
       add :score,       :integer
+      add :finished,    :boolean, default: false, null: false
 
       timestamps()
     end

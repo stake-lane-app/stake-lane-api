@@ -5,6 +5,7 @@ defmodule StakeLaneApi.Fixture do
 
   import Ecto.Query, warn: false
   alias StakeLaneApi.Repo
+  alias StakeLaneApi.Users.Prediction
   alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Football.Fixture.Status
 
@@ -54,7 +55,8 @@ defmodule StakeLaneApi.Fixture do
       inner_join: away_team in assoc(fixture, :away_team),
       left_join: home_country in assoc(home_team, :country),
       left_join: away_country in assoc(away_team, :country),
-      left_join: prediction in assoc(fixture, :prediction),
+      left_join: prediction in Prediction,
+        on: prediction.user_id ==^user_id and prediction.fixture_id == fixture.id,
       where:
         user_league.user_id == ^user_id,
       select: %{
@@ -114,22 +116,10 @@ defmodule StakeLaneApi.Fixture do
   defp get_offset(0, _page_size), do: 0
   defp get_offset(page, page_size), do: (page*page_size)
 
-  @doc """
-  Updates a fixture.
-
-  ## Examples
-
-      iex> update_fixture(fixture, %{field: new_value})
-      {:ok, %Fixture{}}
-
-      iex> update_fixture(fixture, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_fixture(%Fixture{} = fixture, attrs) do
+  def update_fixture!(%Fixture{} = fixture, attrs) do
     fixture
     |> Fixture.changeset(attrs)
-    |> Repo.update()
+    |> Repo.update!()
   end
 
   def create_fixture(attrs \\ %{}) do

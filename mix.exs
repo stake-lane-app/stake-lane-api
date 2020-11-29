@@ -10,7 +10,8 @@ defmodule StakeLaneApi.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 
@@ -56,6 +57,7 @@ defmodule StakeLaneApi.MixProject do
       {:timex, "~> 3.5"},
       {:oban, "~> 2.2"},
       {:ex_machina, "~> 2.4", only: :test},
+      {:excoveralls, "~> 0.13.3", only: :test},
     ]
   end
 

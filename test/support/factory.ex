@@ -144,6 +144,8 @@ defmodule StakeLaneApi.Factory do
       fixture: build(:not_started_fixture),
       home_team: 2,
       away_team: 1,
+      finished: false,
+      score: nil,
     }
   end
 
