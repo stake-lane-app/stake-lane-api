@@ -76,7 +76,7 @@ defmodule StakeLaneApi.Prediction do
     |> Repo.update()
   end
 
-  def update_prediction_score(%StakeLaneApi.Football.Fixture{} = fixture) do
+  def update_predictions_score(%StakeLaneApi.Football.Fixture{} = fixture) do
     %{
       id: fixture_id ,
       status_code: fixture_status_code,

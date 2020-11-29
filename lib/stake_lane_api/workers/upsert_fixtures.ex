@@ -56,7 +56,7 @@ defmodule StakeLaneApi.Workers.UpsertFixtures do
     updated_fixture = refreshed_fixture |> ApiFixtures.parse_fixture_to_update
     fixture
     |> Fixture.update_fixture!(updated_fixture)
-    |> Prediction.update_prediction_score
+    |> Prediction.update_predictions_score
   end
 
 end

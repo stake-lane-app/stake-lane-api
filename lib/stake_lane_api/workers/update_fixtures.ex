@@ -18,7 +18,7 @@ defmodule StakeLaneApi.Workers.UpdateFixtures do
         |> ApiFixtures.get_fixture_by_id
         |> ApiFixtures.parse_fixture_to_update
         |> (&Fixture.update_fixture!(fixture, &1)).()
-        |> Prediction.update_prediction_score
+        |> Prediction.update_predictions_score
       end)
 
     {:ok, done}
