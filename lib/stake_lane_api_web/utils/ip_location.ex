@@ -41,17 +41,29 @@ defmodule StakeLaneApiWeb.Utils.IpLocation do
     end
   end
 
-  @spec get_ip_from_header(Conn.t()) :: Tuple | String
-  def get_ip_from_header(conn) do
-    get_ip(conn, Mix.env())
-  end
+  @doc """
+  Get Ip from header
 
-  defp get_ip(conn, env) when env in [:local, :test, :dev], do: conn.remote_ip
+  ## Examples
+
+      iex> get_ip_from_header(conn)
+      {217, 138, 199, 180} # Prague
+      {89, 187, 178, 104} # NYC
+
+      # For test and dev process:
+      iex> get_ip_from_header(conn)
+      {127, 0, 0, 1}
+
+  """
+  @spec get_ip_from_header(Conn.t()) :: Tuple | String
+  def get_ip_from_header(conn), do: get_ip(conn, Mix.env())
+
+  defp get_ip(conn, env) when env in [:test, :dev], do: conn.remote_ip
   defp get_ip(conn, _) do
     conn
-      |> Conn.get_req_header("x-forwarded-for")
-      |> Enum.at(0)
-      |> String.split(",")
-      |> Enum.at(0)
+    |> Conn.get_req_header("x-forwarded-for")
+    |> Enum.at(0)
+    |> String.split(",")
+    |> Enum.at(0)
   end
 end

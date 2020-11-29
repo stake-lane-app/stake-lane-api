@@ -88,6 +88,7 @@ defmodule StakeLaneApi.Prediction do
     |> get_fixture_predicitons
     |> Enum.map(&get_prediction_score(&1, fixture_status_code, goals_home_team, goals_away_team))
     |> Enum.map(&update_score!/1)
+    |> (&{:ok, &1}).()
   end
 
   defp get_fixture_predicitons(fixture_id) do
