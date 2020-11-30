@@ -5,12 +5,14 @@ defmodule StakeLaneApiWeb.V1.League.MyLeaguesController do
   alias StakeLaneApi.UserLeague
   alias StakeLaneApiWeb.ErrorHelpers
 
-  def create(conn, %{"league_id" => league_id}) do
+  def create(conn, params) do
+    league_id = params |> Map.get("league_id")
+    team_id = params |> Map.get("team_id")
 
     conn
     |> Pow.Plug.current_user
     |> Map.get(:id)
-    |> (fn user_id -> UserLeague.create_user_league(user_id, league_id) end).()
+    |> (fn user_id -> UserLeague.create_user_league(user_id, league_id, team_id) end).()
     |> case do
       {:ok, _} ->
         conn |> send_resp(204, "")

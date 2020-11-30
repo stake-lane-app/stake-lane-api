@@ -29,14 +29,9 @@ defmodule StakeLaneApiWeb.Router do
 
     resources "/leagues", League.LeaguesController, only: [:index]
     resources "/leagues/my", League.MyLeaguesController, only: [:create, :index]
-    resources "/leagues/my/fixtures", League.MyLeaguesFixturesController, only: [:index]
-
     resources "/fixtures/my", Fixture.MyFixturesController, only: [:index]
-
     resources "/predictions", Prediction.PredictionsController, only: [:create]
-
     resources "/countries", Country.CountriesController, only: [:index]
-
     resources "/teams", Team.TeamsController, only: [:index, :create]
     delete "/teams", Team.TeamsController, :delete
   end

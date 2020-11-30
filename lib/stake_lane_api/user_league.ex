@@ -6,8 +6,15 @@ defmodule StakeLaneApi.UserLeague do
   import Ecto.Query, warn: false
   alias StakeLaneApi.Repo
   alias StakeLaneApi.Links.UserLeague
+  alias StakeLaneApi.Links.UserTeamLeague
+  alias StakeLaneApi.Helpers.Errors
+
 
   def get_user_leagues(user_id) do
+    get_user_championship_leagues(user_id) ++ get_user_team_leagues(user_id)
+  end
+
+  def get_user_championship_leagues(user_id) do
     query = from ul in UserLeague,
       inner_join: league in assoc(ul, :league),
       inner_join: country in assoc(league, :country),
@@ -18,20 +25,34 @@ defmodule StakeLaneApi.UserLeague do
         season: league.season,
         active: league.active,
         country: country,
+        type: "league",
       }
 
-    Repo.all query
+    query
+    |> Repo.all
   end
 
-  def get_user_leagues_id(user_id) do
-    query = from ul in UserLeague,
-      where: ul.user_id == ^user_id,
-      select: ul.league_id
+  def get_user_team_leagues(user_id) do
+    query = from utl in UserTeamLeague,
+      inner_join: team in assoc(utl, :team),
+      inner_join: country in assoc(team, :country),
+      where: utl.user_id == ^user_id,
+      select: %{
+        team_id: team.id,
+        name: team.name,
+        logo: team.logo,
+        is_national: team.is_national,
+        founded: team.founded,
+        country: country,
+        type: "team",
+      }
 
-    Repo.all query
+    query
+    |> Repo.all
   end
 
-  def create_user_league(user_id, league_id) do
+  def create_user_league(_, nil, nil), do: Errors.treated_error("You need to pick a league or a team")
+  def create_user_league(user_id, league_id, nil) do
     # TODO: Check if user has slots to participate on a new league
     attrs = %{
       user_id: user_id,
@@ -40,6 +61,17 @@ defmodule StakeLaneApi.UserLeague do
 
     %UserLeague{}
     |> UserLeague.changeset(attrs)
+    |> Repo.insert()
+  end
+  def create_user_league(user_id, nil, team_id) do
+    # TODO: Check if user has slots to participate on a new team-league
+    attrs = %{
+      user_id: user_id,
+      team_id: team_id,
+    }
+
+    %UserTeamLeague{}
+    |> UserTeamLeague.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -53,6 +85,25 @@ defmodule StakeLaneApi.UserLeague do
         ul.blocked == ^blocked
 
     query
-    |> Repo.one
+    |> Repo.exists?
+  end
+
+  def user_plays_team_league?(user_id, fixture_id, blocked \\ false) do
+    query = from fixture in StakeLaneApi.Football.Fixture,
+      left_join: home_team in assoc(fixture, :home_team),
+      left_join: home_utl in assoc(home_team, :user_team_league),
+      left_join: away_team in assoc(fixture, :away_team),
+      left_join: away_utl in assoc(away_team, :user_team_league),
+      where:
+        home_utl.user_id == ^user_id and
+        home_utl.blocked == ^blocked and
+        fixture.id == ^fixture_id,
+      or_where:
+        away_utl.user_id == ^user_id and
+        away_utl.blocked == ^blocked and
+        fixture.id == ^fixture_id
+
+    query
+    |> Repo.exists?
   end
 end
