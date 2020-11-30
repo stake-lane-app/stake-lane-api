@@ -121,6 +121,7 @@ defmodule StakeLaneApi.Prediction do
     }
   end
 
+  defp get_who_leads(nil, nil), do: nil
   defp get_who_leads(home_team, away_team) when home_team > away_team,   do: :home_team
   defp get_who_leads(home_team, away_team) when home_team < away_team,   do: :away_team
   defp get_who_leads(home_team, away_team) when home_team === away_team, do: :draw

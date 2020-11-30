@@ -14,8 +14,6 @@ defmodule StakeLaneApi.Football.Team do
     :founded,
     :venue,
     :country,
-    # :fixtures_home,
-    # :fixtures_away,
   ]}
 
   schema "teams" do
