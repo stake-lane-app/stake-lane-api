@@ -17,6 +17,17 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
     end
   end
 
+  def leagues(conn, %{ "team_id" => team_id }) do
+    team_id
+    |> Team.list_leagues_a_team_plays
+    |> case do
+      teams ->
+        conn
+        |> put_status(200)
+        |> json(teams)
+    end
+  end
+
   def create(conn, params) do
     %{
       "level" => level,

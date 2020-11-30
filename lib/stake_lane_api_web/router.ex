@@ -34,6 +34,7 @@ defmodule StakeLaneApiWeb.Router do
     resources "/countries", Country.CountriesController, only: [:index]
     resources "/teams", Team.TeamsController, only: [:index, :create]
     delete "/teams", Team.TeamsController, :delete
+    get "/teams/leagues", Team.TeamsController, :leagues
   end
 
   # Enables LiveDashboard only for development
