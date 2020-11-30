@@ -16,9 +16,14 @@ defmodule StakeLaneApiWeb.V1.League.MyLeaguesController do
     |> case do
       {:ok, _} ->
         conn |> send_resp(204, "")
+
+      {:treated_error, treated_error} ->
+        conn
+        |> put_status(treated_error.status)
+        |> json(%{treated_error: treated_error})
+
       {:error, changeset} ->
         errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
-
         conn
         |> put_status(400)
         |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't link the league"), errors: errors}})

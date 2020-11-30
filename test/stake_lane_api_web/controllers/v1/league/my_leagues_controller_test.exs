@@ -47,6 +47,34 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
         end
       end)
     end
+  end
 
+  describe "create/2" do
+    setup %{conn: conn} do
+      authed_conn = Pow.Plug.assign_current_user(conn, insert(:user), [])
+      {:ok, authed_conn: authed_conn}
+    end
+
+    test "with valid params, team league", %{authed_conn: authed_conn} do
+      team = insert(:team)
+      body = %{ team_id: team.id }
+
+      conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
+      assert conn.status == 204
+    end
+
+    test "with valid params, championship league", %{authed_conn: authed_conn} do
+      league = insert(:league)
+      body = %{ league_id: league.id }
+
+      conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
+      assert conn.status == 204
+    end
+
+    test "invalid request", %{authed_conn: authed_conn} do
+      conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), %{}
+      assert error = json_response(conn, 400)
+      assert error["treated_error"]["message"] == "You need to pick a league or a team"
+    end
   end
 end
