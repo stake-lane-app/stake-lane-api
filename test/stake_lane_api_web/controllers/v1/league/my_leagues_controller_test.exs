@@ -38,15 +38,14 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
 
         case league["type"] do
           "team" ->
+            assert Map.has_key?(league, "team_id")
             assert Map.has_key?(league, "founded")
             assert Map.has_key?(league, "is_national")
             assert Map.has_key?(league, "logo")
-            assert Map.has_key?(league, "team_id")
 
           "league" ->
-            assert Map.has_key?(league, "active")
             assert Map.has_key?(league, "league_id")
-            assert Map.has_key?(league, "name")
+            assert Map.has_key?(league, "active")
             assert Map.has_key?(league, "season")
 
         end
