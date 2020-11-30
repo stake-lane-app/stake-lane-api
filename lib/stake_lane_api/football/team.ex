@@ -2,6 +2,7 @@ defmodule StakeLaneApi.Football.Team do
   use Ecto.Schema
   import Ecto.Changeset
   alias StakeLaneApi.Countries.Country
+  alias StakeLaneApi.Links.UserTeamLeague
   alias StakeLaneApi.Football.Fixture
 
   @derive {Jason.Encoder, only: [
@@ -31,6 +32,7 @@ defmodule StakeLaneApi.Football.Team do
 
     has_many :fixtures_home, Fixture, foreign_key: :home_team_id, references: :id
     has_many :fixtures_away, Fixture, foreign_key: :away_team_id, references: :id
+    has_many :user_team_league, UserTeamLeague
 
     field :third_party_info, :map, virtual: true
   end

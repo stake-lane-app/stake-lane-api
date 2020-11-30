@@ -103,7 +103,7 @@ msgid "Credentials Incorrect"
 msgstr "Credenciais Incorretas"
 
 #, elixir-format
-#: lib/stake_lane_api_web/controllers/v1/league/my_leagues_controller.ex:22
+#: lib/stake_lane_api_web/controllers/v1/league/my_leagues_controller.ex:29
 msgid "Couldn't link the league"
 msgstr "Não foi possível adicionar a liga"
 
@@ -118,16 +118,41 @@ msgid "Couldn't save the prediction"
 msgstr "Não foi possível salvar o palpite"
 
 #, elixir-format
-#: lib/stake_lane_api/prediction.ex:52
+#: lib/stake_lane_api/prediction.ex:56
 msgid "Fixture not found"
 msgstr "Partida não encontrada"
 
 #, elixir-format
-#: lib/stake_lane_api/prediction.ex:61
+#: lib/stake_lane_api/prediction.ex:65
 msgid "The fixture status does not allow prediction"
 msgstr "O status da partida não permite palpites"
 
 #, elixir-format
-#: lib/stake_lane_api/prediction.ex:43
+#: lib/stake_lane_api/prediction.ex:47
 msgid "You don't play this league"
 msgstr "Você não joga essa liga"
+
+#, elixir-format
+#: lib/stake_lane_api_web/controllers/v1/team/teams_controller.ex:71
+msgid "Couldn't delete team preference"
+msgstr ""
+
+#, elixir-format, fuzzy
+#: lib/stake_lane_api_web/controllers/v1/team/teams_controller.ex:44
+msgid "Couldn't save team preference"
+msgstr ""
+
+#, elixir-format
+#: lib/stake_lane_api/user_team.ex:62
+msgid "The team needs to be national"
+msgstr ""
+
+#, elixir-format
+#: lib/stake_lane_api/user_team.ex:100
+msgid "We've not found any team preference at this level"
+msgstr ""
+
+#, elixir-format
+#: lib/stake_lane_api/user_team.ex:71
+msgid "You already support this team"
+msgstr ""

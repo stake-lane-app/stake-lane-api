@@ -47,40 +47,6 @@ defmodule StakeLaneApi.League do
     Repo.all query
   end
 
-  def list_leagues_with_fixture(league_ids) do
-    # TODO: Paginate it:
-    query = from leagues in League,
-      inner_join: league_country  in assoc(leagues,  :country),
-      inner_join: fixtures  in assoc(leagues,  :fixtures),
-      inner_join: home_team in assoc(fixtures, :home_team),
-      inner_join: away_team in assoc(fixtures, :away_team),
-      inner_join: home_country in assoc(home_team, :country),
-      inner_join: away_country in assoc(away_team, :country),
-      # TODO: left_join: prediction in assoc(fixture, :prediction),
-      where:
-        leagues.id in ^league_ids and
-        fixtures.starts_at_iso_date > datetime_add(^NaiveDateTime.utc_now(), -1, "day") and
-        fixtures.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +1, "day"),
-      preload: [
-        country: league_country,
-        fixtures: {
-          fixtures,
-          home_team: {
-            home_team,
-            country: home_country
-          },
-          away_team: {
-            away_team,
-            country: away_country
-          }
-        },
-      ]
-
-    query
-    |> Repo.all()
-  end
-
-
   @doc """
   Updates a league.
 

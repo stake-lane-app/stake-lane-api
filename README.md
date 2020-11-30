@@ -47,6 +47,5 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 
 
 <!--
-  curl --location --request GET 'https://v2.api-football.com/status' \
-  --header 'X-RapidAPI-Key: 686819f61ee767103c876669418c2156'
+  curl --location --request GET 'https://v2.api-football.com/status' --header 'X-RapidAPI-Key: 686819f61ee767103c876669418c2156'
 -->

@@ -15,7 +15,22 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       {:ok, authed_conn: authed_conn, fixture: fixture, user: user, league: league}
     end
 
-    test "with valid params", %{authed_conn: authed_conn, fixture: fixture} do
+    test "with valid params, solely league mode", %{authed_conn: authed_conn, fixture: fixture} do
+      body = %{
+        fixture_id: fixture.id,
+        prediction_home_team: 1,
+        prediction_away_team: 0,
+      }
+
+      conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
+      assert conn.status == 204
+    end
+
+    test "with valid params, solely team-league mode", %{authed_conn: authed_conn, user: user} do
+      team = insert(:team)
+      insert(:user_team_league, team: team, user: user)
+      fixture = insert(:not_started_fixture, home_team: team)
+
       body = %{
         fixture_id: fixture.id,
         prediction_home_team: 1,
@@ -64,6 +79,21 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       new_fixture = insert(:not_started_fixture)
       body = %{
         fixture_id: new_fixture.id,
+        prediction_home_team: 1,
+        prediction_away_team: 0,
+      }
+
+      conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
+      assert error = json_response(conn, 400)
+      assert error["treated_error"]["message"] == "You don't play this league"
+    end
+
+    test "with a team league the users doesnt play", %{authed_conn: authed_conn} do
+      team = insert(:team)
+      fixture = insert(:not_started_fixture, home_team: team)
+
+      body = %{
+        fixture_id: fixture.id,
         prediction_home_team: 1,
         prediction_away_team: 0,
       }

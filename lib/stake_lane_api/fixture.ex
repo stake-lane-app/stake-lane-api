@@ -6,6 +6,7 @@ defmodule StakeLaneApi.Fixture do
   import Ecto.Query, warn: false
   alias StakeLaneApi.Repo
   alias StakeLaneApi.Users.Prediction
+  alias StakeLaneApi.Links.UserTeamLeague
   alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Football.Fixture.Status
 
@@ -50,15 +51,22 @@ defmodule StakeLaneApi.Fixture do
     query = from fixture in Fixture,
       inner_join: league in assoc(fixture, :league),
       inner_join: league_country in assoc(league, :country),
-      inner_join: user_league in assoc(league, :user_league),
       inner_join: home_team in assoc(fixture, :home_team),
       inner_join: away_team in assoc(fixture, :away_team),
       left_join: home_country in assoc(home_team, :country),
       left_join: away_country in assoc(away_team, :country),
+
+      left_join: user_league in assoc(league, :user_league),
+      left_join: user_team_league in UserTeamLeague,
+        on: user_team_league.team_id == home_team.id or user_team_league.team_id == away_team.id,
       left_join: prediction in Prediction,
         on: prediction.user_id ==^user_id and prediction.fixture_id == fixture.id,
       where:
-        user_league.user_id == ^user_id,
+        user_league.user_id == ^user_id and
+        user_league.blocked == false,
+      or_where:
+        user_team_league.user_id == ^user_id and
+        user_team_league.blocked == false,
       select: %{
         fixture |
         prediction: prediction,

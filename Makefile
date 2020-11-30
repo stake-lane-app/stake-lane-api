@@ -13,4 +13,9 @@ deploy-dev:
 test-coverage:
 	MIX_ENV=test mix coveralls.html
 
+translations:
+	mix gettext.extract
+	mix gettext.merge priv/gettext
+	mix compile.gettext
+
 # TO DO: Add deploy-prod and app.yaml by env
