@@ -64,4 +64,28 @@ defmodule StakeLaneApi.Team do
     |> Team.changeset(attrs)
     |> Repo.insert()
   end
+
+  def list_leagues_a_team_plays(team_id) do
+    query = from team in Team,
+      inner_join: country in assoc(team, :country),
+      left_join: fixture in StakeLaneApi.Football.Fixture,
+        on: team.id == fixture.home_team_id or team.id == fixture.away_team_id,
+      left_join: league in assoc(fixture, :league),
+      left_join: country_league in assoc(league, :country),
+      distinct: league.id,
+      where:
+        team.id == ^team_id and
+        league.active == true,
+      select: %{
+        league_id: league.id,
+        name: league.name,
+        season: league.season,
+        season_start: league.season_start,
+        season_end: league.season_end,
+        country: country_league,
+       }
+
+    query
+    |> Repo.all
+  end
 end

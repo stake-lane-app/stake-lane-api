@@ -125,6 +125,7 @@ defmodule StakeLaneApi.Prediction do
   defp get_who_leads(home_team, away_team) when home_team > away_team,   do: :home_team
   defp get_who_leads(home_team, away_team) when home_team < away_team,   do: :away_team
   defp get_who_leads(home_team, away_team) when home_team === away_team, do: :draw
+  defp get_who_leads(_, _), do: :unknown
 
   @bingo 20
   @who_leads 10

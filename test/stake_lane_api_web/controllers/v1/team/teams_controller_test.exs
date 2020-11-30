@@ -143,4 +143,48 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
     end
 
   end
+
+  describe "leagues/2" do
+    @active_leagues 3
+    setup %{conn: conn} do
+      team = insert(:team, %{ name: "Millonarios"})
+      finished_cup = insert(:league, %{ name: "Libertadores Cup", active: false})
+      continental_cup = insert(:league, %{ name: "Libertadores Cup"})
+      national_cup = insert(:league, %{ name: "Colombian Cup"})
+      national_championship = insert(:league, %{ name: "Colombian Championship"})
+
+      insert(:past_fixture, %{ home_team: team, league: finished_cup})
+      insert(:not_started_fixture, %{ home_team: team, league: continental_cup})
+      insert(:not_started_fixture, %{ away_team: team, league: national_cup})
+      insert(:past_fixture, %{ home_team: team, league: national_championship})
+
+      authed_conn = Pow.Plug.assign_current_user(conn, insert(:user), [])
+      {:ok, authed_conn: authed_conn, team: team}
+    end
+
+    test "with valid params", %{authed_conn: authed_conn, team: team} do
+      attrs = %{ "team_id" => team.id }
+      conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :leagues, attrs)
+      assert leagues = json_response(conn, 200)
+      assert false === Enum.empty?(leagues)
+      assert @active_leagues === length(leagues)
+      Enum.map(leagues, fn league ->
+        assert Map.has_key?(league, "league_id")
+        assert Map.has_key?(league, "name")
+        assert Map.has_key?(league, "season")
+        assert Map.has_key?(league, "season_start")
+        assert Map.has_key?(league, "season_end")
+        assert Map.has_key?(league, "country")
+      end)
+    end
+
+    test "team with no active leagues", %{authed_conn: authed_conn} do
+      team = insert(:team)
+      attrs = %{ "team_id" => team.id }
+      conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :leagues, attrs)
+      assert leagues = json_response(conn, 200)
+      assert true === Enum.empty?(leagues)
+    end
+
+  end
 end
