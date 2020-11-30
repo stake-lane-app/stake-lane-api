@@ -7,8 +7,8 @@ defmodule StakeLaneApi.UserLeague do
   alias StakeLaneApi.Repo
   alias StakeLaneApi.Links.UserLeague
   alias StakeLaneApi.Links.UserTeamLeague
+  alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Helpers.Errors
-
 
   def get_user_leagues(user_id) do
     get_user_championship_leagues(user_id) ++ get_user_team_leagues(user_id)
@@ -18,14 +18,19 @@ defmodule StakeLaneApi.UserLeague do
     query = from ul in UserLeague,
       inner_join: league in assoc(ul, :league),
       inner_join: country in assoc(league, :country),
+      left_join: fixtures in assoc(league, :fixtures),
+      left_join: prediction in assoc(fixtures, :prediction),
+      group_by: [ ul.id, league.id, country.id ],
       where: ul.user_id == ^user_id,
       select: %{
+        blocked: ul.blocked,
         league_id: league.id,
         name: league.name,
         season: league.season,
         active: league.active,
         country: country,
         type: "league",
+        total_score: sum(prediction.score)
       }
 
     query
@@ -36,8 +41,14 @@ defmodule StakeLaneApi.UserLeague do
     query = from utl in UserTeamLeague,
       inner_join: team in assoc(utl, :team),
       inner_join: country in assoc(team, :country),
-      where: utl.user_id == ^user_id,
+      left_join: fixture in Fixture,
+        on: utl.team_id == fixture.home_team_id or utl.team_id == fixture.away_team_id,
+      left_join: prediction in assoc(fixture, :prediction),
+      group_by: [ utl.id, team.id, country.id ],
+      where:
+        utl.user_id == ^user_id,
       select: %{
+        blocked: utl.blocked,
         team_id: team.id,
         name: team.name,
         logo: team.logo,
@@ -45,6 +56,7 @@ defmodule StakeLaneApi.UserLeague do
         founded: team.founded,
         country: country,
         type: "team",
+        total_score: sum(prediction.score)
       }
 
     query

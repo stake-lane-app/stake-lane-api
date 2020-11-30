@@ -28,7 +28,7 @@ defmodule StakeLaneApi.Football.Fixture do
     belongs_to :league,                League
     belongs_to :home_team,             Team
     belongs_to :away_team,             Team
-    has_one    :prediction,            Prediction
+    has_many   :prediction,            Prediction
     embeds_one :score,                 StakeLaneApi.Football.Fixture.Score, on_replace: :update
     embeds_many :third_parties_info,   StakeLaneApi.Football.Fixture.ThirdPartyInfo
 
