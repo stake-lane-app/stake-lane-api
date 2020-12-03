@@ -1,26 +1,17 @@
 # StakeLaneApi
 
 To start your Phoenix server:
-
   * Setup the project with `mix setup`
   * Start Phoenix endpoint with `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
-
-  * Pow only api: https://hexdocs.pm/pow/api.html
-
 
 ## Translations
+
+![Badge](https://img.shields.io/poeditor/progress/392205/en?style=for-the-badge&token=2a41a13d502e1ad13f7499ac1b21d842)
+
+![Badge](https://img.shields.io/poeditor/progress/392205/pt-br?style=for-the-badge&token=2a41a13d502e1ad13f7499ac1b21d842)
+
+![Badge](https://img.shields.io/poeditor/progress/392205/es?style=for-the-badge&token=2a41a13d502e1ad13f7499ac1b21d842)
 
 * How to get the info from the code to the template .pot:
   `mix gettext.extract`

@@ -18,14 +18,25 @@ defmodule StakeLaneApi.Team do
     |> Repo.one()
   end
 
-  def list_team_by_country(country_id) do
+  def list_teams(_, true) do
     query = from team in Team,
-    inner_join: country in assoc(team, :country),
-    where: team.country_id == ^country_id,
-    select: %{
-      team |
-      country: country
-    }
+      inner_join: country in assoc(team, :country),
+      where: team.is_national == ^true,
+      select: %{ team | country: country },
+      order_by: [ asc: team.name ]
+
+    query
+    |> Repo.all()
+  end
+  def list_teams(country_id, _) do
+    query = from team in Team,
+      inner_join: country in assoc(team, :country),
+      where: team.country_id == ^country_id,
+      select: %{ team | country: country },
+      order_by: [
+        desc: team.is_national,
+        asc: team.name,
+      ]
 
     query
     |> Repo.all()

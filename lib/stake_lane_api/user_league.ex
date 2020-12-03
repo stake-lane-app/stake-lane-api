@@ -4,11 +4,13 @@ defmodule StakeLaneApi.UserLeague do
   """
 
   import Ecto.Query, warn: false
+  import StakeLaneApiWeb.Gettext
   alias StakeLaneApi.Repo
   alias StakeLaneApi.Links.UserLeague
   alias StakeLaneApi.Links.UserTeamLeague
   alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Helpers.Errors
+  alias StakeLaneApi.UserPlan
 
   def get_user_leagues(user_id) do
     get_user_championship_leagues(user_id) ++ get_user_team_leagues(user_id)
@@ -63,17 +65,22 @@ defmodule StakeLaneApi.UserLeague do
     |> Repo.all
   end
 
-  def create_user_league(_, nil, nil), do: Errors.treated_error("You need to pick a league or a team")
+  def create_user_league(_, nil, nil), do: {:error, "No league_id/team_id has been sent"}
   def create_user_league(user_id, league_id, nil) do
-    # TODO: Check if user has slots to participate on a new league
-    attrs = %{
-      user_id: user_id,
-      league_id: league_id,
-    }
+    with user_plan <- UserPlan.get_user_plan(user_id),
+      {:ok, plan_limits} <- UserPlan.get_user_plan_limits(user_plan),
+      user_leagues <- get_how_many_active_leagues_user_has(user_id) do
 
-    %UserLeague{}
-    |> UserLeague.changeset(attrs)
-    |> Repo.insert()
+      case allow_to_add_more_leagues(plan_limits, user_leagues) do
+        false -> dgettext("errors", "Your slots are full, you can't add more leagues") |> Errors.treated_error
+        true ->
+          attrs = %{ user_id: user_id, league_id: league_id }
+
+          %UserLeague{}
+          |> UserLeague.changeset(attrs)
+          |> Repo.insert()
+      end
+    end
   end
   def create_user_league(user_id, nil, team_id) do
     # TODO: Check if user has slots to participate on a new team-league
@@ -85,6 +92,27 @@ defmodule StakeLaneApi.UserLeague do
     %UserTeamLeague{}
     |> UserTeamLeague.changeset(attrs)
     |> Repo.insert()
+  end
+
+  defp allow_to_add_more_leagues(plan_limits, user_leagues) when user_leagues >= plan_limits, do: false
+  defp allow_to_add_more_leagues(plan_limits, user_leagues) when user_leagues < plan_limits, do: true
+
+  defp get_how_many_active_leagues_user_has(user_id) do
+    user_league = (
+      from ul in UserLeague,
+      where: ul.user_id == ^user_id and ul.blocked == false
+    )
+    |> Repo.all
+    |> length
+
+    user_team_league = (
+      from utl in UserTeamLeague,
+      where: utl.user_id == ^user_id and utl.blocked == false
+    )
+    |> Repo.all
+    |> length
+
+    user_league + user_team_league
   end
 
   def user_plays_league?(user_id, fixture_id, blocked \\ false) do

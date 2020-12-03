@@ -1,9 +1,7 @@
 defmodule StakeLaneApiWeb.V1.League.MyLeaguesController do
   use StakeLaneApiWeb, :controller
 
-  alias Ecto.Changeset
   alias StakeLaneApi.UserLeague
-  alias StakeLaneApiWeb.ErrorHelpers
 
   def create(conn, params) do
     league_id = params |> Map.get("league_id")
@@ -22,12 +20,14 @@ defmodule StakeLaneApiWeb.V1.League.MyLeaguesController do
         |> put_status(treated_error.status)
         |> json(%{treated_error: treated_error})
 
-      {:error, changeset} ->
-        errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
+      {:error, error} ->
         conn
         |> put_status(400)
-        |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't link the league"), errors: errors}})
-
+        |> json(%{error: %{
+          status: 400,
+          message: dgettext("errors", "Couldn't link the league"),
+          errors: error
+        }})
     end
   end
 

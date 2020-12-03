@@ -4,28 +4,45 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
   alias StakeLaneApi.Links.UserTeam.Level
 
   describe "list/2" do
-    @quantity 3
     setup %{conn: conn} do
-      country = insert(:country)
-      insert_list(@quantity, :team, country: country)
+
+      # 6 National Teams // 4 Republic of Horses Teams // 2 Random Teams
+      republic_of_horses = insert(:country, %{ name: "Republic of Horses"})
+      insert_list(3, :team, country: republic_of_horses)
+      insert_list(1, :team, country: republic_of_horses, is_national: true)
+      insert_list(5, :team, country: insert(:country), is_national: true)
       insert_list(2, :team, country: insert(:country))
 
-
       authed_conn = Pow.Plug.assign_current_user(conn, insert(:user), [])
-      {:ok, authed_conn: authed_conn, country: country}
+      {:ok, authed_conn: authed_conn, country: republic_of_horses}
     end
 
-    test "with valid params", %{authed_conn: authed_conn, country: country} do
-      attrs = %{
-        "country_id" => country.id,
-      }
+    test "with valid params, by country", %{authed_conn: authed_conn, country: country} do
+      attrs = %{ "country_id" => country.id }
       conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :index, attrs)
       assert teams = json_response(conn, 200)
       assert false === Enum.empty?(teams)
-      assert @quantity === length(teams)
+      assert 4 === length(teams)
       Enum.map(teams, fn team ->
         assert Map.has_key?(team, "id")
         assert Map.has_key?(team, "is_national")
+        assert Map.has_key?(team, "full_name")
+        assert Map.has_key?(team, "name")
+        assert Map.has_key?(team, "founded")
+        assert Map.has_key?(team, "venue")
+        assert Map.has_key?(team, "country")
+      end)
+    end
+
+    test "with valid params, national teams", %{authed_conn: authed_conn} do
+      attrs = %{ "nationals" => true }
+      conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :index, attrs)
+      assert teams = json_response(conn, 200)
+      assert false === Enum.empty?(teams)
+      assert 6 === length(teams)
+      Enum.map(teams, fn team ->
+        assert true === team["is_national"]
+        assert Map.has_key?(team, "id")
         assert Map.has_key?(team, "full_name")
         assert Map.has_key?(team, "name")
         assert Map.has_key?(team, "founded")

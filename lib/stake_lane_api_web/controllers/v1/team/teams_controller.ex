@@ -6,9 +6,12 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
   alias StakeLaneApi.Team
   alias StakeLaneApi.UserTeam
 
-  def index(conn, %{ "country_id" => country_id }) do
+  def index(conn, params) do
+    country_id = params |> Map.get("country_id")
+    nationals = params |> Map.get("nationals") |> (&(&1 === "true")).()
+
     country_id
-    |> Team.list_team_by_country
+    |> Team.list_teams(nationals)
     |> case do
       teams ->
         conn
