@@ -65,56 +65,6 @@ defmodule StakeLaneApi.UserLeague do
     |> Repo.all
   end
 
-  def create_user_league(_, nil, nil), do: {:error, "No league_id/team_id has been sent"}
-  def create_user_league(user_id, league_id, nil) do
-    with user_plan <- UserPlan.get_user_plan(user_id),
-      {:ok, plan_limits} <- UserPlan.get_user_plan_limits(user_plan),
-      user_leagues <- get_how_many_active_leagues_user_has(user_id) do
-
-      case allow_to_add_more_leagues(plan_limits, user_leagues) do
-        false -> dgettext("errors", "Your slots are full, you can't add more leagues") |> Errors.treated_error
-        true ->
-          attrs = %{ user_id: user_id, league_id: league_id }
-
-          %UserLeague{}
-          |> UserLeague.changeset(attrs)
-          |> Repo.insert()
-      end
-    end
-  end
-  def create_user_league(user_id, nil, team_id) do
-    # TODO: Check if user has slots to participate on a new team-league
-    attrs = %{
-      user_id: user_id,
-      team_id: team_id,
-    }
-
-    %UserTeamLeague{}
-    |> UserTeamLeague.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  defp allow_to_add_more_leagues(plan_limits, user_leagues) when user_leagues >= plan_limits, do: false
-  defp allow_to_add_more_leagues(plan_limits, user_leagues) when user_leagues < plan_limits, do: true
-
-  defp get_how_many_active_leagues_user_has(user_id) do
-    user_league = (
-      from ul in UserLeague,
-      where: ul.user_id == ^user_id and ul.blocked == false
-    )
-    |> Repo.all
-    |> length
-
-    user_team_league = (
-      from utl in UserTeamLeague,
-      where: utl.user_id == ^user_id and utl.blocked == false
-    )
-    |> Repo.all
-    |> length
-
-    user_league + user_team_league
-  end
-
   def user_plays_league?(user_id, fixture_id, blocked \\ false) do
     query = from ul in UserLeague,
       inner_join: league in assoc(ul, :league),
@@ -145,5 +95,59 @@ defmodule StakeLaneApi.UserLeague do
 
     query
     |> Repo.exists?
+  end
+
+  def create_user_league(_, nil, nil), do: {:error, "No league_id/team_id has been sent"}
+  def create_user_league(user_id, league_id, nil) do
+    case can_user_create_it?(user_id, :leagues) do
+      false -> dgettext("errors", "Your slots are full, you can't add more leagues") |> Errors.treated_error
+      true ->
+        %UserLeague{}
+        |> UserLeague.changeset(%{ user_id: user_id, league_id: league_id })
+        |> Repo.insert()
+    end
+  end
+  def create_user_league(user_id, nil, team_id) do
+    case can_user_create_it?(user_id, :team_leagues) do
+      false -> dgettext("errors", "Your slots are full, play this team-league") |> Errors.treated_error
+      true ->
+        %UserTeamLeague{}
+        |> UserTeamLeague.changeset(%{ user_id: user_id, team_id: team_id })
+        |> Repo.insert()
+    end
+  end
+
+  defp can_user_create_it?(user_id, league_type) do
+    with user_plan <- UserPlan.get_user_plan(user_id, league_type), # TODO: remove the league_type
+      {:ok, plan_limits} <- UserPlan.get_user_plan_limits(user_plan, league_type),
+      user_leagues <- get_user_active_leagues(user_id, league_type) do
+
+      is_limit_behind?(plan_limits, user_leagues)
+    end
+  end
+
+  defp is_limit_behind?(plan_limits, user_leagues) when user_leagues >= plan_limits, do: false
+  defp is_limit_behind?(plan_limits, user_leagues) when user_leagues < plan_limits, do: true
+
+  @spec get_user_active_leagues(Integer, Atom) :: Integer
+  defp get_user_active_leagues(user_id, :leagues), do: user_leagues_quantity(user_id)
+  defp get_user_active_leagues(user_id, :team_leagues), do: user_team_leagues_quantity(user_id)
+
+  defp user_leagues_quantity(user_id) do
+    query = from ul in UserLeague,
+      where: ul.user_id == ^user_id and ul.blocked == false
+
+    query
+    |> Repo.all
+    |> length
+  end
+
+  defp user_team_leagues_quantity(user_id) do
+    query = from utl in UserTeamLeague,
+      where: utl.user_id == ^user_id and utl.blocked == false
+
+    query
+    |> Repo.all
+    |> length
   end
 end

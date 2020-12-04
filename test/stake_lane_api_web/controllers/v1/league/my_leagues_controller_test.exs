@@ -67,6 +67,16 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
       assert conn.status == 204
     end
 
+    # TODO: Take this comment down when we have dinamic users plan
+    # test "creating more than allowed on free plan, team league", %{authed_conn: authed_conn} do
+    #   team = insert(:team)
+    #   body = %{ team_id: team.id }
+
+    #   conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
+    #   assert error = json_response(conn, 400)
+    #   assert error["treated_error"]["message"] == "Your slots are full, play this team-league"
+    # end
+
     test "with valid params, championship league", %{authed_conn: authed_conn} do
       league = insert(:league)
       body = %{ league_id: league.id }

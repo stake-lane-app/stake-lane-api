@@ -72,7 +72,7 @@ config :stake_lane_api, :limits,
   %{
     free: %{
       leagues: 2,
-      team_leagues: nil,
+      team_leagues: 0,
       pools: 1,
     },
     number_one_fan: %{
@@ -82,7 +82,7 @@ config :stake_lane_api, :limits,
     },
     four_four_two: %{
       leagues: 10,
-      team_leagues: nil,
+      team_leagues: 0,
       pools: 10,
     },
     stake_horse: %{
