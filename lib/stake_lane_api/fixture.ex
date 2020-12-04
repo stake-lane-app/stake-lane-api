@@ -94,7 +94,7 @@ defmodule StakeLaneApi.Fixture do
     |> Timex.beginning_of_day()
 
     offset = page
-    |> get_page
+    |> get_page()
     |> get_offset(page_size)
 
     query
@@ -102,6 +102,7 @@ defmodule StakeLaneApi.Fixture do
     |> limit(^page_size)
     |> offset(^offset)
     |> Repo.all()
+    |> maybe_reverse(page)
   end
 
   # For today and future fixtures:
@@ -116,6 +117,9 @@ defmodule StakeLaneApi.Fixture do
     |> where([fixture], fixture.starts_at_iso_date < datetime_add(^beginning_of_the_user_day, -0, "day"))
     |> order_by([desc: :starts_at_iso_date])
   end
+
+  defp maybe_reverse(fixtures, page) when page < 0, do: fixtures |> Enum.reverse
+  defp maybe_reverse(fixtures, _), do: fixtures
 
   defp get_page(-1), do: 0
   defp get_page(page) when page >= 0, do: page

@@ -49,6 +49,8 @@ defmodule StakeLaneApiWeb.Utils.IpLocation do
       iex> get_ip_from_header(conn)
       {217, 138, 199, 180} # Prague
       {89, 187, 178, 104} # NYC
+      {191, 96, 73, 217} # SP
+      {176, 61, 146, 85} # Lisbon
 
       # For test and dev process:
       iex> get_ip_from_header(conn)

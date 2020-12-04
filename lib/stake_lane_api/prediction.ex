@@ -102,14 +102,15 @@ defmodule StakeLaneApi.Prediction do
     |> Repo.all
   end
 
-  def get_prediction_score(%Prediction{} = prediction, fixture_status_code, goals_home_team, goals_amay_team) do
+  defp get_prediction_score(%Prediction{} = prediction, fixture_status_code, goals_home_team, goals_amay_team) do
     who_leads_fixture = get_who_leads(goals_home_team, goals_amay_team)
     who_leads_prediction = get_who_leads(prediction.home_team, prediction.away_team)
 
     score = calculate_prediction(
       who_leads_fixture === who_leads_prediction,
       prediction.home_team === goals_home_team,
-      prediction.away_team === goals_amay_team
+      prediction.away_team === goals_amay_team,
+      [goals_home_team, goals_amay_team, prediction.home_team, prediction.away_team]
     )
 
     %{
@@ -128,11 +129,28 @@ defmodule StakeLaneApi.Prediction do
   defp get_who_leads(_, _), do: :unknown
 
   @bingo 20
-  @who_leads 10
+  @who_leads_max 16
+  @who_leads_min 5
   @zero 0
-  defp calculate_prediction(true, true, true), do: @bingo
-  defp calculate_prediction(true, _, _), do: @who_leads
-  defp calculate_prediction(_, _, _), do: @zero
+  defp calculate_prediction(true, true, true, _), do: @bingo
+  defp calculate_prediction(true, _, _, goals) do
+    [
+      goals_home_team,
+      goals_amay_team,
+      prediction_home_team,
+      prediction_away_team,
+    ] = goals
+
+    home_team_diff = goals_home_team - prediction_home_team |> Kernel.abs
+    away_team_diff = goals_amay_team - prediction_away_team |> Kernel.abs
+
+    @who_leads_max - home_team_diff - away_team_diff
+    |> case do
+      who_leads_score when (who_leads_score < @who_leads_min) -> @who_leads_min
+      who_leads_score -> who_leads_score
+    end
+  end
+  defp calculate_prediction(_, _, _, _), do: @zero
 
   defp update_score!(prediction) do
     prediction[:prediction]

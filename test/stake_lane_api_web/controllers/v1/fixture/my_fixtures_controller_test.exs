@@ -40,7 +40,7 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
       user = insert(:user)
       authed_conn = Pow.Plug.assign_current_user(conn, user, [])
 
-      supported_user_team = insert(:team, %{name: "1# Supporter F.C."})
+      supported_user_team = insert(:team, %{name: "1# Fan F.C."})
       national_championship = insert(:league, %{name: "National Championship"})
       national_cup = insert(:league, %{name: "National Cup"})
       continental_cup = insert(:league, %{name: "Continental Cup"})
@@ -68,7 +68,7 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
     test "with valid params, mixing league and team-league", setup_params do
       %{ authed_conn: authed_conn, league: league, user: user } = setup_params
 
-      supported_user_team = insert(:team, %{name: "1#supporter F.C."})
+      supported_user_team = insert(:team, %{name: "1# Fan F.C."})
       insert(:not_started_fixture, %{ home_team: supported_user_team })
       insert(:not_started_fixture, %{ away_team: supported_user_team })
       insert(:user_team_league, %{ team: supported_user_team, user: user })
