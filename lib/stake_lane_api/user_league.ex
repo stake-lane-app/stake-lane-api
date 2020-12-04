@@ -129,7 +129,7 @@ defmodule StakeLaneApi.UserLeague do
   defp is_limit_behind?(plan_limits, user_leagues) when user_leagues >= plan_limits, do: false
   defp is_limit_behind?(plan_limits, user_leagues) when user_leagues < plan_limits, do: true
 
-  @spec get_user_active_leagues(Integer, Atom) :: Integer
+  @spec get_user_active_leagues(integer, atom) :: integer
   defp get_user_active_leagues(user_id, :leagues), do: user_leagues_quantity(user_id)
   defp get_user_active_leagues(user_id, :team_leagues), do: user_team_leagues_quantity(user_id)
 
