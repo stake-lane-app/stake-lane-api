@@ -7,6 +7,7 @@ defmodule StakeLaneApi.UserTeam do
   import StakeLaneApiWeb.Gettext
   alias StakeLaneApi.Repo
   alias StakeLaneApi.Links.UserTeam
+  alias UserTeam.Level, as: TeamLevel
   alias StakeLaneApi.Team
   alias StakeLaneApi.Helpers.Errors
 
@@ -57,11 +58,16 @@ defmodule StakeLaneApi.UserTeam do
 
   defp validate_national(team_id, level) do
     team_id
-    |> (&( Team.is_national?(&1) and UserTeam.Level.team_levels.national != level)).()
+    |> are_team_and_level_nationals?(level)
     |> case do
-      true -> dgettext("errors", "The team needs to be national") |> Errors.treated_error
-      false -> {:ok, false}
+      {false, _} -> {:ok, :not_national_team}
+      {true, true} -> {:ok, true}
+      _ -> dgettext("errors", "The team needs to be national") |> Errors.treated_error
     end
+  end
+
+  defp are_team_and_level_nationals?(team_id, level) do
+    {Team.is_national?(team_id), level === TeamLevel.team_levels.national}
   end
 
   defp validate_duplicated(user_id, team_id) do

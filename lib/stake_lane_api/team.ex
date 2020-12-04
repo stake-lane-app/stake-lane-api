@@ -28,7 +28,7 @@ defmodule StakeLaneApi.Team do
     query
     |> Repo.all()
   end
-  def list_teams(country_id, _) do
+  def list_teams(country_id, _nationals) do
     query = from team in Team,
       inner_join: country in assoc(team, :country),
       where: team.country_id == ^country_id,
