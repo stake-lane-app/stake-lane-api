@@ -5,9 +5,8 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
   describe "list/2" do
     setup %{conn: conn} do
-
       # 6 National Teams // 4 Republic of Horses Teams // 2 Random Teams
-      republic_of_horses = insert(:country, %{ name: "Republic of Horses"})
+      republic_of_horses = insert(:country, %{name: "Republic of Horses"})
       insert_list(3, :team, country: republic_of_horses)
       insert_list(1, :team, country: republic_of_horses, is_national: true)
       insert_list(5, :team, country: insert(:country), is_national: true)
@@ -18,11 +17,12 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
     end
 
     test "with valid params, by country", %{authed_conn: authed_conn, country: country} do
-      attrs = %{ "country_id" => country.id }
-      conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :index, attrs)
+      attrs = %{"country_id" => country.id}
+      conn = get(authed_conn, Routes.api_v1_teams_path(authed_conn, :index, attrs))
       assert teams = json_response(conn, 200)
       assert false === Enum.empty?(teams)
       assert 4 === length(teams)
+
       Enum.map(teams, fn team ->
         assert Map.has_key?(team, "id")
         assert Map.has_key?(team, "is_national")
@@ -35,11 +35,12 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
     end
 
     test "with valid params, national teams", %{authed_conn: authed_conn} do
-      attrs = %{ "nationals" => true }
-      conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :index, attrs)
+      attrs = %{"nationals" => true}
+      conn = get(authed_conn, Routes.api_v1_teams_path(authed_conn, :index, attrs))
       assert teams = json_response(conn, 200)
       assert false === Enum.empty?(teams)
       assert 6 === length(teams)
+
       Enum.map(teams, fn team ->
         assert true === team["is_national"]
         assert Map.has_key?(team, "id")
@@ -50,12 +51,10 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
         assert Map.has_key?(team, "country")
       end)
     end
-
   end
 
   describe "edit/2" do
     setup %{conn: conn} do
-
       authed_conn = Pow.Plug.assign_current_user(conn, insert(:user), [])
       {:ok, authed_conn: authed_conn}
     end
@@ -65,8 +64,9 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
       body = %{
         team_id: team.id,
-        level: Level.team_levels[:primary],
+        level: Level.team_levels()[:primary]
       }
+
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body
       assert conn.status == 204
     end
@@ -76,8 +76,9 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
       body = %{
         team_id: national_team.id,
-        level: Level.team_levels[:national],
+        level: Level.team_levels()[:national]
       }
+
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body
       assert conn.status == 204
     end
@@ -88,15 +89,17 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
       body_a = %{
         team_id: team_a.id,
-        level: Level.team_levels[:second],
+        level: Level.team_levels()[:second]
       }
+
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body_a
       assert conn.status == 204
 
       body_b = %{
         team_id: team_b.id,
-        level: Level.team_levels[:second],
+        level: Level.team_levels()[:second]
       }
+
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body_b
       assert conn.status == 204
     end
@@ -106,8 +109,9 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
       body = %{
         team_id: national_team.id,
-        level: Level.team_levels[:primary],
+        level: Level.team_levels()[:primary]
       }
+
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body
       assert error = json_response(conn, 400)
       assert error["treated_error"]["message"] == "The team needs to be national"
@@ -118,20 +122,21 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
       body_a = %{
         team_id: team.id,
-        level: Level.team_levels[:primary],
+        level: Level.team_levels()[:primary]
       }
+
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body_a
       assert conn.status == 204
 
       body_b = %{
         team_id: team.id,
-        level: Level.team_levels[:second],
+        level: Level.team_levels()[:second]
       }
+
       conn = post authed_conn, Routes.api_v1_teams_path(authed_conn, :create), body_b
       assert error = json_response(conn, 400)
       assert error["treated_error"]["message"] == "You already support this team"
     end
-
   end
 
   describe "delete/2" do
@@ -143,8 +148,8 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
     end
 
     test "with valid params", %{authed_conn: authed_conn, user: user} do
-      user_team = insert(:user_team, %{ user: user })
-      body = %{ "level" => user_team.level }
+      user_team = insert(:user_team, %{user: user})
+      body = %{"level" => user_team.level}
 
       conn = delete authed_conn, Routes.api_v1_teams_path(authed_conn, :index), body
       assert conn.status == 204
@@ -152,39 +157,42 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
     test "trying to delete non-existing user team", %{authed_conn: authed_conn} do
       body = %{
-        "level" => Level.team_levels[:third],
+        "level" => Level.team_levels()[:third]
       }
+
       conn = delete authed_conn, Routes.api_v1_teams_path(authed_conn, :index), body
       assert error = json_response(conn, 400)
-      assert error["treated_error"]["message"] == "We've not found any team preference at this level"
-    end
 
+      assert error["treated_error"]["message"] ==
+               "We've not found any team preference at this level"
+    end
   end
 
   describe "leagues/2" do
     @active_leagues 3
     setup %{conn: conn} do
-      team = insert(:team, %{ name: "Millonarios"})
-      finished_cup = insert(:league, %{ name: "Libertadores Cup", active: false})
-      continental_cup = insert(:league, %{ name: "Libertadores Cup"})
-      national_cup = insert(:league, %{ name: "Colombian Cup"})
-      national_championship = insert(:league, %{ name: "Colombian Championship"})
+      team = insert(:team, %{name: "Millonarios"})
+      finished_cup = insert(:league, %{name: "Libertadores Cup", active: false})
+      continental_cup = insert(:league, %{name: "Libertadores Cup"})
+      national_cup = insert(:league, %{name: "Colombian Cup"})
+      national_championship = insert(:league, %{name: "Colombian Championship"})
 
-      insert(:past_fixture, %{ home_team: team, league: finished_cup})
-      insert(:not_started_fixture, %{ home_team: team, league: continental_cup})
-      insert(:not_started_fixture, %{ away_team: team, league: national_cup})
-      insert(:past_fixture, %{ home_team: team, league: national_championship})
+      insert(:past_fixture, %{home_team: team, league: finished_cup})
+      insert(:not_started_fixture, %{home_team: team, league: continental_cup})
+      insert(:not_started_fixture, %{away_team: team, league: national_cup})
+      insert(:past_fixture, %{home_team: team, league: national_championship})
 
       authed_conn = Pow.Plug.assign_current_user(conn, insert(:user), [])
       {:ok, authed_conn: authed_conn, team: team}
     end
 
     test "with valid params", %{authed_conn: authed_conn, team: team} do
-      attrs = %{ "team_id" => team.id }
-      conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :leagues, attrs)
+      attrs = %{"team_id" => team.id}
+      conn = get(authed_conn, Routes.api_v1_teams_path(authed_conn, :leagues, attrs))
       assert leagues = json_response(conn, 200)
       assert false === Enum.empty?(leagues)
       assert @active_leagues === length(leagues)
+
       Enum.map(leagues, fn league ->
         assert Map.has_key?(league, "league_id")
         assert Map.has_key?(league, "name")
@@ -197,11 +205,10 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
     test "team with no active leagues", %{authed_conn: authed_conn} do
       team = insert(:team)
-      attrs = %{ "team_id" => team.id }
-      conn = get authed_conn, Routes.api_v1_teams_path(authed_conn, :leagues, attrs)
+      attrs = %{"team_id" => team.id}
+      conn = get(authed_conn, Routes.api_v1_teams_path(authed_conn, :leagues, attrs))
       assert leagues = json_response(conn, 200)
       assert true === Enum.empty?(leagues)
     end
-
   end
 end

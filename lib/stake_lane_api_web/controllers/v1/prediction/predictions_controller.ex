@@ -9,14 +9,14 @@ defmodule StakeLaneApiWeb.V1.Prediction.PredictionsController do
     %{
       "fixture_id" => fixture_id,
       "prediction_home_team" => prediction_home_team,
-      "prediction_away_team" => prediction_away_team,
-      } = params
+      "prediction_away_team" => prediction_away_team
+    } = params
 
     conn
-    |> Pow.Plug.current_user
+    |> Pow.Plug.current_user()
     |> Map.get(:id)
-    |> (&(Prediction.upsert_prediction(&1, fixture_id, prediction_home_team, prediction_away_team))).()
-    |> case  do
+    |> (&Prediction.upsert_prediction(&1, fixture_id, prediction_home_team, prediction_away_team)).()
+    |> case do
       {:ok, _} ->
         conn
         |> send_resp(204, "")
@@ -31,8 +31,13 @@ defmodule StakeLaneApiWeb.V1.Prediction.PredictionsController do
 
         conn
         |> put_status(400)
-        |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't save the prediction"), errors: errors}})
+        |> json(%{
+          error: %{
+            status: 400,
+            message: dgettext("errors", "Couldn't save the prediction"),
+            errors: errors
+          }
+        })
     end
   end
-
 end

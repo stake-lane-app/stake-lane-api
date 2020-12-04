@@ -20,9 +20,9 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
     end
   end
 
-  def leagues(conn, %{ "team_id" => team_id }) do
+  def leagues(conn, %{"team_id" => team_id}) do
     team_id
-    |> Team.list_leagues_a_team_plays
+    |> Team.list_leagues_a_team_plays()
     |> case do
       teams ->
         conn
@@ -34,13 +34,13 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
   def create(conn, params) do
     %{
       "level" => level,
-      "team_id" => team_id,
+      "team_id" => team_id
     } = params
 
     conn
-    |> Pow.Plug.current_user
+    |> Pow.Plug.current_user()
     |> Map.get(:id)
-    |> (&(UserTeam.upsert_user_team(&1, team_id, level))).()
+    |> (&UserTeam.upsert_user_team(&1, team_id, level)).()
     |> case do
       {:ok, _} ->
         conn
@@ -53,21 +53,28 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
 
       {:error, changeset} ->
         errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
+
         conn
         |> put_status(400)
-        |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't save team preference"), errors: errors}})
+        |> json(%{
+          error: %{
+            status: 400,
+            message: dgettext("errors", "Couldn't save team preference"),
+            errors: errors
+          }
+        })
     end
   end
 
   def delete(conn, params) do
     %{
-      "level" => level,
+      "level" => level
     } = params
 
     conn
-    |> Pow.Plug.current_user
+    |> Pow.Plug.current_user()
     |> Map.get(:id)
-    |> (&(UserTeam.delete_user_team_by_level(&1, level))).()
+    |> (&UserTeam.delete_user_team_by_level(&1, level)).()
     |> case do
       {:ok, _} ->
         conn
@@ -80,10 +87,16 @@ defmodule StakeLaneApiWeb.V1.Team.TeamsController do
 
       {:error, changeset} ->
         errors = Changeset.traverse_errors(changeset, &ErrorHelpers.translate_error/1)
+
         conn
         |> put_status(400)
-        |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't delete team preference"), errors: errors}})
+        |> json(%{
+          error: %{
+            status: 400,
+            message: dgettext("errors", "Couldn't delete team preference"),
+            errors: errors
+          }
+        })
     end
   end
-
 end

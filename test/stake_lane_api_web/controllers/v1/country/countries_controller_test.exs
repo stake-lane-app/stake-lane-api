@@ -11,9 +11,10 @@ defmodule StakeLaneApiWeb.API.V1.Country.CountriesControllerTest do
     end
 
     test "with valid params", %{authed_conn: authed_conn} do
-      conn = get authed_conn, Routes.api_v1_countries_path(authed_conn, :index)
+      conn = get(authed_conn, Routes.api_v1_countries_path(authed_conn, :index))
       assert countries = json_response(conn, 200)
       assert false === Enum.empty?(countries)
+
       Enum.map(countries, fn country ->
         assert Map.has_key?(country, "code")
         assert Map.has_key?(country, "flag")
@@ -21,6 +22,5 @@ defmodule StakeLaneApiWeb.API.V1.Country.CountriesControllerTest do
         assert Map.has_key?(country, "name")
       end)
     end
-
   end
 end

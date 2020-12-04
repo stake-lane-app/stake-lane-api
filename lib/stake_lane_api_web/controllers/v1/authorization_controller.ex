@@ -29,7 +29,7 @@ defmodule StakeLaneApiWeb.V1.AuthorizationController do
   @spec callback(Conn.t(), map()) :: Conn.t()
   def callback(conn, %{"provider" => provider} = params) do
     session_params = Map.fetch!(params, "session_params")
-    params         = Map.drop(params, ["provider", "session_params"])
+    params = Map.drop(params, ["provider", "session_params"])
 
     # TODO: How to create the user's username?
     # TODO: Is is possible to get the user's language case yes, let's do it
@@ -40,15 +40,19 @@ defmodule StakeLaneApiWeb.V1.AuthorizationController do
     |> Plug.callback_upsert(provider, params, redirect_uri(conn))
     |> case do
       {:ok, conn} ->
-
-        user = conn |> Pow.Plug.current_user
+        user = conn |> Pow.Plug.current_user()
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        RelevantAction.relevant_actions[:Registered]
-          |> RelevantAction.create(user.id, user_ip, user_agent)
+        RelevantAction.relevant_actions()[:Registered]
+        |> RelevantAction.create(user.id, user_ip, user_agent)
 
-        json(conn, %{data: %{token: conn.private[:api_auth_token], renew_token: conn.private[:api_renew_token]}})
+        json(conn, %{
+          data: %{
+            token: conn.private[:api_auth_token],
+            renew_token: conn.private[:api_renew_token]
+          }
+        })
 
       {:error, conn} ->
         conn

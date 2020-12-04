@@ -4,20 +4,21 @@ defmodule StakeLaneApi.Users.Prediction do
   alias StakeLaneApi.Users.User
   alias StakeLaneApi.Football.Fixture
 
-  @derive {Jason.Encoder, only: [
-    :home_team,
-    :away_team,
-    :score,
-    :finished,
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :home_team,
+             :away_team,
+             :score,
+             :finished
+           ]}
 
   schema "predictions" do
     belongs_to :user, User
     belongs_to :fixture, Fixture
     field :home_team, :integer
     field :away_team, :integer
-    field :score,     :integer
-    field :finished,  :boolean
+    field :score, :integer
+    field :finished, :boolean
 
     timestamps()
   end
@@ -30,7 +31,7 @@ defmodule StakeLaneApi.Users.Prediction do
       :home_team,
       :away_team,
       :score,
-      :finished,
+      :finished
     ])
     |> validate_required([
       :user_id,
@@ -40,5 +41,4 @@ defmodule StakeLaneApi.Users.Prediction do
     ])
     |> unique_constraint([:user_id, :fixture_id])
   end
-
 end

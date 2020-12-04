@@ -7,9 +7,9 @@ defmodule ApiFootball.ApiCountries do
 
     "#{envs[:url]}/countries"
     |> HTTPoison.get!(headers)
-    |> (&(&1.body)).()
+    |> (& &1.body).()
     |> Jason.decode!()
-    |> (&(&1["api"]["countries"])).()
+    |> (& &1["api"]["countries"]).()
   end
 
   def parse_country_to_creation(country) do
@@ -17,7 +17,7 @@ defmodule ApiFootball.ApiCountries do
     |> updatable_fields
     |> Map.merge(%{
       name: country["country"],
-      code: country["code"],
+      code: country["code"]
     })
   end
 
@@ -27,7 +27,7 @@ defmodule ApiFootball.ApiCountries do
 
   defp updatable_fields(country) do
     %{
-      flag: country["flag"],
+      flag: country["flag"]
     }
   end
 end

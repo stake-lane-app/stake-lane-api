@@ -13,12 +13,13 @@ defmodule StakeLaneApi.Workers.UpsertTeams do
 
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    done = @third_api
-    |> League.list_active_leagues_by_third_api
-    |> Enum.map(&request_teams(&1))
-    |> Enum.map(&upsert_teams(&1))
+    done =
+      @third_api
+      |> League.list_active_leagues_by_third_api()
+      |> Enum.map(&request_teams(&1))
+      |> Enum.map(&upsert_teams(&1))
 
-    { :ok, done }
+    {:ok, done}
   end
 
   defp request_teams(league) do
@@ -29,21 +30,21 @@ defmodule StakeLaneApi.Workers.UpsertTeams do
   defp upsert_teams(refreshed_teams) do
     refreshed_teams
     |> Enum.map(fn refreshed_team ->
-
       Team.get_team_by_third_id(@third_api, refreshed_team["team_id"])
-      |> case  do
+      |> case do
         nil -> create_team(refreshed_team)
         current_team -> update_team(current_team, refreshed_team)
       end
-
     end)
   end
 
   defp create_team(team) do
     country_id = team["country"] |> get_country_id
-    {:ok, _} = team
-    |> ApiTeams.parse_team_to_creation(country_id)
-    |> Team.create_team()
+
+    {:ok, _} =
+      team
+      |> ApiTeams.parse_team_to_creation(country_id)
+      |> Team.create_team()
   end
 
   defp update_team(team, refreshed_team) do
@@ -53,10 +54,11 @@ defmodule StakeLaneApi.Workers.UpsertTeams do
   end
 
   defp get_country_id(nil), do: nil
+
   defp get_country_id(country_name) do
     country_name
-    |> Country.get_country_by_name
-    |> case  do
+    |> Country.get_country_by_name()
+    |> case do
       nil -> nil
       country -> country |> Map.get(:id, nil)
     end

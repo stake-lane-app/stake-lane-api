@@ -4,17 +4,18 @@ defmodule StakeLaneApi.Countries.Country do
   alias StakeLaneApi.Football.Team
   alias StakeLaneApi.Football.League
 
-  @derive {Jason.Encoder, only: [
-    :id,
-    :name,
-    :code,
-    :flag,
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :id,
+             :name,
+             :code,
+             :flag
+           ]}
 
   schema "countries" do
-    field :name,        :string
-    field :code,        :string
-    field :flag,        :string
+    field :name, :string
+    field :code, :string
+    field :flag, :string
 
     timestamps()
 

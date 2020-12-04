@@ -6,23 +6,24 @@ defmodule StakeLaneApi.Football.League do
   alias StakeLaneApi.Countries.Country
   alias StakeLaneApi.Links.UserLeague
 
-  @derive {Jason.Encoder, only: [
-    :id,
-    :name,
-    :season,
-    :season_start,
-    :season_end,
-    :active,
-    :fixtures,
-    :country,
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :id,
+             :name,
+             :season,
+             :season_start,
+             :season_end,
+             :active,
+             :fixtures,
+             :country
+           ]}
 
   schema "leagues" do
-    field :name,             :string
-    field :season,           :integer
-    field :season_start,     :date
-    field :season_end,       :date
-    field :active,           :boolean
+    field :name, :string
+    field :season, :integer
+    field :season_start, :date
+    field :season_end, :date
+    field :active, :boolean
     embeds_many :third_parties_info, StakeLaneApi.Football.League.ThirdPartyInfo
 
     timestamps()
@@ -42,7 +43,7 @@ defmodule StakeLaneApi.Football.League do
       :season,
       :season_start,
       :season_end,
-      :active,
+      :active
     ])
     |> cast_embed(:third_parties_info)
     |> validate_required([:name, :country_id, :season, :active])

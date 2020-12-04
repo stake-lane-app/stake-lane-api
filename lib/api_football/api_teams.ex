@@ -7,9 +7,9 @@ defmodule ApiFootball.ApiTeams do
 
     "#{envs[:url]}/teams/league/#{api_football_league_id}"
     |> HTTPoison.get!(headers)
-    |> (&(&1.body)).()
+    |> (& &1.body).()
     |> Jason.decode!()
-    |> (&(&1["api"]["teams"])).()
+    |> (& &1["api"]["teams"]).()
   end
 
   def parse_team_to_creation(team, country_id) do
@@ -36,7 +36,7 @@ defmodule ApiFootball.ApiTeams do
       logo: team["logo"],
       founded: team["founded"],
       country_id: country_id,
-      venue: team |> parse_venue,
+      venue: team |> parse_venue
     }
   end
 
@@ -46,7 +46,7 @@ defmodule ApiFootball.ApiTeams do
       surface: team["venue_surface"],
       address: team["venue_address"],
       city: team["venue_city"],
-      capacity: team["venue_capacity"],
+      capacity: team["venue_capacity"]
     }
   end
 end

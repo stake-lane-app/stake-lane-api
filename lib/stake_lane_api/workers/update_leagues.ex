@@ -12,15 +12,17 @@ defmodule StakeLaneApi.Workers.UpdateLeagues do
 
   @impl Oban.Worker
   def perform(%Oban.Job{}) do
-    done = @third_api
-    |> League.list_active_leagues_by_third_api
-    |> Enum.map(fn league ->
-      {:ok, _} = league.third_party_info["league_id"]
-      |> ApiLeagues.get_league_by_id
-      |> ApiLeagues.parse_league_to_update
-      |> (&(League.update_league(league, &1))).()
-    end)
+    done =
+      @third_api
+      |> League.list_active_leagues_by_third_api()
+      |> Enum.map(fn league ->
+        {:ok, _} =
+          league.third_party_info["league_id"]
+          |> ApiLeagues.get_league_by_id()
+          |> ApiLeagues.parse_league_to_update()
+          |> (&League.update_league(league, &1)).()
+      end)
 
-    { :ok, done }
+    {:ok, done}
   end
 end

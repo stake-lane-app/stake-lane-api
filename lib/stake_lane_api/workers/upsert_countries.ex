@@ -18,25 +18,23 @@ defmodule StakeLaneApi.Workers.UpsertCountries do
   defp upsert_countries(refreshed_countries) do
     refreshed_countries
     |> Enum.map(fn refreshed_country ->
-
       Country.get_country_by_name(refreshed_country["country"])
-      |> case  do
+      |> case do
         nil -> create_country(refreshed_country)
         current_country -> update_country(current_country, refreshed_country)
       end
-
     end)
   end
 
   defp create_country(country) do
-    {:ok, _} = country
-    |> ApiCountries.parse_country_to_creation
-    |> Country.create_country()
+    {:ok, _} =
+      country
+      |> ApiCountries.parse_country_to_creation()
+      |> Country.create_country()
   end
 
   defp update_country(country, refreshed_country) do
-    updated_country = refreshed_country |> ApiCountries.parse_country_to_update
+    updated_country = refreshed_country |> ApiCountries.parse_country_to_update()
     {:ok, _} = country |> Country.update_country(updated_country)
   end
-
 end

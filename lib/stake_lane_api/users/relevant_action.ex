@@ -27,7 +27,8 @@ defmodule StakeLaneApi.Users.RelevantAction do
     relevant_action
     |> cast(attrs, [:user_id, :action, :ip_info, :ip_coordinates, :user_agent])
     |> validate_change(:action, fn :action, action ->
-      action_allowed = RelevantAction.relevant_actions_values |> Enum.member?(action)
+      action_allowed = RelevantAction.relevant_actions_values() |> Enum.member?(action)
+
       if action_allowed do
         []
       else
@@ -35,5 +36,4 @@ defmodule StakeLaneApi.Users.RelevantAction do
       end
     end)
   end
-
 end

@@ -8,19 +8,18 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
   alias StakeLaneApiWeb.Utils.IpLocation
 
   defp user_schema(user) do
-    [language | _other_languages ] = user.languages
+    [language | _other_languages] = user.languages
 
     %{
       user_name: user.user_name,
       email: user.email,
       role: user.role,
-      language: language,
+      language: language
     }
   end
 
   @spec create(Conn.t(), map()) :: Conn.t()
   def create(conn, %{"user" => user_params}) do
-
     conn
     |> Pow.Plug.create_user(user_params)
     |> case do
@@ -28,8 +27,8 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        RelevantAction.relevant_actions[:Registered]
-          |> RelevantAction.create(user.id, user_ip, user_agent)
+        RelevantAction.relevant_actions()[:Registered]
+        |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{
           data: %{
@@ -44,7 +43,13 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
 
         conn
         |> put_status(400)
-        |> json(%{error: %{status: 400, message: dgettext("errors", "Couldn't create the user"), errors: errors}})
+        |> json(%{
+          error: %{
+            status: 400,
+            message: dgettext("errors", "Couldn't create the user"),
+            errors: errors
+          }
+        })
     end
   end
 end

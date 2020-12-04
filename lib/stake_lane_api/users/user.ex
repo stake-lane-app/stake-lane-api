@@ -35,5 +35,4 @@ defmodule StakeLaneApi.Users.User do
     |> validate_required([:user_name])
     |> validate_subset(:role, ["user", "admin"])
   end
-
 end

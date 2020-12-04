@@ -7,9 +7,9 @@ defmodule ApiFootball.ApiFixtures do
 
     "#{envs[:url]}/fixtures/league/#{api_football_league_id}"
     |> HTTPoison.get!(headers)
-    |> (&(&1.body)).()
+    |> (& &1.body).()
     |> Jason.decode!()
-    |> (&(&1["api"]["fixtures"])).()
+    |> (& &1["api"]["fixtures"]).()
   end
 
   def get_fixture_by_id(api_football_fixture_id) do
@@ -18,9 +18,9 @@ defmodule ApiFootball.ApiFixtures do
 
     "#{envs[:url]}/fixtures/id/#{api_football_fixture_id}"
     |> HTTPoison.get!(headers)
-    |> (&(&1.body)).()
+    |> (& &1.body).()
     |> Jason.decode!()
-    |> (&(&1["api"]["fixtures"])).()
+    |> (& &1["api"]["fixtures"]).()
     |> Enum.at(0)
   end
 
@@ -36,9 +36,9 @@ defmodule ApiFootball.ApiFixtures do
           api: "api_football",
           fixture_id: fixture["fixture_id"],
           league_id: fixture["league_id"],
-          round: fixture["fixture_id"],
+          round: fixture["fixture_id"]
         }
-      ],
+      ]
     })
   end
 
@@ -57,7 +57,7 @@ defmodule ApiFootball.ApiFixtures do
       elapsed: fixture["elapsed"],
       venue: fixture["venue"],
       referee: fixture["referee"],
-      score: fixture["score"] |> parse_score,
+      score: fixture["score"] |> parse_score
     }
   end
 
@@ -66,7 +66,7 @@ defmodule ApiFootball.ApiFixtures do
       halftime: fixture["halftime"],
       fulltime: fixture["fulltime"],
       extratime: fixture["extratime"],
-      penalty: fixture["penalty"],
+      penalty: fixture["penalty"]
     }
   end
 

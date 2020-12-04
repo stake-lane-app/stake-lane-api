@@ -41,23 +41,22 @@ config :stake_lane_api, :pow_assent,
       client_id: System.get_env("FACEBOOK_CLIENT_ID"),
       client_secret: System.get_env("FACEBOOK_CLIENT_SECRET"),
       strategy: Assent.Strategy.Facebook,
-      nonce: true,
+      nonce: true
     ],
     google: [
       client_id: System.get_env("GOOGLE_CLIENT_ID"),
       client_secret: System.get_env("GOOGLE_CLIENT_SECRET"),
-      strategy: Assent.Strategy.Google,
+      strategy: Assent.Strategy.Google
     ]
   ]
 
 # Get Text
 config :stake_lane_api,
-  StakeLaneApiWeb.Gettext,
-  default_locale: "en"
+       StakeLaneApiWeb.Gettext,
+       default_locale: "en"
 
 # Postgis
-config :stake_lane_api, StakeLaneApi.Repo,
-types: StakeLaneApi.PostgresTypes
+config :stake_lane_api, StakeLaneApi.Repo, types: StakeLaneApi.PostgresTypes
 
 config :geo_postgis,
   json_library: Jason
@@ -68,26 +67,25 @@ config :stake_lane_api, :football_api,
   key: System.get_env("API_FOOTBALL_KEY") || "686819f61ee767103c876669418c2156"
 
 # Limits
-config :stake_lane_api, :limits,
-  %{
-    free: %{
-      leagues: 2,
-      team_leagues: 0,
-      pools: 1,
-    },
-    number_one_fan: %{
-      leagues: 2,
-      team_leagues: 1,
-      pools: 10,
-    },
-    four_four_two: %{
-      leagues: 10,
-      team_leagues: 0,
-      pools: 10,
-    },
-    stake_horse: %{
-      leagues: 300,
-      team_leagues: 300,
-      pools: 5_000,
-    },
+config :stake_lane_api, :limits, %{
+  free: %{
+    leagues: 2,
+    team_leagues: 0,
+    pools: 1
+  },
+  number_one_fan: %{
+    leagues: 2,
+    team_leagues: 1,
+    pools: 10
+  },
+  four_four_two: %{
+    leagues: 10,
+    team_leagues: 0,
+    pools: 10
+  },
+  stake_horse: %{
+    leagues: 300,
+    team_leagues: 300,
+    pools: 5_000
   }
+}

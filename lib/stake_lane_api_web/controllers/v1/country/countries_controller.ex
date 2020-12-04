@@ -4,8 +4,7 @@ defmodule StakeLaneApiWeb.V1.Country.CountriesController do
   alias StakeLaneApi.Country
 
   def index(conn, _) do
-
-    Country.list_countries
+    Country.list_countries()
     |> case do
       countries ->
         conn
@@ -13,5 +12,4 @@ defmodule StakeLaneApiWeb.V1.Country.CountriesController do
         |> json(countries)
     end
   end
-
 end
