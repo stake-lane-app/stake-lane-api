@@ -7,39 +7,40 @@ defmodule StakeLaneApi.Football.Fixture do
   alias StakeLaneApi.Football.Team
   alias StakeLaneApi.Users.Prediction
 
-  @derive {Jason.Encoder, only: [
-    :id,
-    :goals_home_team,
-    :goals_away_team,
-    :starts_at_iso_date,
-    :event_timestamp,
-    :status_code,
-    :elapsed,
-    :venue,
-    :referee,
-    :home_team,
-    :away_team,
-    :score,
-    :league,
-    :prediction,
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :id,
+             :goals_home_team,
+             :goals_away_team,
+             :starts_at_iso_date,
+             :event_timestamp,
+             :status_code,
+             :elapsed,
+             :venue,
+             :referee,
+             :home_team,
+             :away_team,
+             :score,
+             :league,
+             :prediction
+           ]}
 
   schema "fixtures" do
-    belongs_to :league,                League
-    belongs_to :home_team,             Team
-    belongs_to :away_team,             Team
-    has_many   :prediction,            Prediction
-    embeds_one :score,                 StakeLaneApi.Football.Fixture.Score, on_replace: :update
-    embeds_many :third_parties_info,   StakeLaneApi.Football.Fixture.ThirdPartyInfo
+    belongs_to :league, League
+    belongs_to :home_team, Team
+    belongs_to :away_team, Team
+    has_many :prediction, Prediction
+    embeds_one :score, StakeLaneApi.Football.Fixture.Score, on_replace: :update
+    embeds_many :third_parties_info, StakeLaneApi.Football.Fixture.ThirdPartyInfo
 
-    field :goals_home_team,     :integer
-    field :goals_away_team,     :integer
-    field :starts_at_iso_date,  :utc_datetime
-    field :event_timestamp,     :integer
-    field :status_code,         :string
-    field :elapsed,             :integer
-    field :venue,               :string
-    field :referee,             :string
+    field :goals_home_team, :integer
+    field :goals_away_team, :integer
+    field :starts_at_iso_date, :utc_datetime
+    field :event_timestamp, :integer
+    field :status_code, :string
+    field :elapsed, :integer
+    field :venue, :string
+    field :referee, :string
 
     timestamps()
 
@@ -59,7 +60,7 @@ defmodule StakeLaneApi.Football.Fixture do
       :referee,
       :league_id,
       :home_team_id,
-      :away_team_id,
+      :away_team_id
     ])
     |> cast_embed(:score)
     |> cast_embed(:third_parties_info)
@@ -68,7 +69,7 @@ defmodule StakeLaneApi.Football.Fixture do
       :home_team_id,
       :away_team_id,
       :starts_at_iso_date,
-      :event_timestamp,
+      :event_timestamp
     ])
     |> unique_constraint([:home_team_id, :away_team_id, :event_timestamp])
   end
@@ -77,21 +78,22 @@ end
 defmodule StakeLaneApi.Football.Fixture.Score do
   @moduledoc false
 
-  @derive {Jason.Encoder, only: [
-    :halftime,
-    :fulltime,
-    :extratime,
-    :penalty,
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :halftime,
+             :fulltime,
+             :extratime,
+             :penalty
+           ]}
 
   use Ecto.Schema
   import Ecto.Changeset
 
   embedded_schema do
-    field :halftime,    :string
-    field :fulltime,    :string
-    field :extratime,   :string
-    field :penalty,     :string
+    field :halftime, :string
+    field :fulltime, :string
+    field :extratime, :string
+    field :penalty, :string
   end
 
   def changeset(info, attrs) do
@@ -108,10 +110,10 @@ defmodule StakeLaneApi.Football.Fixture.ThirdPartyInfo do
   import Ecto.Changeset
 
   embedded_schema do
-    field :api,         :string
-    field :fixture_id,  :integer
-    field :league_id,   :integer
-    field :round,       :string
+    field :api, :string
+    field :fixture_id, :integer
+    field :league_id, :integer
+    field :round, :string
     field :respectness, :integer
   end
 
@@ -129,75 +131,75 @@ defmodule StakeLaneApi.Football.Fixture.Status do
     %{
       to_be_defined: %{
         code: "TBD",
-        description: "Time To Be Defined",
+        description: "Time To Be Defined"
       },
       not_started: %{
         code: "NS",
-        description: "Not Started",
+        description: "Not Started"
       },
       first_half: %{
         code: "1H",
-        description: "First Half",
+        description: "First Half"
       },
       half_time: %{
         code: "HT",
-        description: "Halftime",
+        description: "Halftime"
       },
       second_half: %{
         code: "2H",
-        description: "Second Half",
+        description: "Second Half"
       },
       extra_time: %{
         code: "ET",
-        description: "Extra Time",
+        description: "Extra Time"
       },
       penalties: %{
         code: "P",
-        description: "Penalty In Progress",
+        description: "Penalty In Progress"
       },
       finished: %{
         code: "FT",
-        description: "Match Finished",
+        description: "Match Finished"
       },
       extra_time_finished: %{
         code: "AET",
-        description: "Match Finished After Extra Time",
+        description: "Match Finished After Extra Time"
       },
       penalties_finished: %{
         code: "PEN",
-        description: "Match Finished After Penalty",
+        description: "Match Finished After Penalty"
       },
       break_time: %{
         code: "BT",
-        description: "Break Time (in Extra Time)",
+        description: "Break Time (in Extra Time)"
       },
       suspended: %{
         code: "SUSP",
-        description: "Match Suspended",
+        description: "Match Suspended"
       },
       interrupted: %{
         code: "INT",
-        description: "Match Interrupted",
+        description: "Match Interrupted"
       },
       postponed: %{
         code: "PST",
-        description: "Match Postponed",
+        description: "Match Postponed"
       },
       cancelled: %{
         code: "CANC",
-        description: "Match Cancelled",
+        description: "Match Cancelled"
       },
       abandoned: %{
         code: "ABD",
-        description: "Match Abandoned",
+        description: "Match Abandoned"
       },
       technial_loss: %{
         code: "AWD",
-        description: "Technical Loss",
+        description: "Technical Loss"
       },
       walkover: %{
         code: "WO",
-        description: "Walkover",
+        description: "Walkover"
       }
     }
   end
@@ -206,7 +208,7 @@ defmodule StakeLaneApi.Football.Fixture.Status do
     [
       fixtures_statuses()[:finished][:code],
       fixtures_statuses()[:extra_time_finished][:code],
-      fixtures_statuses()[:penalties_finished][:code],
+      fixtures_statuses()[:penalties_finished][:code]
     ]
   end
 
@@ -217,20 +219,21 @@ defmodule StakeLaneApi.Football.Fixture.Status do
       fixtures_statuses()[:second_half][:code],
       fixtures_statuses()[:extra_time][:code],
       fixtures_statuses()[:break_time][:code],
-      fixtures_statuses()[:penalties][:code],
+      fixtures_statuses()[:penalties][:code]
     ]
   end
 
   def allow_prediction() do
     [
       fixtures_statuses()[:not_started][:code],
-      fixtures_statuses()[:to_be_defined][:code],
+      fixtures_statuses()[:to_be_defined][:code]
     ]
   end
 
   def get_by_code(code) do
-    {_, fixture_status} = fixtures_statuses()
-    |> Enum.find(fn {_, value} -> (value.code == code) end)
+    {_, fixture_status} =
+      fixtures_statuses()
+      |> Enum.find(fn {_, value} -> value.code == code end)
 
     fixture_status
   end

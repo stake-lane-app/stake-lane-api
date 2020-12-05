@@ -9,18 +9,19 @@ defmodule StakeLaneApi.Country do
   alias StakeLaneApi.Countries.Country
 
   def get_country_by_name(name) do
-    query = from c in Country,
-    where: c.name == ^name
+    query =
+      from c in Country,
+        where: c.name == ^name
 
     query
     |> Repo.one()
   end
 
   def list_countries() do
-    query = from c in Country
+    query = from(c in Country)
 
     query
-    |> Repo.all
+    |> Repo.all()
   end
 
   def update_country(%Country{} = country, attrs) do

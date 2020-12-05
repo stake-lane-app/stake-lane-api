@@ -11,8 +11,8 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
       national_championship = insert(:league, %{name: "Bundesliga"})
       continental_cup = insert(:league, %{name: "Libertadores Cup"})
 
-      insert(:user_team_league, %{ team: supported_user_team, user: user })
-      insert(:user_team_league, %{ team: loved_user_team, user: user })
+      insert(:user_team_league, %{team: supported_user_team, user: user})
+      insert(:user_team_league, %{team: loved_user_team, user: user})
       insert(:user_league, league: national_championship, user: user)
       insert(:user_league, league: continental_cup, user: user)
 
@@ -21,14 +21,14 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
     end
 
     test "with valid params", %{authed_conn: authed_conn} do
-      conn = get authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index)
+      conn = get(authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index))
       assert leagues = json_response(conn, 200)
       assert false === Enum.empty?(leagues)
       assert 4 === length(leagues)
 
       assert Enum.all?(leagues, fn league ->
-        league["type"] in ["team", "league"]
-      end)
+               league["type"] in ["team", "league"]
+             end)
 
       Enum.map(leagues, fn league ->
         assert Map.has_key?(league, "total_score")
@@ -47,7 +47,6 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
             assert Map.has_key?(league, "league_id")
             assert Map.has_key?(league, "active")
             assert Map.has_key?(league, "season")
-
         end
       end)
     end
@@ -61,7 +60,7 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
 
     test "with valid params, team league", %{authed_conn: authed_conn} do
       team = insert(:team)
-      body = %{ team_id: team.id }
+      body = %{team_id: team.id}
 
       conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
       assert conn.status == 204
@@ -79,7 +78,7 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
 
     test "with valid params, championship league", %{authed_conn: authed_conn} do
       league = insert(:league)
-      body = %{ league_id: league.id }
+      body = %{league_id: league.id}
 
       conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
       assert conn.status == 204
@@ -89,17 +88,19 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
       envs = Application.fetch_env!(:stake_lane_api, :limits)
       limit_allowed = envs[:free].leagues
 
-      for _ <- 1..limit_allowed |> Enum.to_list do
+      for _ <- 1..limit_allowed |> Enum.to_list() do
         team = insert(:league)
-        body = %{ league_id: team.id }
+        body = %{league_id: team.id}
         conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
         assert conn.status == 204
       end
 
-      body = %{ league_id: (insert(:league)).id }
+      body = %{league_id: insert(:league).id}
       conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
       assert error = json_response(conn, 400)
-      assert error["treated_error"]["message"] == "Your slots are full, you can't add more leagues"
+
+      assert error["treated_error"]["message"] ==
+               "Your slots are full, you can't add more leagues"
     end
 
     test "invalid request", %{authed_conn: authed_conn} do

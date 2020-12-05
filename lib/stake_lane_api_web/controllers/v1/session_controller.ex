@@ -9,36 +9,41 @@ defmodule StakeLaneApiWeb.V1.SessionController do
   import StakeLaneApiWeb.Gettext
 
   defp parse_user(user) do
-    [ language | _other_languages ] = user.languages
+    [language | _other_languages] = user.languages
 
     %{
       user_name: user.user_name,
       email: user.email,
       role: user.role,
       language: language,
-      id: user.id,
+      id: user.id
     }
   end
 
   defp parse_params(conn, user_params) do
-    email = case Map.fetch(user_params, "user_name") do
-      {:ok, user_name} ->
-        User.get_email_by_user_name(user_name)
-        |> case do
-          {:ok, email} -> email
-          {:not_found, nil} ->
-            conn
-            |> put_status(401)
-            |> json(%{error: %{status: 401, message: dgettext("errors", "Credentials Incorrect")}})
+    email =
+      case Map.fetch(user_params, "user_name") do
+        {:ok, user_name} ->
+          User.get_email_by_user_name(user_name)
+          |> case do
+            {:ok, email} ->
+              email
 
+            {:not_found, nil} ->
+              conn
+              |> put_status(401)
+              |> json(%{
+                error: %{status: 401, message: dgettext("errors", "Credentials Incorrect")}
+              })
           end
-      _ ->
-        Map.get(user_params, "email")
+
+        _ ->
+          Map.get(user_params, "email")
       end
 
     %{
       "email" => email,
-      "password" => Map.get(user_params, "password"),
+      "password" => Map.get(user_params, "password")
     }
   end
 
@@ -52,18 +57,18 @@ defmodule StakeLaneApiWeb.V1.SessionController do
     |> Pow.Plug.authenticate_user(parsed_params)
     |> case do
       {:ok, conn} ->
-        user = conn |> Pow.Plug.current_user |> parse_user
+        user = conn |> Pow.Plug.current_user() |> parse_user
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        RelevantAction.relevant_actions[:Login]
-          |> RelevantAction.create(user.id, user_ip, user_agent)
+        RelevantAction.relevant_actions()[:Login]
+        |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{
           data: %{
             access_token: conn.private[:api_access_token],
             renewal_token: conn.private[:api_renewal_token],
-            user: user,
+            user: user
           }
         })
 
@@ -91,7 +96,7 @@ defmodule StakeLaneApiWeb.V1.SessionController do
           data: %{
             access_token: conn.private[:api_access_token],
             renewal_token: conn.private[:api_renewal_token],
-            user: raw_user |> parse_user,
+            user: raw_user |> parse_user
           }
         })
     end

@@ -59,6 +59,7 @@ config :phoenix, :plug_init_mode, :runtime
 
 # Oban
 every_even_minute = "*/2 * * * *"
+
 config :stake_lane_api, Oban,
   repo: StakeLaneApi.Repo,
   plugins: [Oban.Plugins.Pruner],
@@ -69,5 +70,5 @@ config :stake_lane_api, Oban,
     {"@weekly", StakeLaneApi.Workers.UpdateLeagues, max_attempts: 2},
     {"@weekly", StakeLaneApi.Workers.UpsertTeams, max_attempts: 3},
     {"@daily", StakeLaneApi.Workers.UpsertFixtures, max_attempts: 3},
-    {every_even_minute, StakeLaneApi.Workers.UpdateFixtures, max_attempts: 1},
+    {every_even_minute, StakeLaneApi.Workers.UpdateFixtures, max_attempts: 1}
   ]

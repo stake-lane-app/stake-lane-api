@@ -4,9 +4,9 @@ defmodule StakeLaneApi.Repo.Migrations.AddCountries do
 
   def change do
     create table("countries") do
-      add :name,               :string, size: 50, null: false
-      add :code,               :string, size: 10, null: false
-      add :flag,               :string, size: 100
+      add :name, :string, size: 50, null: false
+      add :code, :string, size: 10, null: false
+      add :flag, :string, size: 100
 
       timestamps()
     end

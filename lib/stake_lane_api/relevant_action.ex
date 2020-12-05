@@ -12,15 +12,16 @@ defmodule StakeLaneApi.RelevantAction do
   def relevant_actions() do
     %{
       Registered: "registered",
-      Login: "login",
+      Login: "login"
     }
   end
 
   def relevant_actions_values() do
-    relevant_actions() |> Map.values
+    relevant_actions() |> Map.values()
   end
 
   defp get_coordinates(_, nil), do: nil
+
   defp get_coordinates(ip_info, _) do
     %Geo.Point{
       coordinates: {
@@ -32,31 +33,35 @@ defmodule StakeLaneApi.RelevantAction do
   end
 
   def create(action, user_id, remote_ip, user_agent) do
-    ip_attrs = IpLocation.get_ip_info(remote_ip)
+    ip_attrs =
+      IpLocation.get_ip_info(remote_ip)
       |> case do
-      ip_info when is_map(ip_info) ->
-        %{
-          ip_info: ip_info,
-          ip_coordinates: ip_info |> get_coordinates(ip_info[:longitude]),
-        }
+        ip_info when is_map(ip_info) ->
+          %{
+            ip_info: ip_info,
+            ip_coordinates: ip_info |> get_coordinates(ip_info[:longitude])
+          }
 
-      _ -> %{
-        remote_ip: remote_ip |> Tuple.to_list
-      }
-    end
+        _ ->
+          %{
+            remote_ip: remote_ip |> Tuple.to_list()
+          }
+      end
 
-    attrs = ip_attrs |> Map.merge(%{
-      action: action,
-      user_id: user_id,
-      user_agent: user_agent,
-    })
+    attrs =
+      ip_attrs
+      |> Map.merge(%{
+        action: action,
+        user_id: user_id,
+        user_agent: user_agent
+      })
 
     %RelevantAction{}
-      |> RelevantAction.changeset(attrs)
-      |> Repo.insert()
-      |> case do
-        {:error, log} -> Logger.error(inspect(log.errors))
-        _ -> nil
-      end
+    |> RelevantAction.changeset(attrs)
+    |> Repo.insert()
+    |> case do
+      {:error, log} -> Logger.error(inspect(log.errors))
+      _ -> nil
+    end
   end
 end

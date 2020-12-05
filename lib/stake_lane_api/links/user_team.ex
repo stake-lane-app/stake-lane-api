@@ -5,16 +5,17 @@ defmodule StakeLaneApi.Links.UserTeam do
   alias StakeLaneApi.Football.Team
   alias StakeLaneApi.Users.User
 
-  @derive {Jason.Encoder, only: [
-    :level,
-    :team,
-    :user,
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :level,
+             :team,
+             :user
+           ]}
 
   schema "users_teams" do
     field :level, Ecto.Enum, values: [:primary, :second, :third, :national]
-    belongs_to :team,  Team
-    belongs_to :user,  User
+    belongs_to :team, Team
+    belongs_to :user, User
 
     timestamps()
   end
@@ -34,7 +35,7 @@ defmodule StakeLaneApi.Links.UserTeam.Level do
       primary: "primary",
       second: "second",
       third: "third",
-      national: "national",
+      national: "national"
     }
   end
 end

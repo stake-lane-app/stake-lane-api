@@ -19,7 +19,7 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       body = %{
         fixture_id: fixture.id,
         prediction_home_team: 1,
-        prediction_away_team: 0,
+        prediction_away_team: 0
       }
 
       conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
@@ -34,7 +34,7 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       body = %{
         fixture_id: fixture.id,
         prediction_home_team: 1,
-        prediction_away_team: 0,
+        prediction_away_team: 0
       }
 
       conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
@@ -42,23 +42,25 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
     end
 
     test "with not allowed statuses", %{authed_conn: authed_conn, league: league} do
-      for {_, fixture_status} <- Status.fixtures_statuses do
-        if fixture_status[:code] not in Status.allow_prediction do
-
-          live_fixture = insert(:not_started_fixture, %{
-            league: league,
-            status_code: fixture_status[:code]
-          })
+      for {_, fixture_status} <- Status.fixtures_statuses() do
+        if fixture_status[:code] not in Status.allow_prediction() do
+          live_fixture =
+            insert(:not_started_fixture, %{
+              league: league,
+              status_code: fixture_status[:code]
+            })
 
           body = %{
             fixture_id: live_fixture.id,
             prediction_home_team: 1,
-            prediction_away_team: 0,
+            prediction_away_team: 0
           }
 
           conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
           assert error = json_response(conn, 400)
-          assert error["treated_error"]["message"] == "The fixture status does not allow prediction"
+
+          assert error["treated_error"]["message"] ==
+                   "The fixture status does not allow prediction"
         end
       end
     end
@@ -67,7 +69,7 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       body = %{
         fixture_id: 99999,
         prediction_home_team: 1,
-        prediction_away_team: 0,
+        prediction_away_team: 0
       }
 
       conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
@@ -77,10 +79,11 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
 
     test "with a league the users doesnt play", %{authed_conn: authed_conn} do
       new_fixture = insert(:not_started_fixture)
+
       body = %{
         fixture_id: new_fixture.id,
         prediction_home_team: 1,
-        prediction_away_team: 0,
+        prediction_away_team: 0
       }
 
       conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
@@ -95,7 +98,7 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       body = %{
         fixture_id: fixture.id,
         prediction_home_team: 1,
-        prediction_away_team: 0,
+        prediction_away_team: 0
       }
 
       conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
@@ -103,11 +106,14 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       assert error["treated_error"]["message"] == "You don't play this league"
     end
 
-    test "with valid params, overwriting previous prediction", %{authed_conn: authed_conn, fixture: fixture} do
+    test "with valid params, overwriting previous prediction", %{
+      authed_conn: authed_conn,
+      fixture: fixture
+    } do
       body = %{
         fixture_id: fixture.id,
         prediction_home_team: 1,
-        prediction_away_team: 0,
+        prediction_away_team: 0
       }
 
       post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), body
@@ -115,11 +121,11 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
       another_body = %{
         fixture_id: fixture.id,
         prediction_home_team: 1,
-        prediction_away_team: 3,
+        prediction_away_team: 3
       }
+
       conn = post authed_conn, Routes.api_v1_predictions_path(authed_conn, :create), another_body
       assert conn.status == 204
     end
-
   end
 end

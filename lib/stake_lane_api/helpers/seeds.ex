@@ -1,8 +1,7 @@
 defmodule StakeLaneApi.Seeds do
-
-  def run(files) when is_list(files), do: files |> Enum.each(&(run_/1))
+  def run(files) when is_list(files), do: files |> Enum.each(&run_/1)
   def run(file) when is_binary(file), do: file |> run_
-  def run(_), do: raise ArgumentError, "It has to be a list or a string(binary)"
+  def run(_), do: raise(ArgumentError, "It has to be a list or a string(binary)")
 
   defp run_(file) do
     {:ok, _} = Application.ensure_all_started(:stake_lane_api)

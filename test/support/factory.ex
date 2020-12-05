@@ -8,14 +8,14 @@ defmodule StakeLaneApi.Factory do
       last_name: "Test",
       user_name: sequence(:user_name, &"user-#{&1}"),
       email: sequence(:email, &"email-#{&1}@test.com"),
-      role: "user",
+      role: "user"
     }
   end
 
   def country_factory do
     %StakeLaneApi.Countries.Country{
       name: sequence(:name, &"country-#{&1}"),
-      code: "TL",
+      code: "TL"
     }
   end
 
@@ -31,7 +31,7 @@ defmodule StakeLaneApi.Factory do
         %Football.League.ThirdPartyInfo{
           api: "test_third_api",
           league_id: 1,
-          respectness: 0,
+          respectness: 0
         }
       ]
     }
@@ -50,54 +50,54 @@ defmodule StakeLaneApi.Factory do
         surface: "grass",
         address: "North Test, TL",
         city: "Testcity",
-        capacity: 150_000,
+        capacity: 150_000
       },
       third_parties_info: [
         %Football.Team.ThirdPartyInfo{
           api: "test_third_api",
           team_id: 1,
-          respectness: 0,
+          respectness: 0
         }
-      ],
+      ]
     }
   end
 
   def not_started_fixture_factory do
     now = Timex.now("UTC")
+
     %Football.Fixture{
       goals_home_team: nil,
       goals_away_team: nil,
       starts_at_iso_date: now,
       event_timestamp: now |> Timex.to_unix(),
-      status_code: Football.Fixture.Status.fixtures_statuses[:not_started][:code],
+      status_code: Football.Fixture.Status.fixtures_statuses()[:not_started][:code],
       elapsed: nil,
       venue: nil,
       referee: nil,
-
       league: build(:league),
       home_team: build(:team),
       away_team: build(:team),
       score: %Football.Fixture.Score{},
-
       third_parties_info: [
         %Football.Fixture.ThirdPartyInfo{
           api: "test_third_api",
           fixture_id: 1,
           league_id: 1,
-          respectness: 0,
+          respectness: 0
         }
-      ],
+      ]
     }
   end
 
   def past_fixture_factory do
     yesterday = Timex.now("UTC") |> Timex.shift(days: -1)
+
     %Football.Fixture{
       goals_home_team: 2,
       goals_away_team: 1,
       starts_at_iso_date: yesterday,
       event_timestamp: yesterday |> Timex.to_unix(),
-      status_code: Football.Fixture.Status.fixtures_statuses[:finished][:code],
+      status_code: Football.Fixture.Status.fixtures_statuses()[:finished][:code],
       elapsed: 90,
       venue: "Some Venue",
       referee: "Some Referee",
@@ -110,15 +110,14 @@ defmodule StakeLaneApi.Factory do
         extratime: nil,
         penalty: nil
       },
-
       third_parties_info: [
         %Football.Fixture.ThirdPartyInfo{
           api: "test_third_api",
           fixture_id: 1,
           league_id: 1,
-          respectness: 0,
+          respectness: 0
         }
-      ],
+      ]
     }
   end
 
@@ -126,7 +125,7 @@ defmodule StakeLaneApi.Factory do
     %StakeLaneApi.Links.UserLeague{
       blocked: false,
       league: build(:league),
-      user: build(:user),
+      user: build(:user)
     }
   end
 
@@ -134,15 +133,15 @@ defmodule StakeLaneApi.Factory do
     %StakeLaneApi.Links.UserTeamLeague{
       blocked: false,
       team: build(:team),
-      user: build(:user),
+      user: build(:user)
     }
   end
 
   def user_team_factory do
     %StakeLaneApi.Links.UserTeam{
-      level: StakeLaneApi.Links.UserTeam.Level.team_levels[:primary],
+      level: StakeLaneApi.Links.UserTeam.Level.team_levels()[:primary],
       team: build(:team),
-      user: build(:user),
+      user: build(:user)
     }
   end
 
@@ -153,8 +152,7 @@ defmodule StakeLaneApi.Factory do
       home_team: 2,
       away_team: 1,
       finished: false,
-      score: nil,
+      score: nil
     }
   end
-
 end

@@ -5,16 +5,17 @@ defmodule StakeLaneApi.Links.UserLeague do
   alias StakeLaneApi.Football.League
   alias StakeLaneApi.Users.User
 
-  @derive {Jason.Encoder, only: [
-    :league,
-    :user,
-    :blocked,
-  ]}
+  @derive {Jason.Encoder,
+           only: [
+             :league,
+             :user,
+             :blocked
+           ]}
 
   schema "users_leagues" do
     field :blocked, :boolean
-    belongs_to :league,  League
-    belongs_to :user,  User
+    belongs_to :league, League
+    belongs_to :user, User
 
     timestamps()
   end

@@ -4,7 +4,7 @@ defmodule StakeLaneApiWeb.V1.League.LeaguesController do
   alias StakeLaneApi.League
 
   def index(conn, _) do
-    League.list_leagues
+    League.list_leagues()
     |> case do
       leagues ->
         conn
@@ -12,5 +12,4 @@ defmodule StakeLaneApiWeb.V1.League.LeaguesController do
         |> json(leagues)
     end
   end
-
 end

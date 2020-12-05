@@ -9,7 +9,12 @@ defmodule StakeLaneApiWeb.API.V1.SessionControllerTest do
   setup do
     user =
       %User{}
-      |> User.changeset(%{email: "test@example.com", password: @password, password_confirmation: @password, user_name: "test"})
+      |> User.changeset(%{
+        email: "test@example.com",
+        password: @password,
+        password_confirmation: @password,
+        user_name: "test"
+      })
       |> Repo.insert!()
 
     {:ok, user: user}
@@ -20,7 +25,7 @@ defmodule StakeLaneApiWeb.API.V1.SessionControllerTest do
     @invalid_params %{"user" => %{"email" => "test@example.com", "password" => "invalid"}}
 
     test "with valid params (By email)", %{conn: conn} do
-      conn = post conn, Routes.api_v1_session_path(conn, :create, @valid_params)
+      conn = post(conn, Routes.api_v1_session_path(conn, :create, @valid_params))
 
       assert json = json_response(conn, 200)
       assert json["data"]["access_token"]
@@ -28,7 +33,7 @@ defmodule StakeLaneApiWeb.API.V1.SessionControllerTest do
     end
 
     test "with invalid params", %{conn: conn} do
-      conn = post conn, Routes.api_v1_session_path(conn, :create, @invalid_params)
+      conn = post(conn, Routes.api_v1_session_path(conn, :create, @invalid_params))
 
       assert json = json_response(conn, 401)
       assert json["error"]["message"] == dgettext("errors", "Credentials Incorrect")
@@ -39,7 +44,7 @@ defmodule StakeLaneApiWeb.API.V1.SessionControllerTest do
     @invalid_params_user_name %{"user" => %{"user_name" => "test", "password" => "invalid"}}
 
     test "with valid params (By user_name)", %{conn: conn} do
-      conn = post conn, Routes.api_v1_session_path(conn, :create, @valid_params_user_name)
+      conn = post(conn, Routes.api_v1_session_path(conn, :create, @valid_params_user_name))
 
       assert json = json_response(conn, 200)
       assert json["data"]["access_token"]
@@ -47,7 +52,7 @@ defmodule StakeLaneApiWeb.API.V1.SessionControllerTest do
     end
 
     test "with invalid params (By user_name)", %{conn: conn} do
-      conn = post conn, Routes.api_v1_session_path(conn, :create, @invalid_params_user_name)
+      conn = post(conn, Routes.api_v1_session_path(conn, :create, @invalid_params_user_name))
 
       assert json = json_response(conn, 401)
       assert json["error"]["message"] == dgettext("errors", "Credentials Incorrect")

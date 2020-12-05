@@ -4,9 +4,9 @@ defmodule StakeLaneApi.Repo.Migrations.LinkUserTeams do
 
   def change do
     create table(:users_teams) do
-      add :team_id,     references("teams", on_delete: :delete_all), null: false
-      add :user_id,     references("users", on_delete: :delete_all), null: false
-      add :level,      :string, null: false
+      add :team_id, references("teams", on_delete: :delete_all), null: false
+      add :user_id, references("users", on_delete: :delete_all), null: false
+      add :level, :string, null: false
 
       timestamps()
     end
