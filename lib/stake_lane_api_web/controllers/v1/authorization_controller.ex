@@ -41,10 +41,13 @@ defmodule StakeLaneApiWeb.V1.AuthorizationController do
     |> case do
       {:ok, conn} ->
         user = conn |> Pow.Plug.current_user()
+
+        # TODO: create user plan, default: free
+
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        RelevantAction.relevant_actions()[:Registered]
+        RelevantAction.relevant_actions()[:registered]
         |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{

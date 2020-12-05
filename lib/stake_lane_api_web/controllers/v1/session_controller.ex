@@ -61,7 +61,7 @@ defmodule StakeLaneApiWeb.V1.SessionController do
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        RelevantAction.relevant_actions()[:Login]
+        RelevantAction.relevant_actions()[:login]
         |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{

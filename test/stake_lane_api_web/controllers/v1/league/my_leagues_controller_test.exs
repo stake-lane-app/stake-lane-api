@@ -1,6 +1,7 @@
 defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
   use StakeLaneApiWeb.ConnCase
   import StakeLaneApi.Factory
+  alias StakeLaneApi.Finances.Plan
 
   describe "list/2" do
     setup %{conn: conn} do
@@ -85,8 +86,7 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
     end
 
     test "creating more than allowed on free plan", %{authed_conn: authed_conn} do
-      envs = Application.fetch_env!(:stake_lane_api, :limits)
-      limit_allowed = envs[:free].leagues
+      limit_allowed = Plan.Types.plan_types()[:free].leagues
 
       for _ <- 1..limit_allowed |> Enum.to_list() do
         team = insert(:league)

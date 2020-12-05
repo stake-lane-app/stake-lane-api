@@ -65,27 +65,3 @@ config :geo_postgis,
 config :stake_lane_api, :football_api,
   url: System.get_env("API_FOOTBALL_URL") || "https://v2.api-football.com",
   key: System.get_env("API_FOOTBALL_KEY") || "686819f61ee767103c876669418c2156"
-
-# Limits
-config :stake_lane_api, :limits, %{
-  free: %{
-    leagues: 2,
-    team_leagues: 0,
-    pools: 1
-  },
-  number_one_fan: %{
-    leagues: 2,
-    team_leagues: 1,
-    pools: 10
-  },
-  four_four_two: %{
-    leagues: 10,
-    team_leagues: 0,
-    pools: 10
-  },
-  stake_horse: %{
-    leagues: 300,
-    team_leagues: 300,
-    pools: 5_000
-  }
-}
