@@ -125,12 +125,18 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
       for _ <- 1..limit_allowed |> Enum.to_list() do
         team = insert(:league)
         body = %{league_id: team.id}
-        conn = post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+
+        conn =
+          post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+
         assert conn.status == 204
       end
 
       body = %{league_id: insert(:league).id}
-      conn = post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+
+      conn =
+        post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+
       assert error = json_response(conn, 400)
 
       assert error["treated_error"]["message"] ==
