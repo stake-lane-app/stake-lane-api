@@ -86,7 +86,7 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
     end
 
     test "creating more than allowed on free plan", %{authed_conn: authed_conn} do
-      limit_allowed = Plan.Types.plan_types()[:free].leagues
+      limit_allowed = Plan.Types.plans()[:free].leagues
 
       for _ <- 1..limit_allowed |> Enum.to_list() do
         team = insert(:league)

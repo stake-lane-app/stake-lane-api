@@ -16,7 +16,7 @@ defmodule StakeLaneApi.UserPlan do
   end
 
   def get_user_plan_limits(user_plan, league_type) do
-    case Types.plan_types()[user_plan][league_type] do
+    case Types.plans()[user_plan][league_type] do
       nil -> {:error, "Plan does not exist (#{user_plan}/#{league_type})"}
       plan_limits -> {:ok, plan_limits}
     end
