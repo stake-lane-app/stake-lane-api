@@ -155,4 +155,25 @@ defmodule StakeLaneApi.Factory do
       score: nil
     }
   end
+
+  def plan_factory do
+    %StakeLaneApi.Finances.Plan{
+      name: :free,
+      price: %Money{
+        amount: 0,
+        currency: :USD
+      }
+    }
+  end
+
+  def user_plan_factory do
+    next_month = Timex.now("UTC") |> Timex.shift(months: +1)
+
+    %StakeLaneApi.Links.UserPlan{
+      user: build(:user),
+      plan: build(:plan),
+      active: true,
+      valid_until: next_month
+    }
+  end
 end
