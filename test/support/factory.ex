@@ -155,4 +155,24 @@ defmodule StakeLaneApi.Factory do
       score: nil
     }
   end
+
+  def plan_factory do
+    %StakeLaneApi.Finances.Plan{
+      name: :free,
+      valid: true,
+      selectable: true,
+      price: %Money{
+        amount: 0,
+        currency: :USD
+      }
+    }
+  end
+
+  def user_plan_factory do
+    %StakeLaneApi.Links.UserPlan{
+      user: build(:user),
+      plan: build(:plan),
+      active: true
+    }
+  end
 end

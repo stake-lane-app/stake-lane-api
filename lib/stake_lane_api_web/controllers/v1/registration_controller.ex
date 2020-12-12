@@ -4,6 +4,8 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
   alias Ecto.Changeset
   alias Plug.Conn
   alias StakeLaneApi.RelevantAction
+  alias StakeLaneApi.UserPlan
+  alias StakeLaneApi.Plan
   alias StakeLaneApiWeb.ErrorHelpers
   alias StakeLaneApiWeb.Utils.IpLocation
 
@@ -27,7 +29,9 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        RelevantAction.relevant_actions()[:Registered]
+        UserPlan.create_basic_plan!(user.id)
+
+        RelevantAction.relevant_actions()[:registered]
         |> RelevantAction.create(user.id, user_ip, user_agent)
 
         json(conn, %{

@@ -5,7 +5,7 @@ defmodule StakeLaneApi.MixProject do
     [
       app: :stake_lane_api,
       version: "0.1.1",
-      elixir: "~> 1.9",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -57,7 +57,8 @@ defmodule StakeLaneApi.MixProject do
       {:timex, "~> 3.5"},
       {:oban, "~> 2.2"},
       {:ex_machina, "~> 2.4", only: :test},
-      {:excoveralls, "~> 0.13.3", only: :test}
+      {:excoveralls, "~> 0.13.3", only: :test},
+      {:money, "~> 1.8"}
     ]
   end
 

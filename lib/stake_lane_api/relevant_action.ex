@@ -11,8 +11,8 @@ defmodule StakeLaneApi.RelevantAction do
 
   def relevant_actions() do
     %{
-      Registered: "registered",
-      Login: "login"
+      registered: "registered",
+      login: "login"
     }
   end
 

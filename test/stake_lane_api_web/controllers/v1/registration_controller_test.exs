@@ -1,9 +1,15 @@
 defmodule StakeLaneApiWeb.API.V1.RegistrationControllerTest do
   use StakeLaneApiWeb.ConnCase
+  import StakeLaneApi.Factory
 
   @password "secret1234"
 
   describe "create/2" do
+    setup %{} do
+      insert(:plan)
+      :ok
+    end
+
     @valid_params %{
       "user" => %{
         "email" => "test@example.com",
