@@ -8,13 +8,22 @@ defmodule StakeLaneApi.UserPlan do
   alias StakeLaneApi.Finances.Plan
   alias StakeLaneApi.Links.UserPlan
 
-  # TODO: get it dinamically
-  def get_user_plan(_user_id, :team_leagues) do
-    "number_one_fan" |> String.to_atom()
-  end
+  def get_user_plan(user_id) do
+    query =
+      from up in UserPlan,
+        inner_join: plan in assoc(up, :plan),
+        where: up.user_id == ^user_id,
+        select: plan.name
 
-  def get_user_plan(_user_id, _) do
-    "free" |> String.to_atom()
+    query
+    |> Repo.one()
+    |> case do
+      nil ->
+        create_basic_plan!(user_id)
+        :free
+
+      user_plan -> user_plan
+    end
   end
 
   def get_user_plan_limits(user_plan, league_type) do
@@ -24,15 +33,17 @@ defmodule StakeLaneApi.UserPlan do
     end
   end
 
-  def create_basic_plan(%Plan{} = plan, user_id) do
+  def create_basic_plan!(user_id) do
     no_expiraton = Timex.now("UTC") |> Timex.shift(years: +50)
+    basic_plan = StakeLaneApi.Plan.get_plan(:free)
 
     %UserPlan{}
     |> UserPlan.changeset(%{
       user_id: user_id,
-      plan_id: plan.id,
-      valid_until: no_expiraton
+      plan_id: basic_plan.id,
+      valid_until: no_expiraton,
+      active: true
     })
-    |> Repo.insert()
+    |> Repo.insert!()
   end
 end

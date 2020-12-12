@@ -18,7 +18,7 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
       insert(:user_league, league: continental_cup, user: user)
 
       authed_conn = Pow.Plug.assign_current_user(conn, user, [])
-      {:ok, authed_conn: authed_conn}
+      {:ok, authed_conn: authed_conn, conn: conn}
     end
 
     test "with valid params", %{authed_conn: authed_conn} do
@@ -55,27 +55,10 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
 
   describe "create/2" do
     setup %{conn: conn} do
+      insert(:plan)
       authed_conn = Pow.Plug.assign_current_user(conn, insert(:user), [])
       {:ok, authed_conn: authed_conn}
     end
-
-    test "with valid params, team league", %{authed_conn: authed_conn} do
-      team = insert(:team)
-      body = %{team_id: team.id}
-
-      conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
-      assert conn.status == 204
-    end
-
-    # TODO: Take this comment down when we have dinamic users plan
-    # test "creating more than allowed on free plan, team league", %{authed_conn: authed_conn} do
-    #   team = insert(:team)
-    #   body = %{ team_id: team.id }
-
-    #   conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
-    #   assert error = json_response(conn, 400)
-    #   assert error["treated_error"]["message"] == "Your slots are full, play this team-league"
-    # end
 
     test "with valid params, championship league", %{authed_conn: authed_conn} do
       league = insert(:league)
@@ -83,6 +66,29 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
 
       conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
       assert conn.status == 204
+    end
+
+    test "with valid params, team league", %{conn: conn} do
+      other_user = insert(:user)
+      other_authed_conn = Pow.Plug.assign_current_user(conn, other_user, [])
+
+      number_one_fan_plan = insert(:plan, name: :number_one_fan)
+      insert(:user_plan, plan: number_one_fan_plan, user: other_user)
+
+      team = insert(:team)
+      body = %{team_id: team.id}
+
+      conn = post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+      assert conn.status == 204
+    end
+
+    test "trying to play a team-league with a free plan", %{authed_conn: authed_conn} do
+      team = insert(:team)
+      body = %{ team_id: team.id }
+
+      conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
+      assert error = json_response(conn, 400)
+      assert error["treated_error"]["message"] == "Your slots are full, you can't play this team-league"
     end
 
     test "creating more than allowed on free plan", %{authed_conn: authed_conn} do

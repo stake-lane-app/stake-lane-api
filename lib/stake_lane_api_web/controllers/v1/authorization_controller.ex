@@ -49,8 +49,7 @@ defmodule StakeLaneApiWeb.V1.AuthorizationController do
         conn.private.pow_assent_callback_state
         |> case do
           {:ok, :create_user} ->
-            Plan.get_plan(:free)
-            |> UserPlan.create_basic_plan(user.id)
+            UserPlan.create_basic_plan!(user.id)
 
             RelevantAction.relevant_actions()[:registered]
             |> RelevantAction.create(user.id, user_ip, user_agent)

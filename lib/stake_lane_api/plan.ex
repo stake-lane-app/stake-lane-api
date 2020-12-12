@@ -18,8 +18,8 @@ defmodule StakeLaneApi.Plan do
           from plan in Plan,
             where:
               plan.name == ^plan_name and
-                plan.valid == true and
-                plan.selectable == true
+              plan.valid == true and
+              plan.selectable == true
 
         query
         |> Repo.all()

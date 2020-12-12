@@ -4,7 +4,7 @@ defmodule StakeLaneApi.Links.UserPlan do
   alias StakeLaneApi.Users.User
   alias StakeLaneApi.Finances.Plan
 
-  schema "user_plans" do
+  schema "users_plans" do
     belongs_to :user, User
     belongs_to :plan, Plan
 

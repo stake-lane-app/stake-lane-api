@@ -118,7 +118,7 @@ defmodule StakeLaneApi.UserLeague do
   def create_user_league(user_id, nil, team_id) do
     case can_user_create_it?(user_id, :team_leagues) do
       false ->
-        dgettext("errors", "Your slots are full, play this team-league") |> Errors.treated_error()
+        dgettext("errors", "Your slots are full, you can't play this team-league") |> Errors.treated_error()
 
       true ->
         %UserTeamLeague{}
@@ -128,8 +128,7 @@ defmodule StakeLaneApi.UserLeague do
   end
 
   defp can_user_create_it?(user_id, league_type) do
-    # TODO: remove the league_type
-    with user_plan <- UserPlan.get_user_plan(user_id, league_type),
+    with user_plan <- UserPlan.get_user_plan(user_id),
          {:ok, plan_limits} <- UserPlan.get_user_plan_limits(user_plan, league_type),
          user_leagues <- get_user_active_leagues(user_id, league_type) do
       is_limit_behind?(plan_limits, user_leagues)

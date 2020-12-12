@@ -29,8 +29,7 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        Plan.get_plan(:free)
-        |> UserPlan.create_basic_plan(user.id)
+        UserPlan.create_basic_plan!(user.id)
 
         RelevantAction.relevant_actions()[:registered]
         |> RelevantAction.create(user.id, user_ip, user_agent)
