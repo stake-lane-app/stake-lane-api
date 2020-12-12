@@ -11,6 +11,6 @@ defmodule StakeLaneApi.Repo.Migrations.AddPlans do
       timestamps()
     end
 
-    create unique_index(:plans, [:name, :price])
+    create unique_index(:plans, [:name, :price, :selectable])
   end
 end

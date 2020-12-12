@@ -25,6 +25,6 @@ defmodule StakeLaneApi.Links.UserPlan do
       :plan_id,
       :active
     ])
-    |> unique_constraint(:user_id)
+    |> unique_constraint([:user_id, :plan_id])
   end
 end

@@ -27,6 +27,7 @@ defmodule StakeLaneApi.Finances.Plan do
       :valid,
       :selectable
     ])
+    |> unique_constraint([:name, :price, :selectable])
   end
 end
 
