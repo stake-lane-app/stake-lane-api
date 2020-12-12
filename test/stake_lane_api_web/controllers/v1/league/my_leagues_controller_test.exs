@@ -113,6 +113,30 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
                "Your slots are full, you can't add more leagues"
     end
 
+    test "creating more than allowed on four_four_two plan", %{conn: conn} do
+      other_user = insert(:user)
+      other_authed_conn = Pow.Plug.assign_current_user(conn, other_user, [])
+
+      number_one_fan_plan = insert(:plan, name: :four_four_two)
+      insert(:user_plan, plan: number_one_fan_plan, user: other_user)
+
+      limit_allowed = Plan.Types.plans()[:four_four_two].leagues
+
+      for _ <- 1..limit_allowed |> Enum.to_list() do
+        team = insert(:league)
+        body = %{league_id: team.id}
+        conn = post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+        assert conn.status == 204
+      end
+
+      body = %{league_id: insert(:league).id}
+      conn = post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+      assert error = json_response(conn, 400)
+
+      assert error["treated_error"]["message"] ==
+               "Your slots are full, you can't add more leagues"
+    end
+
     test "invalid request", %{authed_conn: authed_conn} do
       conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), %{}
       assert error = json_response(conn, 400)
