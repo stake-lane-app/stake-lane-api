@@ -22,7 +22,8 @@ defmodule StakeLaneApi.UserPlan do
         create_basic_plan!(user_id)
         :free
 
-      user_plan -> user_plan
+      user_plan ->
+        user_plan
     end
   end
 

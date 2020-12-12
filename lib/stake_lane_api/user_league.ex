@@ -118,7 +118,8 @@ defmodule StakeLaneApi.UserLeague do
   def create_user_league(user_id, nil, team_id) do
     case can_user_create_it?(user_id, :team_leagues) do
       false ->
-        dgettext("errors", "Your slots are full, you can't play this team-league") |> Errors.treated_error()
+        dgettext("errors", "Your slots are full, you can't play this team-league")
+        |> Errors.treated_error()
 
       true ->
         %UserTeamLeague{}

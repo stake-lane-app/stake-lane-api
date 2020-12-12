@@ -78,17 +78,21 @@ defmodule StakeLaneApiWeb.API.V1.League.MyLeaguesControllerTest do
       team = insert(:team)
       body = %{team_id: team.id}
 
-      conn = post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+      conn =
+        post other_authed_conn, Routes.api_v1_my_leagues_path(other_authed_conn, :index), body
+
       assert conn.status == 204
     end
 
     test "trying to play a team-league with a free plan", %{authed_conn: authed_conn} do
       team = insert(:team)
-      body = %{ team_id: team.id }
+      body = %{team_id: team.id}
 
       conn = post authed_conn, Routes.api_v1_my_leagues_path(authed_conn, :index), body
       assert error = json_response(conn, 400)
-      assert error["treated_error"]["message"] == "Your slots are full, you can't play this team-league"
+
+      assert error["treated_error"]["message"] ==
+               "Your slots are full, you can't play this team-league"
     end
 
     test "creating more than allowed on free plan", %{authed_conn: authed_conn} do
