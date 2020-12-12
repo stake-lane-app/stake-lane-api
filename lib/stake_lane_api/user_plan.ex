@@ -35,14 +35,12 @@ defmodule StakeLaneApi.UserPlan do
   end
 
   def create_basic_plan!(user_id) do
-    no_expiration = Timex.now("UTC") |> Timex.shift(years: +50)
     basic_plan = StakeLaneApi.Plan.get_plan(:free)
 
     %UserPlan{}
     |> UserPlan.changeset(%{
       user_id: user_id,
       plan_id: basic_plan.id,
-      valid_until: no_expiration,
       active: true
     })
     |> Repo.insert!()

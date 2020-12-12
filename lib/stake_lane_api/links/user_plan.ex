@@ -9,7 +9,6 @@ defmodule StakeLaneApi.Links.UserPlan do
     belongs_to :plan, Plan
 
     field :active, :boolean
-    field :valid_until, :utc_datetime
 
     timestamps()
   end
@@ -19,14 +18,12 @@ defmodule StakeLaneApi.Links.UserPlan do
     |> cast(attrs, [
       :user_id,
       :plan_id,
-      :active,
-      :valid_until
+      :active
     ])
     |> validate_required([
       :user_id,
       :plan_id,
-      :active,
-      :valid_until
+      :active
     ])
     |> unique_constraint(:user_id)
   end

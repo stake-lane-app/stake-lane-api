@@ -169,13 +169,10 @@ defmodule StakeLaneApi.Factory do
   end
 
   def user_plan_factory do
-    next_month = Timex.now("UTC") |> Timex.shift(months: +1)
-
     %StakeLaneApi.Links.UserPlan{
       user: build(:user),
       plan: build(:plan),
-      active: true,
-      valid_until: next_month
+      active: true
     }
   end
 end
