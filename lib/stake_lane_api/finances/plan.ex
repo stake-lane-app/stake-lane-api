@@ -3,7 +3,9 @@ defmodule StakeLaneApi.Finances.Plan do
   import Ecto.Changeset
 
   schema "plans" do
-    field :plan, Ecto.Enum, values: [:free, :number_one_fan, :four_four_two, :stake_horse, :top_brass]
+    field :plan, Ecto.Enum,
+      values: [:free, :number_one_fan, :four_four_two, :stake_horse, :top_brass]
+
     field :price, Money.Currency.Ecto.Type
 
     # free Money.Currency.usd(0) OR %Money{amount: 0, currency: :USD},
