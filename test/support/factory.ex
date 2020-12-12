@@ -159,6 +159,8 @@ defmodule StakeLaneApi.Factory do
   def plan_factory do
     %StakeLaneApi.Finances.Plan{
       name: :free,
+      valid: true,
+      selectable: true,
       price: %Money{
         amount: 0,
         currency: :USD

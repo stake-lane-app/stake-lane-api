@@ -4,6 +4,8 @@ defmodule StakeLaneApiWeb.V1.AuthorizationController do
   alias Plug.Conn
   alias PowAssent.Plug
   alias StakeLaneApi.RelevantAction
+  alias StakeLaneApi.UserPlan
+  alias StakeLaneApi.Plan
   alias StakeLaneApiWeb.Utils.IpLocation
 
   @spec new(Conn.t(), map()) :: Conn.t()
@@ -41,14 +43,22 @@ defmodule StakeLaneApiWeb.V1.AuthorizationController do
     |> case do
       {:ok, conn} ->
         user = conn |> Pow.Plug.current_user()
-
-        # TODO: create user plan, default: free
-
         user_ip = conn |> IpLocation.get_ip_from_header()
         user_agent = conn |> get_req_header("user-agent") |> to_string
 
-        RelevantAction.relevant_actions()[:registered]
-        |> RelevantAction.create(user.id, user_ip, user_agent)
+        conn.private.pow_assent_callback_state
+        |> case do
+          {:ok, :create_user} ->
+            Plan.get_plan(:free)
+            |> UserPlan.create_basic_plan(user.id)
+
+            RelevantAction.relevant_actions()[:registered]
+            |> RelevantAction.create(user.id, user_ip, user_agent)
+
+          {:ok, :upsert_user_identity} ->
+            RelevantAction.relevant_actions()[:login]
+            |> RelevantAction.create(user.id, user_ip, user_agent)
+        end
 
         json(conn, %{
           data: %{

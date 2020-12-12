@@ -7,6 +7,8 @@ defmodule StakeLaneApi.Finances.Plan do
       values: [:free, :number_one_fan, :four_four_two, :stake_horse, :top_brass]
 
     field :price, Money.Ecto.Composite.Type
+    field :valid, :boolean
+    field :selectable, :boolean
 
     timestamps()
   end
@@ -15,11 +17,15 @@ defmodule StakeLaneApi.Finances.Plan do
     changeset
     |> cast(attrs, [
       :plan,
-      :price
+      :price,
+      :valid,
+      :selectable
     ])
     |> validate_required([
       :plan,
-      :price
+      :price,
+      :valid,
+      :selectable
     ])
   end
 end
@@ -57,7 +63,27 @@ defmodule StakeLaneApi.Finances.Plan.Types do
     }
   end
 
-  def plans_list() do
+  defp plans_list() do
     plans() |> Enum.map(fn {key, _} -> key end)
+  end
+
+  def is_plan_allowed?(plan) do
+    plan in plans_list()
+  end
+end
+
+defmodule StakeLaneApi.Finances.Plan.Currencies do
+  defp acceptable_currencies() do
+    [
+      :USD,
+      :EUR,
+      :GBP,
+      :BRL,
+      :MXN
+    ]
+  end
+
+  def is_currency_allowed?(currency) do
+    currency in acceptable_currencies()
   end
 end

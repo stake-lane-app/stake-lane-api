@@ -18,13 +18,13 @@ defmodule StakeLaneApi.Links.UserPlan do
     changeset
     |> cast(attrs, [
       :user_id,
-      :type,
+      :plan_id,
       :active,
       :valid_until
     ])
     |> validate_required([
       :user_id,
-      :type,
+      :plan_id,
       :active,
       :valid_until
     ])
