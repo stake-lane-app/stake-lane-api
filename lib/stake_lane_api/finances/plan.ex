@@ -84,6 +84,7 @@ defmodule StakeLaneApi.Finances.Plan.Currencies do
     ]
   end
 
+  @spec is_currency_allowed?(atom) :: boolean
   def is_currency_allowed?(currency) do
     currency in acceptable_currencies()
   end

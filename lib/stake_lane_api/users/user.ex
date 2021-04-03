@@ -3,8 +3,7 @@ defmodule StakeLaneApi.Users.User do
   use Pow.Ecto.Schema
   use PowAssent.Ecto.Schema
   import Ecto.Changeset
-  alias StakeLaneApi.Users.RelevantAction
-  alias StakeLaneApi.Users.Prediction
+  alias StakeLaneApi.Users.{Prediction, RelevantAction}
 
   schema "users" do
     field :user_name, :string

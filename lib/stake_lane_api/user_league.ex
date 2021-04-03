@@ -6,8 +6,7 @@ defmodule StakeLaneApi.UserLeague do
   import Ecto.Query, warn: false
   import StakeLaneApiWeb.Gettext
   alias StakeLaneApi.Repo
-  alias StakeLaneApi.Links.UserLeague
-  alias StakeLaneApi.Links.UserTeamLeague
+  alias StakeLaneApi.Links.{UserLeague, UserTeamLeague}
   alias StakeLaneApi.Football.Fixture
   alias StakeLaneApi.Helpers.Errors
   alias StakeLaneApi.UserPlan
@@ -132,12 +131,12 @@ defmodule StakeLaneApi.UserLeague do
     with user_plan <- UserPlan.get_user_plan(user_id),
          {:ok, plan_limits} <- UserPlan.get_user_plan_limits(user_plan, league_type),
          user_leagues <- get_user_active_leagues(user_id, league_type) do
-      is_limit_behind?(plan_limits, user_leagues)
+      under_the_limit?(plan_limits, user_leagues)
     end
   end
 
-  defp is_limit_behind?(plan_limits, user_leagues) when user_leagues >= plan_limits, do: false
-  defp is_limit_behind?(plan_limits, user_leagues) when user_leagues < plan_limits, do: true
+  defp under_the_limit?(plan_limits, user_leagues) when user_leagues >= plan_limits, do: false
+  defp under_the_limit?(plan_limits, user_leagues) when user_leagues < plan_limits, do: true
 
   @spec get_user_active_leagues(integer, atom) :: integer
   defp get_user_active_leagues(user_id, :leagues), do: user_leagues_quantity(user_id)

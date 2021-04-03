@@ -7,6 +7,9 @@ local-infra:
 
 local: local-infra local-api
 
+test:
+	mix test
+
 deploy-dev:
 	gcloud app deploy --quiet
 

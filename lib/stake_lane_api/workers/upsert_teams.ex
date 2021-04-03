@@ -4,9 +4,7 @@ defmodule StakeLaneApi.Workers.UpsertTeams do
   """
 
   use Oban.Worker, queue: :events
-  alias StakeLaneApi.League
-  alias StakeLaneApi.Team
-  alias StakeLaneApi.Country
+  alias StakeLaneApi.{Country, League, Team}
   alias ApiFootball.ApiTeams
 
   @third_api "api_football"

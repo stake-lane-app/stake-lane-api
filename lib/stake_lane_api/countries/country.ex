@@ -1,8 +1,7 @@
 defmodule StakeLaneApi.Countries.Country do
   use Ecto.Schema
   import Ecto.Changeset
-  alias StakeLaneApi.Football.Team
-  alias StakeLaneApi.Football.League
+  alias StakeLaneApi.Football.{League, Team}
 
   @derive {Jason.Encoder,
            only: [
