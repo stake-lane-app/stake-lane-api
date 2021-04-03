@@ -5,7 +5,7 @@ defmodule StakeLaneApi.MixProject do
     [
       app: :stake_lane_api,
       version: "0.1.1",
-      elixir: "~> 1.11",
+      elixir: "~> 1.11.4",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,

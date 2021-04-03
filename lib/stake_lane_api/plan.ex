@@ -26,10 +26,10 @@ defmodule StakeLaneApi.Plan do
         |> Enum.find(fn plan -> plan.price.currency == currency end)
 
       {false, _} ->
-        {:error, "Currency #{currency} not allowed"}
+        {:error, "Currency '#{currency}' not allowed"}
 
       {_, false} ->
-        {:error, "Plan #{plan_name} not allowed"}
+        {:error, "Plan '#{plan_name}' not allowed"}
     end
   end
 end
