@@ -3,6 +3,16 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
   import StakeLaneApi.Factory
   alias StakeLaneApi.Links.UserTeam.Level
 
+  def team_asserted?(team) do
+    assert Map.has_key?(team, "id")
+    assert Map.has_key?(team, "is_national")
+    assert Map.has_key?(team, "full_name")
+    assert Map.has_key?(team, "name")
+    assert Map.has_key?(team, "founded")
+    assert Map.has_key?(team, "venue")
+    assert Map.has_key?(team, "country")
+  end
+
   describe "list/2" do
     setup %{conn: conn} do
       # 6 National Teams // 4 Republic of Horses Teams // 2 Random Teams
@@ -23,15 +33,7 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       assert false === Enum.empty?(teams)
       assert 4 === length(teams)
 
-      Enum.map(teams, fn team ->
-        assert Map.has_key?(team, "id")
-        assert Map.has_key?(team, "is_national")
-        assert Map.has_key?(team, "full_name")
-        assert Map.has_key?(team, "name")
-        assert Map.has_key?(team, "founded")
-        assert Map.has_key?(team, "venue")
-        assert Map.has_key?(team, "country")
-      end)
+      Enum.each(teams, &team_asserted?(&1))
     end
 
     test "with valid params, national teams", %{authed_conn: authed_conn} do
@@ -41,14 +43,9 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       assert false === Enum.empty?(teams)
       assert 6 === length(teams)
 
-      Enum.map(teams, fn team ->
+      Enum.each(teams, &team_asserted?(&1))
+      Enum.each(teams, fn team ->
         assert true === team["is_national"]
-        assert Map.has_key?(team, "id")
-        assert Map.has_key?(team, "full_name")
-        assert Map.has_key?(team, "name")
-        assert Map.has_key?(team, "founded")
-        assert Map.has_key?(team, "venue")
-        assert Map.has_key?(team, "country")
       end)
     end
   end

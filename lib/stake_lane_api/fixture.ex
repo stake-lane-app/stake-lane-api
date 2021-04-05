@@ -136,7 +136,7 @@ defmodule StakeLaneApi.Fixture do
 
   defp get_page(-1), do: 0
   defp get_page(page) when page >= 0, do: page
-  defp get_page(page) when page <= -2, do: page * -1 - 1
+  defp get_page(page) when page <= -2, do: Kernel.abs(page) - 1
 
   defp get_offset(0, _page_size), do: 0
   defp get_offset(page, page_size), do: page * page_size
