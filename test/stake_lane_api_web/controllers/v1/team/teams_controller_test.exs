@@ -44,6 +44,7 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       assert 6 === length(teams)
 
       Enum.each(teams, &team_asserted?(&1))
+
       Enum.each(teams, fn team ->
         assert true === team["is_national"]
       end)
