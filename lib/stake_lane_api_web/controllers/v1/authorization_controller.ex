@@ -5,7 +5,6 @@ defmodule StakeLaneApiWeb.V1.AuthorizationController do
   alias PowAssent.Plug
   alias StakeLaneApi.RelevantAction
   alias StakeLaneApi.UserPlan
-  alias StakeLaneApi.Plan
   alias StakeLaneApiWeb.Utils.IpLocation
 
   @spec new(Conn.t(), map()) :: Conn.t()

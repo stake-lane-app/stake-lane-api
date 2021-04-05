@@ -5,7 +5,6 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
   alias Plug.Conn
   alias StakeLaneApi.RelevantAction
   alias StakeLaneApi.UserPlan
-  alias StakeLaneApi.Plan
   alias StakeLaneApiWeb.ErrorHelpers
   alias StakeLaneApiWeb.Utils.IpLocation
 
