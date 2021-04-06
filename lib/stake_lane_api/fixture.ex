@@ -116,7 +116,7 @@ defmodule StakeLaneApi.Fixture do
     queryable
     |> where(
       [fixture],
-      fixture.starts_at_iso_date > datetime_add(^beginning_of_the_user_day, -0, "day")
+      fixture.starts_at_iso_date > ^beginning_of_the_user_day
     )
     |> order_by(asc: :starts_at_iso_date)
   end
@@ -126,7 +126,7 @@ defmodule StakeLaneApi.Fixture do
     queryable
     |> where(
       [fixture],
-      fixture.starts_at_iso_date < datetime_add(^beginning_of_the_user_day, -0, "day")
+      fixture.starts_at_iso_date < ^beginning_of_the_user_day
     )
     |> order_by(desc: :starts_at_iso_date)
   end
