@@ -1,3 +1,13 @@
+elixir_version = 1.11.4-otp-23
+erlang_version = 23.0
+
+set-elixir-version:
+	asdf global elixir $(elixir_version)
+
+set-erlang-version:
+	asdf global erlang $(erlang_version)
+
+set-versions: set-erlang-version set-elixir-version
 
 local-api:
 	mix phx.server

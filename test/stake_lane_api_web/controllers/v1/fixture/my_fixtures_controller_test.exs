@@ -12,6 +12,7 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
     assert Map.has_key?(fixture, "starts_at_iso_date")
     assert Map.has_key?(fixture, "status_code")
     assert Map.has_key?(fixture, "elapsed")
+    fixture
   end
 
   describe "my_fixtures/1" do
@@ -36,9 +37,10 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
       assert fixtures = json_response(conn, 200)
       assert false === Enum.empty?(fixtures)
 
-      Enum.each(fixtures, &fixture_asserted?(&1))
-
-      assert Enum.all?(fixtures, fn fixture -> fixture["league"]["name"] === league.name end)
+      fixtures
+      |> Stream.map(&fixture_asserted?/1)
+      |> Stream.map(fn fixture -> assert fixture["league"]["name"] === league.name end)
+      |> Stream.run()
     end
 
     test "with valid params, solely team-league mode", %{conn: conn} do
@@ -107,7 +109,7 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
       assert fixtures = json_response(conn, 200)
       assert false === Enum.empty?(fixtures)
 
-      Enum.each(fixtures, &fixture_asserted?(&1))
+      Enum.each(fixtures, &fixture_asserted?/1)
     end
 
     test "with valid params, past fixtures, page -2", setup_params do
@@ -119,7 +121,7 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
       assert fixtures = json_response(conn, 200)
       assert false === Enum.empty?(fixtures)
 
-      Enum.each(fixtures, &fixture_asserted?(&1))
+      Enum.each(fixtures, &fixture_asserted?/1)
     end
 
     test "with valid params and prediction", setup_params do

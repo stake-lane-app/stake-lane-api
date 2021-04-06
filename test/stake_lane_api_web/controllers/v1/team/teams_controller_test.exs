@@ -11,6 +11,7 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
     assert Map.has_key?(team, "founded")
     assert Map.has_key?(team, "venue")
     assert Map.has_key?(team, "country")
+    team
   end
 
   describe "list/2" do
@@ -33,7 +34,8 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       assert false === Enum.empty?(teams)
       assert 4 === length(teams)
 
-      Enum.each(teams, &team_asserted?(&1))
+      teams
+      |> Stream.map(&team_asserted?/1)
     end
 
     test "with valid params, national teams", %{authed_conn: authed_conn} do
@@ -43,11 +45,10 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
       assert false === Enum.empty?(teams)
       assert 6 === length(teams)
 
-      Enum.each(teams, &team_asserted?(&1))
-
-      Enum.each(teams, fn team ->
-        assert true === team["is_national"]
-      end)
+      teams
+      |> Stream.map(&team_asserted?/1)
+      |> Stream.map(fn team -> assert true === team["is_national"] end)
+      |> Stream.run()
     end
   end
 
