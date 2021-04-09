@@ -36,6 +36,7 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
 
       teams
       |> Stream.map(&team_asserted?/1)
+      |> Stream.run()
     end
 
     test "with valid params, national teams", %{authed_conn: authed_conn} do
