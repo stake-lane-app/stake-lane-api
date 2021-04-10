@@ -20,6 +20,12 @@ defmodule StakeLaneApiWeb.API.V1.Pool.PoolsControllerTest do
     assert Map.has_key?(participant, "captain")
     assert Map.has_key?(participant, "blocked")
     assert Map.has_key?(participant, "id")
+    assert Map.has_key?(participant, "user_id")
+    assert Map.has_key?(participant, "user_name")
+    assert Map.has_key?(participant, "first_name")
+    assert Map.has_key?(participant, "last_name")
+    assert Map.has_key?(participant, "picture")
+    assert Map.has_key?(participant, "email")
     participant
   end
 

@@ -7,6 +7,7 @@ defmodule StakeLaneApi.Pool do
   import StakeLaneApiWeb.Gettext
   alias StakeLaneApi.Helpers.Errors
   alias StakeLaneApi.UserLeague
+  alias StakeLaneApi.User
 
   alias StakeLaneApi.Pools.Pool
   alias StakeLaneApi.Pools.PoolParticipant
@@ -18,27 +19,28 @@ defmodule StakeLaneApi.Pool do
   # Return the participants from the created pool
 
   def create_pool(user_id, league_id, _, participant_ids, name) when is_number(league_id) do
-    # Check if user_id and participants have slots on its pool plan (Before the creation)
+    # TODOs: Check if user_id and participants have slots on its pool plan (Before the creation)
 
     {:ok, pool} =
       %Pool{}
       |> Pool.changeset(%{name: name, league_id: league_id})
       |> Repo.insert()
 
-    {_, participants} =
+    {number_of_participants, participants} =
       [user_id]
       |> Enum.concat(participant_ids)
       |> UserLeague.who_plays_this_league(league_id)
       |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
       |> (&Repo.insert_all(PoolParticipant, &1, returning: true)).()
 
-    created_pool = %{
-      pool_info: pool,
-      participants: participants,
-      number_of_participants: length(participants)
-    }
+    user_participants = get_participants_data(participants)
 
-    {:ok, created_pool}
+    {:ok,
+     %{
+       pool_info: pool,
+       participants: user_participants,
+       number_of_participants: number_of_participants
+     }}
   end
 
   def create_pool(user_id, _, team_id, participant_ids, _name) when is_number(team_id) do
@@ -59,5 +61,22 @@ defmodule StakeLaneApi.Pool do
       inserted_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second),
       updated_at: NaiveDateTime.utc_now() |> NaiveDateTime.truncate(:second)
     }
+  end
+
+  defp get_participants_data(participants) do
+    participants
+    |> Stream.map(fn participant ->
+      participant_filtered = %{
+        user_id: participant.user_id,
+        captain: participant.captain,
+        blocked: participant.blocked,
+        id: participant.id
+      }
+
+      participant.user_id
+      |> User.get_user_by_id()
+      |> Map.merge(participant_filtered)
+    end)
+    |> Enum.to_list()
   end
 end
