@@ -2,7 +2,7 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
   use StakeLaneApiWeb.ConnCase
   import StakeLaneApi.Factory
 
-  def fixture_asserted?(fixture) do
+  defp fixture_asserted?(fixture) do
     assert Map.has_key?(fixture, "league")
     assert Map.has_key?(fixture, "prediction")
     assert Map.has_key?(fixture, "home_team")

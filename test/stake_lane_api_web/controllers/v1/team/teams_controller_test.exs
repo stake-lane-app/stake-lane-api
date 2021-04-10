@@ -3,7 +3,7 @@ defmodule StakeLaneApiWeb.API.V1.Team.TeamsControllerTest do
   import StakeLaneApi.Factory
   alias StakeLaneApi.Links.UserTeam.Level
 
-  def team_asserted?(team) do
+  defp team_asserted?(team) do
     assert Map.has_key?(team, "id")
     assert Map.has_key?(team, "is_national")
     assert Map.has_key?(team, "full_name")

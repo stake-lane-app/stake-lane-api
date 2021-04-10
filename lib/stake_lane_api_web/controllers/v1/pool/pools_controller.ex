@@ -16,7 +16,6 @@ defmodule StakeLaneApiWeb.V1.Pool.PoolsController do
     |> Pow.Plug.current_user()
     |> Map.get(:id)
     |> Pool.create_pool(league_id, team_id, participant_ids, name)
-    |> IO.inspect(label: "gggg")
     |> case do
       {:ok, pool} ->
         conn
