@@ -26,20 +26,19 @@ defmodule StakeLaneApi.Pool do
       |> Pool.changeset(%{name: name, league_id: league_id})
       |> Repo.insert()
 
-    {number_of_participants, participants} =
+    participants =
       [user_id]
       |> Enum.concat(participant_ids)
       |> UserLeague.who_plays_this_league(league_id)
       |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
       |> (&Repo.insert_all(PoolParticipant, &1, returning: true)).()
-
-    user_participants = get_participants_data(participants)
+      |> (fn {_, participants} -> participants |> get_participants_data() end).()
 
     {:ok,
      %{
        pool_info: pool,
-       participants: user_participants,
-       number_of_participants: number_of_participants
+       participants: participants,
+       number_of_participants: participants |> length()
      }}
   end
 
