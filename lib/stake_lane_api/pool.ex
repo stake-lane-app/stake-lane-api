@@ -8,7 +8,7 @@ defmodule StakeLaneApi.Pool do
   alias StakeLaneApi.Helpers.Errors
   alias StakeLaneApi.UserLeague
   alias StakeLaneApi.User
-
+  # alias StakeLaneApi.UserPlan
   alias StakeLaneApi.Pools.Pool
   alias StakeLaneApi.Pools.PoolParticipant
   alias StakeLaneApi.Repo
@@ -21,25 +21,28 @@ defmodule StakeLaneApi.Pool do
   def create_pool(user_id, league_id, _, participant_ids, name) when is_number(league_id) do
     # TODOs: Check if user_id and participants have slots on its pool plan (Before the creation)
 
-    {:ok, pool} =
-      %Pool{}
-      |> Pool.changeset(%{name: name, league_id: league_id})
-      |> Repo.insert()
+    Repo.transaction(fn repo ->
+      {:ok, pool} =
+        %Pool{}
+        |> Pool.changeset(%{name: name, league_id: league_id})
+        |> repo.insert()
 
-    participants =
-      [user_id]
-      |> Enum.concat(participant_ids)
-      |> UserLeague.who_plays_this_league(league_id)
-      |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
-      |> (&Repo.insert_all(PoolParticipant, &1, returning: true)).()
-      |> (fn {_, participants} -> participants |> get_participants_data() end).()
+      # repo.rollback(:some_error)
 
-    {:ok,
-     %{
-       pool_info: pool,
-       participants: participants,
-       number_of_participants: participants |> length()
-     }}
+      participants =
+        [user_id]
+        |> Enum.concat(participant_ids)
+        |> UserLeague.who_plays_this_league(league_id)
+        |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
+        |> (&repo.insert_all(PoolParticipant, &1, returning: true)).()
+        |> (fn {_, participants} -> participants |> get_participants_data() end).()
+
+      %{
+        pool_info: pool,
+        participants: participants,
+        number_of_participants: participants |> length()
+      }
+    end)
   end
 
   def create_pool(user_id, _, team_id, participant_ids, _name) when is_number(team_id) do

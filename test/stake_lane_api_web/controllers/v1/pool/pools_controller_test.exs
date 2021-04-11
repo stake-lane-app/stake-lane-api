@@ -45,7 +45,7 @@ defmodule StakeLaneApiWeb.API.V1.Pool.PoolsControllerTest do
 
       {
         :ok,
-        authed_conn: authed_conn, league: league, user: user, participants: participants
+        user: user, authed_conn: authed_conn, league: league, participants: participants
       }
     end
 
@@ -65,6 +65,31 @@ defmodule StakeLaneApiWeb.API.V1.Pool.PoolsControllerTest do
       conn = post(authed_conn, Routes.api_v1_pools_path(authed_conn, :create), body)
       assert pool = json_response(conn, 201)
       pool_asserted?(pool)
+    end
+
+    test "with valid params and user who doesn't play the league", params do
+      %{
+        authed_conn: authed_conn,
+        league: league
+      } = params
+
+      user_who_doesnt_play_it = insert(:user)
+
+      body = %{
+        participant_ids: [user_who_doesnt_play_it.id],
+        league_id: league.id,
+        name: "Super Office Pool"
+      }
+
+      conn = post(authed_conn, Routes.api_v1_pools_path(authed_conn, :create), body)
+      assert pool = json_response(conn, 201)
+      pool_asserted?(pool)
+
+      user_who_doesnt_play_it_has_been_added =
+        pool["participants"]
+        |> Enum.any?(fn participant -> participant["user_id"] === user_who_doesnt_play_it.id end)
+
+      assert user_who_doesnt_play_it_has_been_added === false
     end
   end
 end
