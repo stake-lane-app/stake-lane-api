@@ -5,7 +5,10 @@ config :stake_lane_api, StakeLaneApi.Repo,
   username: "postgres",
   password: "postgres",
   database: "stake_lane_api_dev",
+  # Locally in the machine
   hostname: "localhost",
+  # From container
+  # hostname: "database",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
@@ -16,7 +19,7 @@ config :stake_lane_api, StakeLaneApi.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :stake_lane_api, StakeLaneApiWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: 8080],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
