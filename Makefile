@@ -15,7 +15,7 @@ local-api:
 local-infra:
 	docker-compose up -d
 
-local: local-infra local-api
+local: set-elixir-version set-erlang-version local-infra local-api
 
 test:
 	mix test

@@ -30,3 +30,5 @@ stake_lane_api-*.tar
 .db/data/
 
 /config/.env*
+
+/.vscode
