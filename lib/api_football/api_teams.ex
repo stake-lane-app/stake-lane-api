@@ -14,7 +14,7 @@ defmodule ApiFootball.ApiTeams do
 
   def parse_team_to_creation(team, country_id) do
     team
-    |> updatable_fields(country_id)
+    |> parse_updatable_fields(country_id)
     |> Map.merge(%{
       name: team["name"],
       is_national: team["is_national"],
@@ -28,10 +28,10 @@ defmodule ApiFootball.ApiTeams do
   end
 
   def parse_team_to_update(refreshed_team, country_id) do
-    refreshed_team |> updatable_fields(country_id)
+    refreshed_team |> parse_updatable_fields(country_id)
   end
 
-  defp updatable_fields(team, country_id) do
+  defp parse_updatable_fields(team, country_id) do
     %{
       logo: team["logo"],
       founded: team["founded"],

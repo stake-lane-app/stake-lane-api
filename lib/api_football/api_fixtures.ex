@@ -26,7 +26,7 @@ defmodule ApiFootball.ApiFixtures do
 
   def parse_fixture_to_creation(fixture, league_id, home_team_id, away_team_id) do
     fixture
-    |> updatable_fields
+    |> parse_updatable_fields
     |> Map.merge(%{
       league_id: league_id,
       home_team_id: home_team_id,
@@ -43,10 +43,10 @@ defmodule ApiFootball.ApiFixtures do
   end
 
   def parse_fixture_to_update(refreshed_fixture) do
-    refreshed_fixture |> updatable_fields
+    refreshed_fixture |> parse_updatable_fields
   end
 
-  defp updatable_fields(fixture) do
+  defp parse_updatable_fields(fixture) do
     %{
       goals_home_team: fixture["goalsHomeTeam"],
       goals_away_team: fixture["goalsAwayTeam"],

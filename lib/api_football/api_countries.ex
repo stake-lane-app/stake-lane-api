@@ -14,7 +14,7 @@ defmodule ApiFootball.ApiCountries do
 
   def parse_country_to_creation(country) do
     country
-    |> updatable_fields
+    |> parse_updatable_fields
     |> Map.merge(%{
       name: country["country"],
       code: country["code"]
@@ -22,10 +22,10 @@ defmodule ApiFootball.ApiCountries do
   end
 
   def parse_country_to_update(refreshed_country) do
-    refreshed_country |> updatable_fields
+    refreshed_country |> parse_updatable_fields
   end
 
-  defp updatable_fields(country) do
+  defp parse_updatable_fields(country) do
     %{
       flag: country["flag"]
     }
