@@ -20,231 +20,103 @@ Repo.insert % Country { name: "Mexico", code: "MX" }
 Repo.insert % League {
   name: "UEFA Champions League",
   country_id: (Repo.get_by(Country, name: "World")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2771 } ]
-}
-
-Repo.insert % League {
-  name: "UEFA Europa League",
-  country_id: (Repo.get_by(Country, name: "World")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2777 } ]
-}
-
-Repo.insert % League {
-  name: "UEFA Euro",
-  country_id: (Repo.get_by(Country, name: "World")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 403 } ]
-}
-
-Repo.insert % League {
-  name: "UEFA Nations League",
-  country_id: (Repo.get_by(Country, name: "World")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1422 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3431 } ]
 }
 
 Repo.insert % League {
   name: "Premier League",
   country_id: (Repo.get_by(Country, name: "England")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2790 } ]
-}
-
-Repo.insert % League {
-  name: "FA Cup",
-  country_id: (Repo.get_by(Country, name: "England")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2791 } ]
-}
-
-Repo.insert % League {
-  name: "EFL Cup",
-  country_id: (Repo.get_by(Country, name: "England")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2781 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3456 } ]
 }
 
 Repo.insert % League {
   name: "La Liga",
   country_id: (Repo.get_by(Country, name: "Spain")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2833 } ]
-}
-
-Repo.insert % League {
-  name: "Copa del Rey",
-  country_id: (Repo.get_by(Country, name: "Spain")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: []
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3513 } ]
 }
 
 Repo.insert % League {
   name: "Bundesliga",
   country_id: (Repo.get_by(Country, name: "Germany")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2755 } ]
-}
-
-Repo.insert % League {
-  name: "DFB Pokal",
-  country_id: (Repo.get_by(Country, name: "Germany")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2677 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3510 } ]
 }
 
 Repo.insert % League {
   name: "Ligue 1",
   country_id: (Repo.get_by(Country, name: "France")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2664 } ]
-}
-
-Repo.insert % League {
-  name: "France Cup",
-  country_id: (Repo.get_by(Country, name: "France")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: []
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3506 } ]
 }
 
 Repo.insert % League {
   name: "Serie A",
   country_id: (Repo.get_by(Country, name: "Italy")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2857 } ]
-}
-
-Repo.insert % League {
-  name: "Coppa Italia",
-  country_id: (Repo.get_by(Country, name: "Italy")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2941 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3576 } ]
 }
 
 Repo.insert % League {
   name: "Primeira Liga",
   country_id: (Repo.get_by(Country, name: "Portugal")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2826 } ]
-}
-
-Repo.insert % League {
-  name: "Taça de Portugal",
-  country_id: (Repo.get_by(Country, name: "Portugal")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2948 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3575 } ]
 }
 
 Repo.insert % League {
   name: "Eredivisie",
   country_id: (Repo.get_by(Country, name: "Netherlands")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2673 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3437 } ]
 }
 
 Repo.insert % League {
   name: "Serie A",
   country_id: (Repo.get_by(Country, name: "Brazil")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1396 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3364 } ]
 }
 
 Repo.insert % League {
   name: "Paulista",
   country_id: (Repo.get_by(Country, name: "Brazil")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1345 } ]
-}
-
-Repo.insert % League {
-  name: "Carioca",
-  country_id: (Repo.get_by(Country, name: "Brazil")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2269 } ]
-}
-
-Repo.insert % League {
-  name: "Copa do Brasil",
-  country_id: (Repo.get_by(Country, name: "Brazil")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1333 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3097 } ]
 }
 
 Repo.insert % League {
   name: "Campeonato Argentino",
   country_id: (Repo.get_by(Country, name: "Argentina")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3023 } ]
-}
-
-Repo.insert % League {
-  name: "Copa Argentina",
-  country_id: (Repo.get_by(Country, name: "Argentina")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1291 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3265 } ]
 }
 
 Repo.insert % League {
   name: "Campeonato Mexicano",
   country_id: (Repo.get_by(Country, name: "Mexico")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2656 } ]
-}
-
-Repo.insert % League {
-  name: "Copa Por Mexico",
-  country_id: (Repo.get_by(Country, name: "Mexico")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 2786 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3517 } ]
 }
 
 Repo.insert % League {
   name: "Copa Libertadores",
   country_id: (Repo.get_by(Country, name: "World")).id,
-  season: 2020,
+  season: 2021,
   active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1251 } ]
-}
-
-Repo.insert % League {
-  name: "Copa America",
-  country_id: (Repo.get_by(Country, name: "World")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1321 } ]
-}
-
-Repo.insert % League {
-  name: "African Nations Championship",
-  country_id: (Repo.get_by(Country, name: "World")).id,
-  season: 2020,
-  active: true,
-  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 1030 } ]
+  third_parties_info: [ %ThirdPartyInfo { api: "api_football", league_id: 3273 } ]
 }
