@@ -32,6 +32,7 @@ defmodule StakeLaneApi.Users.User do
     |> unique_constraint(:user_name)
     |> cast(attrs, [:user_name])
     |> validate_required([:user_name])
+    |> validate_length(:user_name, max: 20)
     |> validate_subset(:role, ["user", "admin"])
   end
 end

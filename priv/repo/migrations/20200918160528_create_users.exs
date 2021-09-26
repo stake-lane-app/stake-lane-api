@@ -7,7 +7,7 @@ defmodule StakeLaneApi.Repo.Migrations.CreateUsers do
       add :password_hash, :string
       add :email, :string
 
-      add :user_name, :string, size: 15, null: false
+      add :user_name, :string, size: 20, null: false
       add :email_confirmed, :boolean, default: false, null: false
       add :first_name, :string
       add :last_name, :string
