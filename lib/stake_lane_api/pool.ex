@@ -10,6 +10,7 @@ defmodule StakeLaneApi.Pool do
   alias StakeLaneApi.User
   # alias StakeLaneApi.UserPlan
   alias StakeLaneApi.Pools.Pool
+  alias StakeLaneApi.League
   alias StakeLaneApi.Pools.PoolParticipant
   alias StakeLaneApi.Repo
 
@@ -22,6 +23,8 @@ defmodule StakeLaneApi.Pool do
     # TODOs: Check if user_id and participants have slots on its pool plan (Before the creation)
 
     Repo.transaction(fn repo ->
+      league = League.get_league!(league_id)
+
       {:ok, pool} =
         %Pool{}
         |> Pool.changeset(%{name: name, league_id: league_id})
@@ -35,12 +38,13 @@ defmodule StakeLaneApi.Pool do
         |> UserLeague.who_plays_this_league(league_id)
         |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
         |> (&repo.insert_all(PoolParticipant, &1, returning: true)).()
-        |> (fn {_, participants} -> participants |> get_participants_data() end).()
+        |> (fn {_, participants} -> get_participants_data(participants) end).()
 
       %{
         pool_info: pool,
+        about: "#{league.name} #{league.season}",
         participants: participants,
-        number_of_participants: participants |> length()
+        number_of_participants: length(participants),
       }
     end)
   end
