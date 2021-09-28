@@ -22,8 +22,6 @@ defmodule StakeLaneApi.Pool do
   end
 
   def create_pool(user_id, league_id, team_id, participant_ids, name) do
-    # TODOs: Check if user_id and participants have slots on its pool plan (Before the creation)
-
     Repo.transaction(fn repo ->
       {:ok, pool} =
         %Pool{}
@@ -32,8 +30,9 @@ defmodule StakeLaneApi.Pool do
 
       participants =
         Enum.concat([user_id], participant_ids)
-        |> who_plays_this_league(league_id, team_id)
+        |> remove_participants_who_dont_play_it(league_id, team_id)
         |> does_creator_play_it?(user_id, repo)
+        |> does_creator_have_free_spot?(user_id, repo)
         |> remove_participants_with_no_free_spot()
         |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
         |> (&repo.insert_all(Pools.PoolParticipant, &1, returning: true)).()
@@ -48,11 +47,13 @@ defmodule StakeLaneApi.Pool do
     end)
   end
 
-  defp who_plays_this_league(participant_ids, league_id, _team_id) when is_number(league_id) do
+  defp remove_participants_who_dont_play_it(participant_ids, league_id, _team_id)
+       when is_number(league_id) do
     UserLeague.who_plays_this_league(participant_ids, league_id)
   end
 
-  defp who_plays_this_league(participant_ids, _league_id, team_id) when is_number(team_id) do
+  defp remove_participants_who_dont_play_it(participant_ids, _league_id, team_id)
+       when is_number(team_id) do
     UserLeague.who_plays_this_team_league(participant_ids, team_id)
   end
 
@@ -75,16 +76,28 @@ defmodule StakeLaneApi.Pool do
     end
   end
 
+  defp does_creator_have_free_spot?(verified_participants, user_creator_id, repo) do
+    has_free_spots?(user_creator_id)
+    |> case do
+      false -> repo.rollback(:creator_doesnt_have_free_spot)
+      true -> verified_participants
+    end
+  end
+
   defp remove_participants_with_no_free_spot(verified_participants) do
     verified_participants
     |> Enum.filter(fn verified_participant ->
-      UserPlan.get_user_plan(verified_participant.user_id)
-      |> UserPlan.get_user_plan_limits(:pools)
-      |> (fn {:ok, plan_limit} ->
-            user_pools = PoolParticipant.user_pools_quantity(verified_participant.user_id)
-            under_the_limit?(plan_limit, user_pools)
-          end).()
+      has_free_spots?(verified_participant.user_id)
     end)
+  end
+
+  defp has_free_spots?(user_id) do
+    UserPlan.get_user_plan(user_id)
+    |> UserPlan.get_user_plan_limits(:pools)
+    |> (fn {:ok, plan_limit} ->
+          user_pools = PoolParticipant.user_pools_quantity(user_id)
+          under_the_limit?(plan_limit, user_pools)
+        end).()
   end
 
   defp under_the_limit?(plan_limit, user_leagues) when user_leagues >= plan_limit, do: false

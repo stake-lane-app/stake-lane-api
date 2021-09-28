@@ -125,8 +125,25 @@ defmodule StakeLaneApiWeb.API.V1.Pool.PoolsControllerTest do
       assert response["error"]["errors"] === "creator_doesnt_play_league"
     end
 
-    test "creator doesn't have free spots, league creation", _params do
-      # todo
+    test "creator doesn't have free spots, pool league creation", params do
+      %{
+        authed_conn: authed_conn,
+        participants: participants,
+        league: league,
+        user: user
+      } = params
+
+      insert(:pool_participant, user: user)
+
+      body = %{
+        participant_ids: Enum.map(participants, fn participant -> participant.id end),
+        league_id: league.id,
+        name: "Some Name"
+      }
+
+      conn = post(authed_conn, Routes.api_v1_pools_path(authed_conn, :create), body)
+      assert response = json_response(conn, 400)
+      assert response["error"]["errors"] === "creator_doesnt_have_free_spot"
     end
 
     test "creating league pool without participant with no free spot", params do
@@ -246,8 +263,25 @@ defmodule StakeLaneApiWeb.API.V1.Pool.PoolsControllerTest do
       assert user_who_doesnt_have_free_spot === false
     end
 
-    test "creator doesn't have free spots, team league creation", _params do
-      # todo
+    test "creator doesn't have free spots, pool team league creation", params do
+      %{
+        authed_conn: authed_conn,
+        participants: participants,
+        team: team,
+        user: user
+      } = params
+
+      insert(:pool_participant, user: user)
+
+      body = %{
+        participant_ids: Enum.map(participants, fn participant -> participant.id end),
+        team_id: team.id,
+        name: "Some Name"
+      }
+
+      conn = post(authed_conn, Routes.api_v1_pools_path(authed_conn, :create), body)
+      assert response = json_response(conn, 400)
+      assert response["error"]["errors"] === "creator_doesnt_have_free_spot"
     end
   end
 end
