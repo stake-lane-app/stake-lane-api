@@ -25,7 +25,11 @@ defmodule StakeLaneApi.Pool do
     Repo.transaction(fn repo ->
       {:ok, pool} =
         %Pool{}
-        |> Pool.changeset(%{name: name, league_id: league_id})
+        |> Pool.changeset(%{
+          name: name,
+          league_id: league_id,
+          team_id: team_id
+        })
         |> repo.insert()
 
       participants =
