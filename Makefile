@@ -17,6 +17,9 @@ local-infra:
 
 local: set-elixir-version set-erlang-version local-infra local-api
 
+interactive-session:
+	iex -S mix phx.server
+
 test:
 	mix test
 
