@@ -112,14 +112,26 @@ defmodule StakeLaneApiWeb.V1.Fixture.MyFixturesControllerTest do
       Enum.each(fixtures, &fixture_asserted?/1)
     end
 
-    test "with valid params, past fixtures, page -2", setup_params do
+    test "with valid params, past fixtures, populated page -2", setup_params do
+      %{authed_conn: authed_conn, league: league} = setup_params
+
+      insert_list(3, :past_fixture, league: league)
+      attrs = %{"page" => -2, "page_size" => 1}
+      conn = get(authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index, attrs))
+      assert fixtures = json_response(conn, 200)
+      assert false === Enum.empty?(fixtures)
+
+      Enum.each(fixtures, &fixture_asserted?/1)
+    end
+
+    test "with valid params, past fixtures, empty page -2", setup_params do
       %{authed_conn: authed_conn, league: league} = setup_params
 
       insert_list(2, :past_fixture, league: league)
       attrs = %{"page" => -2, "page_size" => 1}
       conn = get(authed_conn, Routes.api_v1_my_fixtures_path(authed_conn, :index, attrs))
       assert fixtures = json_response(conn, 200)
-      assert false === Enum.empty?(fixtures)
+      assert true === Enum.empty?(fixtures)
 
       Enum.each(fixtures, &fixture_asserted?/1)
     end
