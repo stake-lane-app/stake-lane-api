@@ -11,6 +11,7 @@ defmodule StakeLaneApi.Pool do
   # alias StakeLaneApi.UserPlan
   alias StakeLaneApi.Pools.Pool
   alias StakeLaneApi.League
+  alias StakeLaneApi.Team
   alias StakeLaneApi.Pools.PoolParticipant
   alias StakeLaneApi.Repo
 
@@ -30,12 +31,11 @@ defmodule StakeLaneApi.Pool do
         |> Pool.changeset(%{name: name, league_id: league_id})
         |> repo.insert()
 
-      # repo.rollback(:some_error)
-
       participants =
         [user_id]
         |> Enum.concat(participant_ids)
         |> UserLeague.who_plays_this_league(league_id)
+        |> does_creator_play_it?(league_id, user_id, repo)
         |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
         |> (&repo.insert_all(PoolParticipant, &1, returning: true)).()
         |> (fn {_, participants} -> get_participants_data(participants) end).()
@@ -44,19 +44,50 @@ defmodule StakeLaneApi.Pool do
         pool_info: pool,
         about: "#{league.name} #{league.season}",
         participants: participants,
-        number_of_participants: length(participants),
+        number_of_participants: length(participants)
       }
     end)
   end
 
-  def create_pool(user_id, _, team_id, participant_ids, _name) when is_number(team_id) do
-    ([user_id] ++ participant_ids)
-    |> UserLeague.who_plays_this_team_league(team_id)
+  def create_pool(user_id, _, team_id, participant_ids, name) when is_number(team_id) do
+    Repo.transaction(fn repo ->
+      team = Team.get_team!(team_id)
+
+      {:ok, pool} =
+        %Pool{}
+        |> Pool.changeset(%{name: name, team_id: team_id})
+        |> repo.insert()
+
+      participants =
+        [user_id]
+        |> Enum.concat(participant_ids)
+        |> UserLeague.who_plays_this_team_league(team_id)
+        |> does_creator_play_it?(team_id, user_id, repo)
+        |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
+        |> (&repo.insert_all(PoolParticipant, &1, returning: true)).()
+        |> (fn {_, participants} -> get_participants_data(participants) end).()
+
+      %{
+        pool_info: pool,
+        about: team.name,
+        participants: participants,
+        number_of_participants: length(participants)
+      }
+    end)
   end
 
   def create_pool(_, _, _, _, _) do
     dgettext("errors", "A pool has to be based on a league or a team")
     |> Errors.treated_error()
+  end
+
+  defp does_creator_play_it?(verified_participants, league_id, user_creator_id, repo) do
+    verified_participants
+    |> Enum.find(fn verified_participant -> verified_participant.user_id === user_creator_id end)
+    |> case do
+      nil -> repo.rollback(:creator_doesnt_play_league)
+      _ -> verified_participants
+    end
   end
 
   defp parse_participant_to_insert(verified_participant, pool, user_creator_id) do
