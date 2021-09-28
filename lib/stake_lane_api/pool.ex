@@ -6,19 +6,15 @@ defmodule StakeLaneApi.Pool do
   import Ecto.Query, warn: false
   import StakeLaneApiWeb.Gettext
   alias StakeLaneApi.Helpers.Errors
+  alias StakeLaneApi.Pools
+  alias StakeLaneApi.Pools.Pool
   alias StakeLaneApi.UserLeague
   alias StakeLaneApi.User
-  # alias StakeLaneApi.UserPlan
-  alias StakeLaneApi.Pools.Pool
+  alias StakeLaneApi.UserPlan
   alias StakeLaneApi.League
   alias StakeLaneApi.Team
-  alias StakeLaneApi.Pools.PoolParticipant
+  alias StakeLaneApi.PoolParticipant
   alias StakeLaneApi.Repo
-
-  # Todos:
-  # Check if every participant actually play that league or team
-  # Have a filtered paticipant_id before inserting it at the pool_participant table
-  # Return the participants from the created pool
 
   def create_pool(user_id, league_id, _, participant_ids, name) when is_number(league_id) do
     # TODOs: Check if user_id and participants have slots on its pool plan (Before the creation)
@@ -35,9 +31,10 @@ defmodule StakeLaneApi.Pool do
         [user_id]
         |> Enum.concat(participant_ids)
         |> UserLeague.who_plays_this_league(league_id)
-        |> does_creator_play_it?(league_id, user_id, repo)
+        |> does_creator_play_it?(user_id, repo)
+        |> remove_participants_with_no_free_spot()
         |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
-        |> (&repo.insert_all(PoolParticipant, &1, returning: true)).()
+        |> (&repo.insert_all(Pools.PoolParticipant, &1, returning: true)).()
         |> (fn {_, participants} -> get_participants_data(participants) end).()
 
       %{
@@ -62,9 +59,10 @@ defmodule StakeLaneApi.Pool do
         [user_id]
         |> Enum.concat(participant_ids)
         |> UserLeague.who_plays_this_team_league(team_id)
-        |> does_creator_play_it?(team_id, user_id, repo)
+        |> does_creator_play_it?(user_id, repo)
+        |> remove_participants_with_no_free_spot()
         |> Enum.map(&parse_participant_to_insert(&1, pool, user_id))
-        |> (&repo.insert_all(PoolParticipant, &1, returning: true)).()
+        |> (&repo.insert_all(Pools.PoolParticipant, &1, returning: true)).()
         |> (fn {_, participants} -> get_participants_data(participants) end).()
 
       %{
@@ -81,7 +79,7 @@ defmodule StakeLaneApi.Pool do
     |> Errors.treated_error()
   end
 
-  defp does_creator_play_it?(verified_participants, league_id, user_creator_id, repo) do
+  defp does_creator_play_it?(verified_participants, user_creator_id, repo) do
     verified_participants
     |> Enum.find(fn verified_participant -> verified_participant.user_id === user_creator_id end)
     |> case do
@@ -89,6 +87,21 @@ defmodule StakeLaneApi.Pool do
       _ -> verified_participants
     end
   end
+
+  defp remove_participants_with_no_free_spot(verified_participants) do
+    verified_participants
+    |> Enum.filter(fn verified_participant ->
+      UserPlan.get_user_plan(verified_participant.user_id)
+      |> UserPlan.get_user_plan_limits(:pools)
+      |> (fn {:ok, plan_limit} ->
+            user_pools = PoolParticipant.user_pools_quantity(verified_participant.user_id)
+            under_the_limit?(plan_limit, user_pools)
+          end).()
+    end)
+  end
+
+  defp under_the_limit?(plan_limit, user_leagues) when user_leagues >= plan_limit, do: false
+  defp under_the_limit?(plan_limit, user_leagues) when user_leagues < plan_limit, do: true
 
   defp parse_participant_to_insert(verified_participant, pool, user_creator_id) do
     %{
