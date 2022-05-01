@@ -1,0 +1,18 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'build', '-t', 'eu.gcr.io/bolao-hub/api', '.' ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [ 'push', 'eu.gcr.io/bolao-hub/api']
+  - name: gcr.io/cloud-builders/gcloud
+    env:
+    - 'MIX_ENV=${_MIX_ENV}'
+    - 'HOSTNAME=${_HOSTNAME}'
+    - 'PAYMENT_KEY=${_PAYMENT_KEY}'
+    - 'DATABASE_SOCKET_DIR=${_DATABASE_SOCKET_DIR}'
+    - 'SECRET_KEY_BASE=${_SECRET_KEY_BASE}'
+    - 'DATABASE_USERNAME=${_DATABASE_USERNAME}'
+    - 'DATABASE_PASSWORD=${_DATABASE_PASSWORD}'
+    - 'DATABASE_DB_NAME=${_DATABASE_DB_NAME}'
+    args: ['run', 'deploy', '--set-env-vars=MIX_ENV=${_MIX_ENV},DATABASE_SOCKET_DIR=${_DATABASE_SOCKET_DIR},SECRET_KEY_BASE=${_SECRET_KEY_BASE},DATABASE_USERNAME=${_DATABASE_USERNAME},DATABASE_PASSWORD=${_DATABASE_PASSWORD},DATABASE_DB_NAME=${_DATABASE_DB_NAME}', '--region', 'europe-north1', '--allow-unauthenticated', '--image', 'eu.gcr.io/bolao-hub/api', 'api']
+images:
+  - 'eu.gcr.io/bolao-hub/api'
