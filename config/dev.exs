@@ -72,3 +72,12 @@ config :stake_lane_api, Oban,
     {"@daily", StakeLaneApi.Workers.UpsertFixtures, max_attempts: 3},
     {every_even_minute, StakeLaneApi.Workers.UpdateFixtures, max_attempts: 1}
   ]
+
+  # Populating Database Running the Workers Manually Manually
+
+  # ```
+  #   StakeLaneApi.Workers.UpsertCountries.perform(%Oban.Job{})
+  #   StakeLaneApi.Workers.UpdateLeagues.perform(%Oban.Job{})
+  #   StakeLaneApi.Workers.UpsertTeams.perform(%Oban.Job{})
+  #   StakeLaneApi.Workers.UpsertFixtures.perform(%Oban.Job{})
+  # ```

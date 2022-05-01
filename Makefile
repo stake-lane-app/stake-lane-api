@@ -12,15 +12,18 @@ set-versions: set-erlang-version set-elixir-version
 local-api:
 	mix phx.server
 
+console:
+	iex -S mix phx.server
+
 local-infra:
 	docker-compose up -d
 
-local: set-elixir-version set-erlang-version local-infra local-api
+local: set-versions local-infra local-api
 
 interactive-session:
 	iex -S mix phx.server
 
-test:
+test: set-versions local-infra
 	mix test
 
 deploy-dev:
@@ -35,3 +38,9 @@ translations:
 	mix compile.gettext
 
 # TO DO: Add deploy-prod and app.yaml by env
+
+asdf-setup:
+	asdf plugin add elixir
+	asdf install elixir $(elixir_version)
+	asdf plugin add erlang
+	asdf install erlang $(erlang_version)
