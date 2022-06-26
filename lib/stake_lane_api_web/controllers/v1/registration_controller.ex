@@ -9,7 +9,7 @@ defmodule StakeLaneApiWeb.V1.RegistrationController do
   alias StakeLaneApiWeb.Utils.IpLocation
 
   defp user_schema(user) do
-    [language | _other_languages] = user.languages
+    [language | _other_languages] = user.languages || ["EN"]
 
     %{
       user_name: user.user_name,
