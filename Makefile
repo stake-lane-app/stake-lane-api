@@ -1,5 +1,5 @@
-elixir_version = 1.12.2-otp-24
-erlang_version = 24.0
+elixir_version = 1.13.4-otp-23
+erlang_version = 23.0
 
 set-elixir-version:
 	asdf global elixir $(elixir_version)

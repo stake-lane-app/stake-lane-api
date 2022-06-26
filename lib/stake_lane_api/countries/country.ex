@@ -25,7 +25,7 @@ defmodule StakeLaneApi.Countries.Country do
   def changeset(info, attrs) do
     info
     |> cast(attrs, [:name, :code, :flag])
-    |> validate_required([:name, :code])
+    |> validate_required([:name])
     |> unique_constraint([:name])
   end
 end
