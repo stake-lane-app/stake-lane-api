@@ -1,13 +1,13 @@
 version: '3.7'
 services:
   database:
-    image: mdillon/postgis
+    image: postgis/postgis
     environment:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=stake_lane_api_dev
       - POSTGRES_USER=postgres
     ports:
-      - 5432:5432
+      - 5433:5432
     volumes:
       - ./.db/data:/var/lib/postgresql/data:delegated
       

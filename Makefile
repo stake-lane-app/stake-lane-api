@@ -1,4 +1,4 @@
-elixir_version = 1.11.4-otp-23
+elixir_version = 1.13.4-otp-23
 erlang_version = 23.0
 
 set-elixir-version:
