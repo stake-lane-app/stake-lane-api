@@ -20,6 +20,9 @@ local-infra:
 
 local: set-versions local-infra local-api
 
+interactive-session:
+	iex -S mix phx.server
+
 test: set-versions local-infra
 	mix test
 

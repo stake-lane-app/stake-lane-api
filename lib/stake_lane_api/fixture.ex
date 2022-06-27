@@ -139,7 +139,7 @@ defmodule StakeLaneApi.Fixture do
   defp get_page(page) when page <= -2, do: Kernel.abs(page) - 1
 
   defp get_offset(0, _page_size), do: 0
-  defp get_offset(page, page_size), do: page * page_size
+  defp get_offset(page, page_size), do: page * page_size + 1
 
   def update_fixture!(%Fixture{} = fixture, attrs) do
     fixture
