@@ -207,7 +207,8 @@ defmodule StakeLaneApi.Football.Fixture.Status do
     [
       fixtures_statuses()[:finished][:code],
       fixtures_statuses()[:extra_time_finished][:code],
-      fixtures_statuses()[:penalties_finished][:code]
+      fixtures_statuses()[:penalties_finished][:code],
+      fixtures_statuses()[:technial_loss][:code]
     ]
   end
 
@@ -226,6 +227,17 @@ defmodule StakeLaneApi.Football.Fixture.Status do
     [
       fixtures_statuses()[:not_started][:code],
       fixtures_statuses()[:to_be_defined][:code]
+    ]
+  end
+
+  def special_ending() do
+    [
+      fixtures_statuses()[:suspended][:code],
+      fixtures_statuses()[:interrupted][:code],
+      fixtures_statuses()[:postponed][:code],
+      fixtures_statuses()[:cancelled][:code],
+      fixtures_statuses()[:abandoned][:code],
+      fixtures_statuses()[:walkover][:code],
     ]
   end
 
