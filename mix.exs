@@ -58,7 +58,8 @@ defmodule StakeLaneApi.MixProject do
       {:oban, "~> 2.2"},
       {:ex_machina, "~> 2.4", only: :test},
       {:excoveralls, "~> 0.13.3", only: :test},
-      {:money, "~> 1.8"}
+      {:money, "~> 1.8"},
+      {:corsica, "~> 1.2.0"}
     ]
   end
 

@@ -49,5 +49,7 @@ defmodule StakeLaneApiWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug Pow.Plug.Session, otp_app: :stake_lane_api
+  plug Corsica, origins: "*", allow_methods: :all, allow_headers: :all
+
   plug StakeLaneApiWeb.Router
 end
