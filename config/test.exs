@@ -8,6 +8,7 @@ use Mix.Config
 config :stake_lane_api, StakeLaneApi.Repo,
   username: "postgres",
   password: "postgres",
+  port: 5433,
   database: "stake_lane_api_test#{System.get_env("MIX_TEST_PARTITION")}",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

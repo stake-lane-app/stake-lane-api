@@ -81,4 +81,5 @@ config :stake_lane_api, Oban,
   #   StakeLaneApi.Workers.UpdateLeagues.perform(%Oban.Job{})
   #   StakeLaneApi.Workers.UpsertTeams.perform(%Oban.Job{})
   #   StakeLaneApi.Workers.UpsertFixtures.perform(%Oban.Job{})
+  #   StakeLaneApi.Workers.UpdateFixtures.perform(%Oban.Job{})
   # ```

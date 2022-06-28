@@ -6,6 +6,7 @@ defmodule ApiFootball.ApiFixtures do
     headers = ["X-RapidAPI-Key": envs[:key]]
 
     "#{envs[:url]}/fixtures/league/#{api_football_league_id}"
+    |> IO.inspect(label: "get_fixtures_by_league_id")
     |> HTTPoison.get!(headers)
     |> (& &1.body).()
     |> Jason.decode!()
@@ -17,6 +18,7 @@ defmodule ApiFootball.ApiFixtures do
     headers = ["X-RapidAPI-Key": envs[:key]]
 
     "#{envs[:url]}/fixtures/id/#{api_football_fixture_id}"
+    |> IO.inspect(label: "get_fixture_by_id")
     |> HTTPoison.get!(headers)
     |> (& &1.body).()
     |> Jason.decode!()
