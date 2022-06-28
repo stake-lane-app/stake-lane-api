@@ -63,13 +63,13 @@ defmodule StakeLaneApi.Factory do
   end
 
   def not_started_fixture_factory do
-    now = Timex.now("UTC")
+    in_five_min = Timex.now("UTC") |> Timex.shift(minutes: 5)
 
     %Football.Fixture{
       goals_home_team: nil,
       goals_away_team: nil,
-      starts_at_iso_date: now,
-      event_timestamp: now |> Timex.to_unix(),
+      starts_at_iso_date: in_five_min,
+      event_timestamp: in_five_min |> Timex.to_unix(),
       status_code: Football.Fixture.Status.fixtures_statuses()[:not_started][:code],
       elapsed: nil,
       venue: nil,

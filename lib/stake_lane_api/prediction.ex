@@ -58,15 +58,17 @@ defmodule StakeLaneApi.Prediction do
   end
 
   defp fixture_allow_prediction(fixture) do
-    fixture
-    |> (&(&1.status_code in Status.allow_prediction())).()
-    |> case do
-      false ->
-        dgettext("errors", "The fixture status does not allow prediction")
-        |> Errors.treated_error()
 
-      allow_prediction ->
-        {:ok, allow_prediction}
+    beforeStartingHour = DateTime.diff(fixture.starts_at_iso_date, DateTime.utc_now()) > 0
+    predictableStatus = fixture.status_code in Status.allow_prediction()
+
+    {beforeStartingHour, predictableStatus}
+    |> case do
+      {true, true} -> {:ok, :allow_prediction}
+
+      _ ->
+        dgettext("errors", "The fixture does not allow prediction")
+        |> Errors.treated_error()
     end
   end
 

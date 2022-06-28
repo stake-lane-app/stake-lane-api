@@ -60,7 +60,7 @@ defmodule StakeLaneApiWeb.API.V1.Prediction.PredictionsControllerTest do
           assert error = json_response(conn, 400)
 
           assert error["treated_error"]["message"] ==
-                   "The fixture status does not allow prediction"
+                   "The fixture does not allow prediction"
         end
       end
     end

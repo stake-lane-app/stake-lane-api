@@ -45,7 +45,10 @@ defmodule StakeLaneApi.Fixture do
             f.starts_at_iso_date < datetime_add(^NaiveDateTime.utc_now(), +15, "minute") and
             f.status_code not in ^Status.finished_status_codes() and
             fragment("third_parties_info @> ?", ^[%{"api" => third_api}]),
-        order_by: [asc: f.starts_at_iso_date]
+        order_by: [
+          asc: f.starts_at_iso_date,
+          asc: f.id
+        ]
 
     query
     |> Repo.all()
@@ -131,7 +134,7 @@ defmodule StakeLaneApi.Fixture do
     |> order_by(desc: :starts_at_iso_date)
   end
 
-  defp maybe_reverse(fixtures, page) when page < 0, do: fixtures |> Enum.reverse()
+  # defp maybe_reverse(fixtures, page) when page < 0, do: fixtures |> Enum.reverse()
   defp maybe_reverse(fixtures, _), do: fixtures
 
   defp get_page(-1), do: 0
