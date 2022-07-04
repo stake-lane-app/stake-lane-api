@@ -107,6 +107,7 @@ defmodule StakeLaneApi.Fixture do
       |> get_offset(page_size)
 
     query
+    |> distinct(true)
     |> filter_fixtures(page, beginning_of_the_user_day)
     |> limit(^page_size)
     |> offset(^offset)
