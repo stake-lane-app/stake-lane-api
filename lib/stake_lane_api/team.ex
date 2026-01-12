@@ -20,6 +20,15 @@ defmodule StakeLaneApi.Team do
     |> Repo.one()
   end
 
+  def get_team!(team_id) do
+    query =
+      from f in Team,
+        where: f.id == ^team_id
+
+    query
+    |> Repo.one!()
+  end
+
   def list_teams(_, true) do
     query =
       from team in Team,

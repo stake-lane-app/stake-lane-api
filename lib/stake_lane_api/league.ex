@@ -35,6 +35,15 @@ defmodule StakeLaneApi.League do
     |> Repo.one()
   end
 
+  def get_league!(league_id) do
+    query =
+      from f in League,
+        where: f.id == ^league_id
+
+    query
+    |> Repo.one!()
+  end
+
   def list_leagues() do
     query =
       from league in League,

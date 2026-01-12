@@ -99,6 +99,30 @@ defmodule StakeLaneApi.UserLeague do
     |> Repo.exists?()
   end
 
+  def who_plays_this_league(user_ids, league_id, blocked \\ false) do
+    query =
+      from ul in UserLeague,
+        where:
+          ul.user_id in ^user_ids and
+            ul.league_id == ^league_id and
+            ul.blocked == ^blocked
+
+    query
+    |> Repo.all()
+  end
+
+  def who_plays_this_team_league(user_ids, team_id, blocked \\ false) do
+    query =
+      from utl in UserTeamLeague,
+        where:
+          utl.user_id in ^user_ids and
+            utl.team_id == ^team_id and
+            utl.blocked == ^blocked
+
+    query
+    |> Repo.all()
+  end
+
   def create_user_league(_, nil, nil), do: {:error, "No league_id/team_id has been sent"}
 
   def create_user_league(user_id, league_id, nil) do

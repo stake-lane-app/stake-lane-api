@@ -21,4 +21,20 @@ defmodule StakeLaneApi.User do
       _ -> {:not_found, nil}
     end
   end
+
+  def get_user_by_id(user_id) do
+    query =
+      from u in User,
+        where: u.id == ^user_id,
+        select: %{
+          email: u.email,
+          first_name: u.first_name,
+          last_name: u.last_name,
+          user_name: u.user_name,
+          picture: u.picture
+        }
+
+    query
+    |> Repo.one()
+  end
 end

@@ -175,4 +175,27 @@ defmodule StakeLaneApi.Factory do
       active: true
     }
   end
+
+  def pool_league_factory do
+    %StakeLaneApi.Pools.Pool{
+      name: sequence(:name, &"pool_league-#{&1}"),
+      league: build(:league)
+    }
+  end
+
+  def pool_team_factory do
+    %StakeLaneApi.Pools.Pool{
+      name: sequence(:name, &"pool_team-#{&1}"),
+      team: build(:team)
+    }
+  end
+
+  def pool_participant_factory do
+    %StakeLaneApi.Pools.PoolParticipant{
+      pool: build(:pool_league),
+      user: build(:user),
+      captain: false,
+      blocked: false
+    }
+  end
 end
